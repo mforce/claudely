@@ -11,10 +11,17 @@ Publishes to npm. Two triggers:
 
 ### One-time setup before first publish
 
-1. Create an npm **automation** access token at <https://www.npmjs.com/settings/~/tokens> (skips 2FA challenge for CI).
+Uses npm **Trusted Publishing** (OIDC) — no npm tokens, no GitHub secrets.
+
+1. On npmjs.com, go to the package page → **Settings → Publishing access → Add trusted publisher** → **GitHub Actions**, then fill in:
+   - Organization or user: `mforce`
+   - Repository: `claudely`
+   - Workflow filename: `publish.yml`
+   - Environment name: `npm-publish`
 2. In the GitHub repo: **Settings → Environments → New environment** → name it `npm-publish`. Add required reviewers if you want a manual approval gate.
-3. In that environment, add secret `NPM_TOKEN` = the automation token.
-4. Provenance (`--provenance`) requires the package's `repository` field in `package.json` to match the GitHub repo, which it already does.
+3. (Recommended) On the npm package settings, set **Publishing access** to *Require two-factor authentication and disallow tokens* — Trusted Publishing bypasses both checks via OIDC, while blocking any stray token-based publish path.
+
+Provenance is attached automatically by Trusted Publishing; the `repository` field in `package.json` already matches the GitHub repo, which is required.
 
 ### Cutting a release
 
