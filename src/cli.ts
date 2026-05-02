@@ -22,7 +22,7 @@ import {
   listV1Models,
   type ModelEntry,
 } from "./listers.js";
-import { effortOverrideArgs, loadEffortLevel, maybeWarnEffort } from "./effort.js";
+import { applyCompat, loadSettings } from "./compat.js";
 import { splitArgs, type FlagSpec } from "./argsplit.js";
 
 const FLAG_SPEC: FlagSpec = {
@@ -201,19 +201,14 @@ async function main(): Promise<number> {
     env.CLAUDE_CODE_ATTRIBUTION_HEADER = "0";
   }
 
-  const settingsPath = join(homedir(), ".claude", "settings.json");
-  const effortLevel = loadEffortLevel(settingsPath);
-  maybeWarnEffort({
-    baseUrl,
-    settingsPath,
-    write: (line) => process.stderr.write(line),
-  });
-  const effortArgs = effortOverrideArgs({ effortLevel, baseUrl }, claudeArgs);
+  const settings = loadSettings(join(homedir(), ".claude", "settings.json"));
+  const compat = applyCompat({ settings, baseUrl, existingClaudeArgs: claudeArgs });
+  for (const w of compat.warnings) process.stderr.write(`loclaude: ${w}\n`);
 
   return await new Promise<number>((resolve) => {
     const child = spawn(
       "claude",
-      ["--model", model!, ...effortArgs, ...claudeArgs],
+      ["--model", model!, ...compat.extraArgs, ...claudeArgs],
       { stdio: "inherit", env },
     );
     child.on("error", (err) => {
