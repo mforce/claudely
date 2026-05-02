@@ -11,6 +11,31 @@ section is also used as the body of the Release notes by the
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-05-02
+
+### Added
+- Auto-resume on bare `claudely` invocation: when a saved claude session
+  exists for the current directory, `claudely` (with no args) now resumes
+  it instead of starting fresh. A one-line stderr notice announces the
+  behavior (`claudely: resuming previous session (use --new for a fresh
+  one)`).
+- New `--new` flag forces a fresh session even when a saved one exists
+  for the cwd.
+- New `CLAUDELY_NO_AUTO_RESUME=1` env var disables auto-resume globally.
+
+### Changed
+- Explicit resume flags (`-c` / `--continue`, `-r` / `--resume`,
+  `--session-id`, `--from-pr`) now skip the model picker. Previously the
+  picker still ran even when the user was clearly resuming, producing a
+  model value the saved session would override.
+- Model selection and resume detection are now independent decisions.
+  `claudely --model X` (with a saved session) auto-resumes AND passes
+  `--model X` through to claude; `claudely -c --model X` no longer
+  silently drops the explicit model. Env-derived model defaults
+  (`CLAUDELY_MODEL`, provider-specific env vars) are skipped on resume,
+  since they're "default for fresh," not "intent to override the saved
+  session."
+
 ## [0.1.3] - 2026-05-01
 
 ### Added
@@ -65,7 +90,8 @@ section is also used as the body of the Release notes by the
   `--` separator.
 - CI workflow (Node 20, 22) and npm publish workflow triggered by GitHub Release.
 
-[Unreleased]: https://github.com/mforce/claudely/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/mforce/claudely/compare/v0.1.4...HEAD
+[0.1.4]: https://github.com/mforce/claudely/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/mforce/claudely/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/mforce/claudely/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/mforce/claudely/compare/v0.1.0...v0.1.1
