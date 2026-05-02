@@ -25,6 +25,7 @@ import {
 import { applyCompat, loadSettings } from "./compat.js";
 import { splitArgs, type FlagSpec } from "./argsplit.js";
 import { renderVersion } from "./version.js";
+import { isResumeIntent, assembleClaudeArgv } from "./resume.js";
 
 const FLAG_SPEC: FlagSpec = {
   string: new Set(["provider", "model", "base-url", "token"]),
@@ -49,6 +50,10 @@ claudely options:
       --list              Print available models for the provider and exit
   -h, --help              Show this help
   -V, --version           Print claudely and claude versions, then exit
+
+When you pass a claude resume flag (-c/--continue, -r/--resume,
+--session-id, --from-pr) claudely skips the model picker and does NOT
+inject --model — the saved session already knows its model.
 
 Any flag claudely does not recognize is forwarded verbatim to \`claude\`.
 Use \`--\` as an escape hatch to force a token through (e.g. when claude
@@ -162,41 +167,49 @@ async function main(): Promise<number> {
     return 0;
   }
 
-  let model =
-    values.model ??
-    process.env.CLAUDELY_MODEL ??
-    (provider.modelEnvVar ? process.env[provider.modelEnvVar] : undefined);
+  // When resuming a saved session, the model is already encoded in that
+  // session — running the picker would just produce a value that gets
+  // overridden, and re-injecting `--model` can fight the saved state.
+  const resuming = isResumeIntent(claudeArgs);
 
-  if (!model) {
-    const entries = await listForProvider(provider, baseUrl, token);
-    if (entries.length === 0) {
-      console.error(
-        `claudely: no models discovered for provider '${providerName}' at ${baseUrl}.`,
-      );
-      if (provider.startHint) console.error(`  hint: ${provider.startHint}`);
-      return 1;
+  let model: string | undefined;
+  if (!resuming) {
+    model =
+      values.model ??
+      process.env.CLAUDELY_MODEL ??
+      (provider.modelEnvVar ? process.env[provider.modelEnvVar] : undefined);
+
+    if (!model) {
+      const entries = await listForProvider(provider, baseUrl, token);
+      if (entries.length === 0) {
+        console.error(
+          `claudely: no models discovered for provider '${providerName}' at ${baseUrl}.`,
+        );
+        if (provider.startHint) console.error(`  hint: ${provider.startHint}`);
+        return 1;
+      }
+      model = await search<string>({
+        message: `${providerName} model`,
+        source: async (input) => {
+          const q = (input ?? "").toLowerCase();
+          const filtered = !q
+            ? entries
+            : entries.filter(
+                (e) =>
+                  e.display.toLowerCase().includes(q) ||
+                  e.id.toLowerCase().includes(q),
+              );
+          return filtered.map((e) => ({
+            name: e.display,
+            value: e.id,
+            description:
+              e.extras.length > 0
+                ? `${e.id}  ·  ${e.extras.join(" · ")}`
+                : e.id,
+          }));
+        },
+      });
     }
-    model = await search<string>({
-      message: `${providerName} model`,
-      source: async (input) => {
-        const q = (input ?? "").toLowerCase();
-        const filtered = !q
-          ? entries
-          : entries.filter(
-              (e) =>
-                e.display.toLowerCase().includes(q) ||
-                e.id.toLowerCase().includes(q),
-            );
-        return filtered.map((e) => ({
-          name: e.display,
-          value: e.id,
-          description:
-            e.extras.length > 0
-              ? `${e.id}  ·  ${e.extras.join(" · ")}`
-              : e.id,
-        }));
-      },
-    });
   }
 
   // Build the env recipe to hand to claude.
@@ -220,12 +233,14 @@ async function main(): Promise<number> {
   const compat = applyCompat({ settings, baseUrl, existingClaudeArgs: claudeArgs });
   for (const w of compat.warnings) process.stderr.write(`claudely: ${w}\n`);
 
+  const claudeArgv = assembleClaudeArgv({
+    model,
+    extraArgs: compat.extraArgs,
+    claudeArgs,
+  });
+
   return await new Promise<number>((resolve) => {
-    const child = spawn(
-      "claude",
-      ["--model", model!, ...compat.extraArgs, ...claudeArgs],
-      { stdio: "inherit", env },
-    );
+    const child = spawn("claude", claudeArgv, { stdio: "inherit", env });
     child.on("error", (err) => {
       console.error(`claudely: failed to spawn claude: ${err.message}`);
       resolve(127);
