@@ -6,7 +6,7 @@ Build + smoke test on every push to `main` and PR. Matrix: Node 20, 22.
 ## `publish.yml`
 Publishes to npm. Two triggers:
 
-- **Tag push** (`v*.*.*`) — verifies the tag matches `package.json` version, then `npm publish --access public --provenance` to the `latest` dist-tag.
+- **GitHub Release published** — verifies the release tag matches `package.json` version, then `npm publish --access public --provenance` to the `latest` dist-tag. Plain tag pushes do **not** trigger this; you must create a Release (GitHub UI or `gh release create`).
 - **Manual** (`workflow_dispatch`) — choose a dist-tag (`latest`, `next`, etc.). Useful for prereleases.
 
 ### One-time setup before first publish
@@ -19,9 +19,8 @@ Publishes to npm. Two triggers:
 ### Cutting a release
 
 ```bash
-# bump version in package.json, commit, then:
-git tag v0.1.0
-git push origin v0.1.0
+# bump version in package.json, commit, push, then:
+gh release create v0.1.0 --generate-notes
 ```
 
-The `Publish to npm` workflow will run, verify, and publish.
+The `Publish to npm` workflow fires on the `release: published` event, verifies the tag matches `package.json`, and publishes. A plain `git push --tags` will **not** trigger publish — that's intentional, so accidental tag pushes can't ship a release.

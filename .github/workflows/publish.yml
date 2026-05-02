@@ -1,9 +1,8 @@
 name: Publish to npm
 
 on:
-  push:
-    tags:
-      - 'v*.*.*'
+  release:
+    types: [published]
   workflow_dispatch:
     inputs:
       tag:
@@ -31,20 +30,20 @@ jobs:
       - run: npm run build
       - run: npm run smoke
 
-      - name: Verify tag matches package.json version
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Verify release tag matches package.json version
+        if: github.event_name == 'release'
         env:
-          GIT_REF: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: |
           PKG_VERSION="$(node -p "require('./package.json').version")"
-          TAG_VERSION="${GIT_REF#v}"
+          TAG_VERSION="${RELEASE_TAG#v}"
           if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
-            echo "::error::package.json version ($PKG_VERSION) does not match tag ($TAG_VERSION)"
+            echo "::error::package.json version ($PKG_VERSION) does not match release tag ($TAG_VERSION)"
             exit 1
           fi
 
-      - name: Publish (tag push)
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Publish (release)
+        if: github.event_name == 'release'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public --provenance
