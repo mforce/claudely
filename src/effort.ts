@@ -28,7 +28,19 @@ function isAnthropicHost(baseUrl: string): boolean {
 export function effortWarning(ctx: EffortContext): string | null {
   if (!ctx.effortLevel || !REJECTED.has(ctx.effortLevel)) return null;
   if (isAnthropicHost(ctx.baseUrl)) return null;
-  return `warning: effortLevel '${ctx.effortLevel}' may be rejected by local Anthropic-compatible servers; consider 'high' (or run /effort high in Claude Code).`;
+  return `warning: effortLevel '${ctx.effortLevel}' is rejected by most local Anthropic-compatible servers; auto-clamping to 'high' for this session via --effort. Edit ~/.claude/settings.json or run /effort high to make it permanent.`;
+}
+
+const SAFE_FALLBACK = "high";
+
+export function effortOverrideArgs(
+  ctx: EffortContext,
+  existingClaudeArgs: readonly string[] = [],
+): string[] {
+  if (existingClaudeArgs.includes("--effort")) return [];
+  if (!ctx.effortLevel || !REJECTED.has(ctx.effortLevel)) return [];
+  if (isAnthropicHost(ctx.baseUrl)) return [];
+  return ["--effort", SAFE_FALLBACK];
 }
 
 export interface MaybeWarnArgs {

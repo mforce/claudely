@@ -140,11 +140,14 @@ export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
 - Claude Code's in-session `/model` command does **not** auto-discover
   backend models; it accepts an arbitrary id string. To switch mid-session,
   type `/model <id>` with one of the ids shown by `loclaude --list`.
-- **Effort levels:** if your `~/.claude/settings.json` has `effortLevel:
-  "xhigh"` (Anthropic-only), local Anthropic-compatible servers (LM Studio,
-  Ollama, etc.) will reject every request with HTTP 400. loclaude prints a
-  one-line warning to stderr at startup when it detects this. Fix it with
-  `/effort high` inside Claude Code, or by editing `settings.json`.
+- **Effort levels:** `effortLevel: "xhigh"` (Anthropic Opus 4.7 only) gets
+  rejected by local Anthropic-compatible servers (LM Studio, Ollama, etc.)
+  with HTTP 400. When loclaude detects `xhigh` in `~/.claude/settings.json`
+  and the target is not `api.anthropic.com`, it prints a one-line stderr
+  warning **and** injects `--effort high` into the spawned `claude` argv
+  for that session — your settings file is left untouched. To make it
+  permanent, run `/effort high` inside Claude Code or edit `settings.json`.
+  An explicit `--effort` you pass after `--` always wins over the override.
 
 ## License
 

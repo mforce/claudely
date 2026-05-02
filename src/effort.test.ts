@@ -3,7 +3,12 @@ import assert from "node:assert/strict";
 import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { effortWarning, loadEffortLevel, maybeWarnEffort } from "./effort.js";
+import {
+  effortWarning,
+  loadEffortLevel,
+  maybeWarnEffort,
+  effortOverrideArgs,
+} from "./effort.js";
 
 test("effortWarning warns when effortLevel is xhigh against a non-Anthropic base URL", () => {
   const msg = effortWarning({
@@ -97,6 +102,37 @@ test("maybeWarnEffort writes warning to writer when xhigh + non-Anthropic settin
   assert.match(lines[0], /effortLevel/);
   assert.match(lines[0], /xhigh/);
   assert.ok(lines[0].endsWith("\n"), "warning should end with newline");
+});
+
+test("effortOverrideArgs returns ['--effort','high'] when xhigh + non-Anthropic, [] otherwise", () => {
+  assert.deepEqual(
+    effortOverrideArgs({ effortLevel: "xhigh", baseUrl: "http://localhost:1234" }),
+    ["--effort", "high"],
+  );
+  assert.deepEqual(
+    effortOverrideArgs({ effortLevel: "xhigh", baseUrl: "https://api.anthropic.com" }),
+    [],
+  );
+  assert.deepEqual(
+    effortOverrideArgs({ effortLevel: "high", baseUrl: "http://localhost:1234" }),
+    [],
+  );
+  assert.deepEqual(
+    effortOverrideArgs({ effortLevel: undefined, baseUrl: "http://localhost:1234" }),
+    [],
+  );
+});
+
+test("effortOverrideArgs respects an explicit user --effort already in claudeArgs", () => {
+  // If the user (or an upstream wrapper) already passed --effort, we don't
+  // override it — let the user's explicit choice win.
+  assert.deepEqual(
+    effortOverrideArgs(
+      { effortLevel: "xhigh", baseUrl: "http://localhost:1234" },
+      ["--effort", "max", "--print", "hi"],
+    ),
+    [],
+  );
 });
 
 test("maybeWarnEffort writes nothing for safe effort, missing settings, or Anthropic target", () => {
