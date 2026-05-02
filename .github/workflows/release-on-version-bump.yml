@@ -1,0 +1,95 @@
+name: Release on version bump
+
+on:
+  push:
+    branches: [main]
+    paths: [package.json]
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect version change
+        id: ver
+        run: |
+          NEW=$(jq -r .version package.json)
+          OLD=$(git show HEAD~1:package.json 2>/dev/null | jq -r .version 2>/dev/null || echo "")
+          echo "new=$NEW" >> "$GITHUB_OUTPUT"
+          if [ "$NEW" != "$OLD" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+          case "$NEW" in
+            *-*) echo "prerelease=true"  >> "$GITHUB_OUTPUT" ;;
+            *)   echo "prerelease=false" >> "$GITHUB_OUTPUT" ;;
+          esac
+
+      - name: Skip when version is unchanged
+        if: steps.ver.outputs.changed != 'true'
+        run: echo "package.json version is unchanged; nothing to release."
+
+      - name: Check tag does not already exist
+        if: steps.ver.outputs.changed == 'true'
+        id: tagcheck
+        env:
+          NEW: ${{ steps.ver.outputs.new }}
+        run: |
+          if git rev-parse "v$NEW" >/dev/null 2>&1; then
+            echo "::warning::Tag v$NEW already exists; skipping release."
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Extract release notes from CHANGELOG.md
+        if: steps.ver.outputs.changed == 'true' && steps.tagcheck.outputs.exists == 'false'
+        env:
+          NEW: ${{ steps.ver.outputs.new }}
+        run: |
+          if [ ! -f CHANGELOG.md ]; then
+            echo "::error::CHANGELOG.md is missing"
+            exit 1
+          fi
+          awk -v ver="$NEW" '
+            /^## \[/ {
+              if (in_section) exit
+              if ($0 ~ "^## \\[" ver "\\]") { in_section = 1; next }
+            }
+            in_section { print }
+          ' CHANGELOG.md > release-notes.md
+          if [ ! -s release-notes.md ]; then
+            echo "::error::No CHANGELOG.md section found for version $NEW. Add a '## [$NEW] - YYYY-MM-DD' heading before bumping package.json."
+            exit 1
+          fi
+          echo "--- release notes ---"
+          cat release-notes.md
+          echo "---"
+
+      - name: Create tag and GitHub Release
+        if: steps.ver.outputs.changed == 'true' && steps.tagcheck.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PAT }}
+          NEW: ${{ steps.ver.outputs.new }}
+          PRERELEASE: ${{ steps.ver.outputs.prerelease }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::secrets.RELEASE_PAT is not set. A fine-grained PAT (Contents: write) is required so the resulting release event can trigger publish.yml; GITHUB_TOKEN cannot do this."
+            exit 1
+          fi
+          flags=()
+          if [ "$PRERELEASE" = "true" ]; then
+            flags+=(--prerelease)
+          fi
+          gh release create "v$NEW" \
+            --target "$GITHUB_SHA" \
+            --title "v$NEW" \
+            --notes-file release-notes.md \
+            "${flags[@]}"

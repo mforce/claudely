@@ -1,6 +1,6 @@
 # claudely
 
-*pron. **"lo-clawd"** — short for **"local claude"***
+*pron. **"CLAW-dlee"** — Claude, locally.*
 
 Launch [Claude Code](https://docs.anthropic.com/en/docs/claude-code) against a
 local LLM (LM Studio, Ollama, llama.cpp, or any Anthropic-compatible
@@ -15,6 +15,21 @@ talking to the official Anthropic API.
 > and spawns `claude` unchanged.
 
 ---
+
+## Why this exists
+
+Plenty of CLI coding agents will happily talk to a local LLM. The catch is
+the ecosystem: skills, slash commands, MCP servers, plugins, hooks — the
+interesting tooling has been built specifically for Claude Code, and the
+parity story on every other agent is patchy at best. Trying to reuse a
+Claude-shaped workflow on a different agent quickly turns into "rewrite all
+the plugins" or "do without."
+
+`claudely` skips that fight. Keep Claude Code as the client (and its entire
+plugin / skill / MCP ecosystem with it), and just point it at a model
+running on your own hardware. The official `claude` command still talks to
+Anthropic; `claudely` is a separate entrypoint that sets the right
+environment variables for the local path and spawns `claude` unchanged.
 
 ## Install
 

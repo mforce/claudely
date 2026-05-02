@@ -1,7 +1,7 @@
 {
   "name": "claudely",
-  "version": "0.1.0",
-  "description": "Launch Claude Code against a local LLM (LM Studio, Ollama, llama.cpp, or any Anthropic-compatible endpoint). Unaffiliated community helper.",
+  "version": "0.1.1",
+  "description": "Claude, locally. Launch Claude Code against a local LLM (LM Studio, Ollama, llama.cpp, or any Anthropic-compatible endpoint). Unaffiliated community helper.",
   "license": "MIT",
   "author": "mforce",
   "type": "module",
