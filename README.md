@@ -1,5 +1,9 @@
 # claudely
 
+[![npm version](https://img.shields.io/npm/v/claudely.svg)](https://www.npmjs.com/package/claudely)
+[![npm downloads](https://img.shields.io/npm/dm/claudely.svg)](https://www.npmjs.com/package/claudely)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 *pron. **"CLAW-dlee"** — Claude, locally.*
 
 Launch [Claude Code](https://docs.anthropic.com/en/docs/claude-code) against a
@@ -33,6 +37,8 @@ environment variables for the local path and spawns `claude` unchanged.
 
 ## Install
 
+Published on npm as [`claudely`](https://www.npmjs.com/package/claudely).
+
 ```bash
 # global (recommended)
 npm i -g claudely
@@ -41,7 +47,9 @@ npm i -g claudely
 npx claudely
 ```
 
-Requires Node.js ≥ 20 and the `claude` CLI on your `PATH`.
+Requires Node.js ≥ 20 and the `claude` CLI on your `PATH`. (npm 7+ will
+install Claude Code automatically as a peer dependency; users who got
+`claude` via the native installer or Homebrew are unaffected.)
 
 ## Quickstart
 

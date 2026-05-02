@@ -25,10 +25,16 @@ import {
 import { applyCompat, loadSettings } from "./compat.js";
 import { splitArgs, type FlagSpec } from "./argsplit.js";
 import { renderVersion } from "./version.js";
+import {
+  isResumeIntent,
+  assembleClaudeArgv,
+  hasRecentSessionForCwd,
+  shouldAutoResume,
+} from "./resume.js";
 
 const FLAG_SPEC: FlagSpec = {
   string: new Set(["provider", "model", "base-url", "token"]),
-  boolean: new Set(["list", "help", "version"]),
+  boolean: new Set(["list", "help", "version", "new"]),
   short: {
     p: "provider",
     m: "model",
@@ -47,8 +53,18 @@ claudely options:
   -u, --base-url <url>    Override the provider's default base URL
   -t, --token <token>     Override the provider's default auth token
       --list              Print available models for the provider and exit
+      --new               Force a fresh session (skip auto-resume)
   -h, --help              Show this help
   -V, --version           Print claudely and claude versions, then exit
+
+Bare \`claudely\` (no args, no --model) auto-resumes the most recent
+claude session for the current directory when one exists. Use --new to
+force a fresh session, or set CLAUDELY_NO_AUTO_RESUME=1 to disable
+auto-resume globally.
+
+When you pass a claude resume flag (-c/--continue, -r/--resume,
+--session-id, --from-pr) claudely skips the model picker and does NOT
+inject --model — the saved session already knows its model.
 
 Any flag claudely does not recognize is forwarded verbatim to \`claude\`.
 Use \`--\` as an escape hatch to force a token through (e.g. when claude
@@ -103,6 +119,7 @@ async function main(): Promise<number> {
         "base-url": { type: "string", short: "u" },
         token: { type: "string", short: "t" },
         list: { type: "boolean" },
+        new: { type: "boolean" },
         help: { type: "boolean", short: "h" },
         version: { type: "boolean", short: "V" },
       },
@@ -162,41 +179,67 @@ async function main(): Promise<number> {
     return 0;
   }
 
-  let model =
-    values.model ??
-    process.env.CLAUDELY_MODEL ??
-    (provider.modelEnvVar ? process.env[provider.modelEnvVar] : undefined);
+  // Auto-resume on bare invocation: if the user typed `claudely` with no
+  // forwarded args and there's a saved session for this cwd, behave as if
+  // they had typed `claudely --continue`. --new and CLAUDELY_NO_AUTO_RESUME
+  // opt out.
+  const autoResume = shouldAutoResume({
+    ownValues: values,
+    claudeArgs,
+    hasRecentSession: hasRecentSessionForCwd(process.cwd()),
+    env: process.env,
+  });
+  if (autoResume) {
+    process.stderr.write("claudely: resuming previous session (use --new for a fresh one)\n");
+    claudeArgs.push("--continue");
+  }
 
-  if (!model) {
-    const entries = await listForProvider(provider, baseUrl, token);
-    if (entries.length === 0) {
-      console.error(
-        `claudely: no models discovered for provider '${providerName}' at ${baseUrl}.`,
-      );
-      if (provider.startHint) console.error(`  hint: ${provider.startHint}`);
-      return 1;
+  // Resume vs. model selection are independent decisions:
+  //   - Resume controls whether the picker runs and whether --continue is added.
+  //   - Model selection controls what (if anything) goes into --model.
+  // On resume, an explicit CLI --model is still honored (claude supports
+  // --continue --model X to switch models on a resumed conversation), but
+  // env-derived model defaults are skipped — they're "default for fresh",
+  // not "intent to override the saved session".
+  const resuming = isResumeIntent(claudeArgs);
+
+  let model: string | undefined = values.model;
+  if (!model && !resuming) {
+    model =
+      process.env.CLAUDELY_MODEL ??
+      (provider.modelEnvVar ? process.env[provider.modelEnvVar] : undefined);
+
+    if (!model) {
+      const entries = await listForProvider(provider, baseUrl, token);
+      if (entries.length === 0) {
+        console.error(
+          `claudely: no models discovered for provider '${providerName}' at ${baseUrl}.`,
+        );
+        if (provider.startHint) console.error(`  hint: ${provider.startHint}`);
+        return 1;
+      }
+      model = await search<string>({
+        message: `${providerName} model`,
+        source: async (input) => {
+          const q = (input ?? "").toLowerCase();
+          const filtered = !q
+            ? entries
+            : entries.filter(
+                (e) =>
+                  e.display.toLowerCase().includes(q) ||
+                  e.id.toLowerCase().includes(q),
+              );
+          return filtered.map((e) => ({
+            name: e.display,
+            value: e.id,
+            description:
+              e.extras.length > 0
+                ? `${e.id}  ·  ${e.extras.join(" · ")}`
+                : e.id,
+          }));
+        },
+      });
     }
-    model = await search<string>({
-      message: `${providerName} model`,
-      source: async (input) => {
-        const q = (input ?? "").toLowerCase();
-        const filtered = !q
-          ? entries
-          : entries.filter(
-              (e) =>
-                e.display.toLowerCase().includes(q) ||
-                e.id.toLowerCase().includes(q),
-            );
-        return filtered.map((e) => ({
-          name: e.display,
-          value: e.id,
-          description:
-            e.extras.length > 0
-              ? `${e.id}  ·  ${e.extras.join(" · ")}`
-              : e.id,
-        }));
-      },
-    });
   }
 
   // Build the env recipe to hand to claude.
@@ -220,12 +263,14 @@ async function main(): Promise<number> {
   const compat = applyCompat({ settings, baseUrl, existingClaudeArgs: claudeArgs });
   for (const w of compat.warnings) process.stderr.write(`claudely: ${w}\n`);
 
+  const claudeArgv = assembleClaudeArgv({
+    model,
+    extraArgs: compat.extraArgs,
+    claudeArgs,
+  });
+
   return await new Promise<number>((resolve) => {
-    const child = spawn(
-      "claude",
-      ["--model", model!, ...compat.extraArgs, ...claudeArgs],
-      { stdio: "inherit", env },
-    );
+    const child = spawn("claude", claudeArgv, { stdio: "inherit", env });
     child.on("error", (err) => {
       console.error(`claudely: failed to spawn claude: ${err.message}`);
       resolve(127);
