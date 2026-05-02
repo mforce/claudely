@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // SPDX-License-Identifier: MIT
 //
-// loclaude — launch Claude Code against a local LLM.
+// claudely — launch Claude Code against a local LLM.
 //
 // Unaffiliated community helper — not endorsed by Anthropic. "Claude" /
 // "Claude Code" are Anthropic trademarks, used here descriptively to
@@ -31,9 +31,9 @@ const FLAG_SPEC: FlagSpec = {
   short: { p: "provider", m: "model", u: "base-url", t: "token", h: "help" },
 };
 
-const HELP = `Usage: loclaude [loclaude-options] [claude-args...]
+const HELP = `Usage: claudely [claudely-options] [claude-args...]
 
-loclaude options:
+claudely options:
   -p, --provider <name>   lmstudio (default) | ollama | llamacpp | custom
   -m, --model <id>        Skip the picker and use this model id
   -u, --base-url <url>    Override the provider's default base URL
@@ -41,25 +41,25 @@ loclaude options:
       --list              Print available models for the provider and exit
   -h, --help              Show this help
 
-Any flag loclaude does not recognize is forwarded verbatim to \`claude\`.
+Any flag claudely does not recognize is forwarded verbatim to \`claude\`.
 Use \`--\` as an escape hatch to force a token through (e.g. when claude
-gains a flag whose name collides with one of loclaude's own).
+gains a flag whose name collides with one of claudely's own).
 
 Examples:
-  loclaude                                       # LM Studio + interactive picker
-  loclaude -p ollama                             # Ollama
-  loclaude -p llamacpp                           # llama.cpp
-  loclaude -p ollama -m gpt-oss:20b              # skip the picker
-  loclaude -p custom -u http://localhost:4000 -t sk-x -m my-model
-  loclaude -p ollama --list                      # print models, don't launch
-  loclaude --print "explain this repo"           # forwarded to claude (no -- needed)
-  loclaude -- --provider force-this-to-claude    # escape hatch for collisions
+  claudely                                       # LM Studio + interactive picker
+  claudely -p ollama                             # Ollama
+  claudely -p llamacpp                           # llama.cpp
+  claudely -p ollama -m gpt-oss:20b              # skip the picker
+  claudely -p custom -u http://localhost:4000 -t sk-x -m my-model
+  claudely -p ollama --list                      # print models, don't launch
+  claudely --print "explain this repo"           # forwarded to claude (no -- needed)
+  claudely -- --provider force-this-to-claude    # escape hatch for collisions
 
 Selection precedence:
-  Provider:  -p  >  $LOCLAUDE_PROVIDER  >  lmstudio
-  Model:     -m  >  $LOCLAUDE_MODEL     >  provider-specific env  >  picker
-  Base URL:  -u  >  $LOCLAUDE_BASE_URL  >  provider default
-  Token:     -t  >  $LOCLAUDE_TOKEN     >  provider default
+  Provider:  -p  >  $CLAUDELY_PROVIDER  >  lmstudio
+  Model:     -m  >  $CLAUDELY_MODEL     >  provider-specific env  >  picker
+  Base URL:  -u  >  $CLAUDELY_BASE_URL  >  provider default
+  Token:     -t  >  $CLAUDELY_TOKEN     >  provider default
   Port:      $LMSTUDIO_PORT / $OLLAMA_PORT / $LLAMACPP_PORT  >  defaults
 `;
 
@@ -79,7 +79,7 @@ function listForProvider(
 }
 
 async function main(): Promise<number> {
-  // Anything loclaude doesn't recognize as one of its own flags is forwarded
+  // Anything claudely doesn't recognize as one of its own flags is forwarded
   // to claude. Use `--` as an explicit escape hatch to force a token through
   // (e.g. when claude has a flag that collides with one of ours).
   const { own: ownArgs, claude: claudeArgs } = splitArgs(process.argv.slice(2), FLAG_SPEC);
@@ -101,7 +101,7 @@ async function main(): Promise<number> {
     });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
-    console.error(`loclaude: ${msg}`);
+    console.error(`claudely: ${msg}`);
     return 2;
   }
 
@@ -112,28 +112,28 @@ async function main(): Promise<number> {
     return 0;
   }
 
-  const providerName = values.provider ?? process.env.LOCLAUDE_PROVIDER ?? "lmstudio";
+  const providerName = values.provider ?? process.env.CLAUDELY_PROVIDER ?? "lmstudio";
   const provider = PROVIDERS[providerName];
   if (!provider) {
     console.error(
-      `loclaude: unknown provider '${providerName}' (expected: ${Object.keys(PROVIDERS).join(" | ")})`,
+      `claudely: unknown provider '${providerName}' (expected: ${Object.keys(PROVIDERS).join(" | ")})`,
     );
     return 2;
   }
 
   const baseUrl =
-    values["base-url"] ?? process.env.LOCLAUDE_BASE_URL ?? provider.defaultBaseUrl();
-  const token = values.token ?? process.env.LOCLAUDE_TOKEN ?? provider.defaultToken;
+    values["base-url"] ?? process.env.CLAUDELY_BASE_URL ?? provider.defaultBaseUrl();
+  const token = values.token ?? process.env.CLAUDELY_TOKEN ?? provider.defaultToken;
 
   if (!baseUrl) {
     console.error(
-      "loclaude: provider 'custom' requires --base-url <url> (or $LOCLAUDE_BASE_URL)",
+      "claudely: provider 'custom' requires --base-url <url> (or $CLAUDELY_BASE_URL)",
     );
     return 2;
   }
   if (!token) {
     console.error(
-      "loclaude: provider 'custom' requires --token <token> (or $LOCLAUDE_TOKEN)",
+      "claudely: provider 'custom' requires --token <token> (or $CLAUDELY_TOKEN)",
     );
     return 2;
   }
@@ -149,14 +149,14 @@ async function main(): Promise<number> {
 
   let model =
     values.model ??
-    process.env.LOCLAUDE_MODEL ??
+    process.env.CLAUDELY_MODEL ??
     (provider.modelEnvVar ? process.env[provider.modelEnvVar] : undefined);
 
   if (!model) {
     const entries = await listForProvider(provider, baseUrl, token);
     if (entries.length === 0) {
       console.error(
-        `loclaude: no models discovered for provider '${providerName}' at ${baseUrl}.`,
+        `claudely: no models discovered for provider '${providerName}' at ${baseUrl}.`,
       );
       if (provider.startHint) console.error(`  hint: ${provider.startHint}`);
       return 1;
@@ -203,7 +203,7 @@ async function main(): Promise<number> {
 
   const settings = loadSettings(join(homedir(), ".claude", "settings.json"));
   const compat = applyCompat({ settings, baseUrl, existingClaudeArgs: claudeArgs });
-  for (const w of compat.warnings) process.stderr.write(`loclaude: ${w}\n`);
+  for (const w of compat.warnings) process.stderr.write(`claudely: ${w}\n`);
 
   return await new Promise<number>((resolve) => {
     const child = spawn(
@@ -212,7 +212,7 @@ async function main(): Promise<number> {
       { stdio: "inherit", env },
     );
     child.on("error", (err) => {
-      console.error(`loclaude: failed to spawn claude: ${err.message}`);
+      console.error(`claudely: failed to spawn claude: ${err.message}`);
       resolve(127);
     });
     child.on("exit", (code) => resolve(code ?? 0));
@@ -224,6 +224,6 @@ main()
   .catch((err) => {
     // Inquirer surfaces user-cancelled (Ctrl-C / Esc) as ExitPromptError.
     if (err && err.name === "ExitPromptError") process.exit(130);
-    console.error(`loclaude: ${err?.message ?? err}`);
+    console.error(`claudely: ${err?.message ?? err}`);
     process.exit(1);
   });

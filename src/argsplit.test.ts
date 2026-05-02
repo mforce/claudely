@@ -8,19 +8,19 @@ const SPEC: FlagSpec = {
   short: { p: "provider", m: "model", u: "base-url", t: "token", h: "help" },
 };
 
-test("splits known loclaude flags from passthrough args", () => {
+test("splits known claudely flags from passthrough args", () => {
   const result = splitArgs(["-p", "ollama", "--print", "hi"], SPEC);
   assert.deepEqual(result.own, ["-p", "ollama"]);
   assert.deepEqual(result.claude, ["--print", "hi"]);
 });
 
-test("explicit -- forces all subsequent tokens to claude, even loclaude-known ones", () => {
+test("explicit -- forces all subsequent tokens to claude, even claudely-known ones", () => {
   const result = splitArgs(["--", "-p", "collide", "--list"], SPEC);
   assert.deepEqual(result.own, []);
   assert.deepEqual(result.claude, ["-p", "collide", "--list"]);
 });
 
-test("-- in the middle: tokens before stay on loclaude, tokens after go to claude verbatim", () => {
+test("-- in the middle: tokens before stay on claudely, tokens after go to claude verbatim", () => {
   const result = splitArgs(["-p", "ollama", "--", "--provider", "force"], SPEC);
   assert.deepEqual(result.own, ["-p", "ollama"]);
   assert.deepEqual(result.claude, ["--provider", "force"]);

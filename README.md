@@ -1,4 +1,4 @@
-# loclaude
+# claudely
 
 *pron. **"lo-clawd"** — short for **"local claude"***
 
@@ -10,7 +10,7 @@ talking to the official Anthropic API.
 > **Disclaimer.** This is an unofficial, community-maintained helper. It is
 > not affiliated with, endorsed by, or sponsored by Anthropic. *Claude* and
 > *Claude Code* are trademarks of Anthropic, used here only descriptively to
-> identify the upstream tool this CLI wraps. `loclaude` does not modify the
+> identify the upstream tool this CLI wraps. `claudely` does not modify the
 > `claude` binary; it only sets [documented environment variables](https://code.claude.com/docs/en/env-vars)
 > and spawns `claude` unchanged.
 
@@ -20,10 +20,10 @@ talking to the official Anthropic API.
 
 ```bash
 # global (recommended)
-npm i -g loclaude
+npm i -g claudely
 
 # or one-shot, no install
-npx loclaude
+npx claudely
 ```
 
 Requires Node.js ≥ 20 and the `claude` CLI on your `PATH`.
@@ -32,30 +32,30 @@ Requires Node.js ≥ 20 and the `claude` CLI on your `PATH`.
 
 ```bash
 # LM Studio (default), interactive picker over your downloaded models
-loclaude
+claudely
 
 # Ollama
-loclaude -p ollama
+claudely -p ollama
 
 # llama.cpp (whichever GGUF llama-server is currently serving)
-loclaude -p llamacpp
+claudely -p llamacpp
 
 # Skip the picker by naming a model
-loclaude -p ollama -m gpt-oss:20b
-loclaude -p lmstudio -m openai/gpt-oss-20b
+claudely -p ollama -m gpt-oss:20b
+claudely -p lmstudio -m openai/gpt-oss-20b
 
 # Just print what's available, don't launch claude
-loclaude -p ollama --list
+claudely -p ollama --list
 
 # Custom Anthropic-compatible endpoint (e.g. a litellm proxy)
-loclaude -p custom -u http://localhost:4000 -t sk-anything -m my-model
+claudely -p custom -u http://localhost:4000 -t sk-anything -m my-model
 
-# Any flag loclaude doesn't recognize is forwarded verbatim to claude
-loclaude -p ollama -m gpt-oss:20b --print "explain this repo"
+# Any flag claudely doesn't recognize is forwarded verbatim to claude
+claudely -p ollama -m gpt-oss:20b --print "explain this repo"
 
 # `--` is an escape hatch to force a token through, e.g. if claude grows
-# a flag whose name collides with one of loclaude's own
-loclaude -p ollama -- --provider force-this-to-claude
+# a flag whose name collides with one of claudely's own
+claudely -p ollama -- --provider force-this-to-claude
 ```
 
 ## Supported providers
@@ -71,7 +71,7 @@ For backends that only speak the OpenAI protocol (vLLM, text-generation-webui,
 TabbyAPI, …), front them with a translation proxy such as
 [litellm](https://docs.litellm.ai) or
 [claude-code-router](https://github.com/musistudio/claude-code-router) and
-point `loclaude` at the proxy via `-p custom`.
+point `claudely` at the proxy via `-p custom`.
 
 ## Prerequisites
 
@@ -88,13 +88,13 @@ point `loclaude` at the proxy via `-p custom`.
 
 | Setting   | Sources, first match wins                                                       |
 |-----------|---------------------------------------------------------------------------------|
-| Provider  | `-p` flag → `$LOCLAUDE_PROVIDER` → `lmstudio`                                   |
-| Model     | `-m` flag → `$LOCLAUDE_MODEL` → `$LMSTUDIO_MODEL` / `$OLLAMA_MODEL` / `$LLAMACPP_MODEL` → interactive picker |
-| Base URL  | `-u` flag → `$LOCLAUDE_BASE_URL` → provider default                             |
-| Token     | `-t` flag → `$LOCLAUDE_TOKEN` → provider default                                |
+| Provider  | `-p` flag → `$CLAUDELY_PROVIDER` → `lmstudio`                                   |
+| Model     | `-m` flag → `$CLAUDELY_MODEL` → `$LMSTUDIO_MODEL` / `$OLLAMA_MODEL` / `$LLAMACPP_MODEL` → interactive picker |
+| Base URL  | `-u` flag → `$CLAUDELY_BASE_URL` → provider default                             |
+| Token     | `-t` flag → `$CLAUDELY_TOKEN` → provider default                                |
 | Port      | `$LMSTUDIO_PORT` / `$OLLAMA_PORT` / `$LLAMACPP_PORT` (only affect provider defaults) |
 
-## What loclaude exports to `claude`
+## What claudely exports to `claude`
 
 Every variable is set in the spawned process only — your shell (and the
 regular `claude` command) is untouched.
@@ -120,7 +120,7 @@ Claude Code prepends an attribution string to the system prompt that contains
 a per-request hash (`x-anthropic-billing-header: cc_version=…; cch=…;`). On
 a local server every turn hashes differently, so the prompt cache misses
 every single time — [unsloth measured ~90% slowdown](https://unsloth.ai/docs/basics/claude-code).
-The fix is a single env var: `CLAUDE_CODE_ATTRIBUTION_HEADER=0`. `loclaude`
+The fix is a single env var: `CLAUDE_CODE_ATTRIBUTION_HEADER=0`. `claudely`
 sets it for you in the spawned process, so the regular `claude` command is
 unaffected. Override per-invocation by exporting your own value first.
 
@@ -131,7 +131,7 @@ References: [official env-vars docs](https://code.claude.com/docs/en/env-vars),
 
 ```bash
 # Skip Claude Code's telemetry / feedback traffic. Useful when the model is
-# local, but it's left to your judgment — loclaude does not disable analytics
+# local, but it's left to your judgment — claudely does not disable analytics
 # Anthropic uses to improve Claude Code without an explicit opt-in.
 export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
 ```
@@ -143,10 +143,10 @@ export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
   `llama-server` with a different `-m` path.
 - Claude Code's in-session `/model` command does **not** auto-discover
   backend models; it accepts an arbitrary id string. To switch mid-session,
-  type `/model <id>` with one of the ids shown by `loclaude --list`.
+  type `/model <id>` with one of the ids shown by `claudely --list`.
 - **Effort levels:** `effortLevel: "xhigh"` (Anthropic Opus 4.7 only) gets
   rejected by local Anthropic-compatible servers (LM Studio, Ollama, etc.)
-  with HTTP 400. When loclaude detects `xhigh` in `~/.claude/settings.json`
+  with HTTP 400. When claudely detects `xhigh` in `~/.claude/settings.json`
   and the target is not `api.anthropic.com`, it prints a one-line stderr
   warning **and** injects `--effort high` into the spawned `claude` argv
   for that session — your settings file is left untouched. To make it

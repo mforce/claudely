@@ -63,7 +63,7 @@ test("undefined settings (missing/malformed file): no-op", () => {
 });
 
 test("loadSettings returns parsed object for a valid file", () => {
-  const dir = mkdtempSync(join(tmpdir(), "loclaude-test-"));
+  const dir = mkdtempSync(join(tmpdir(), "claudely-test-"));
   try {
     const path = join(dir, "settings.json");
     writeFileSync(path, JSON.stringify({ effortLevel: "xhigh", other: 1 }));
@@ -74,7 +74,7 @@ test("loadSettings returns parsed object for a valid file", () => {
 });
 
 test("loadSettings returns undefined for missing, malformed, or non-object JSON", () => {
-  const dir = mkdtempSync(join(tmpdir(), "loclaude-test-"));
+  const dir = mkdtempSync(join(tmpdir(), "claudely-test-"));
   try {
     assert.equal(loadSettings(join(dir, "nope.json")), undefined);
 

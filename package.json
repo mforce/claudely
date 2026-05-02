@@ -1,5 +1,5 @@
 {
-  "name": "loclaude",
+  "name": "claudely",
   "version": "0.1.0",
   "description": "Launch Claude Code against a local LLM (LM Studio, Ollama, llama.cpp, or any Anthropic-compatible endpoint). Unaffiliated community helper.",
   "license": "MIT",
@@ -7,14 +7,14 @@
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mforce/loclaude.git"
+    "url": "git+https://github.com/mforce/claudely.git"
   },
-  "homepage": "https://github.com/mforce/loclaude#readme",
+  "homepage": "https://github.com/mforce/claudely#readme",
   "bugs": {
-    "url": "https://github.com/mforce/loclaude/issues"
+    "url": "https://github.com/mforce/claudely/issues"
   },
   "bin": {
-    "loclaude": "dist/cli.js"
+    "claudely": "dist/cli.js"
   },
   "files": [
     "dist",
