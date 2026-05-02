@@ -1,4 +1,4 @@
-// Provider registry for loclaude.
+// Provider registry for claudely.
 // Each provider declares: how to derive its base URL/token, which env-var
 // style Claude Code expects (auth_token vs api_key), and which lister to
 // use for model discovery.

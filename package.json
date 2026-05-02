@@ -14,7 +14,7 @@
     "url": "https://github.com/mforce/claudely/issues"
   },
   "bin": {
-    "loclaude": "dist/cli.js"
+    "claudely": "dist/cli.js"
   },
   "files": [
     "dist",
