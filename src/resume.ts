@@ -10,6 +10,10 @@
 //   --session-id <uuid>             use a specific session id
 //   --from-pr [value]               resume the session linked to a PR
 
+import { readdirSync } from "node:fs";
+import { homedir } from "node:os";
+import { join } from "node:path";
+
 const RESUME_BOOLS = new Set(["-c", "--continue"]);
 
 // Flags that are themselves resume intent regardless of their value form
@@ -36,4 +40,50 @@ export interface AssembleArgs {
 export function assembleClaudeArgv(opts: AssembleArgs): string[] {
   const head = opts.model ? ["--model", opts.model] : [];
   return [...head, ...opts.extraArgs, ...opts.claudeArgs];
+}
+
+// claude stores per-cwd sessions under ~/.claude/projects/<encoded-cwd>/.
+// The encoding replaces path separators with `-` (e.g. /home/u/x → -home-u-x).
+// We mirror that to detect "is there a previous session here?" without spawning.
+export function encodeCwdForClaude(cwd: string): string {
+  return cwd.replace(/\//g, "-");
+}
+
+export interface SessionLookupOpts {
+  // Override for tests; defaults to os.homedir().
+  home?: string;
+}
+
+export function hasRecentSessionForCwd(cwd: string, opts: SessionLookupOpts = {}): boolean {
+  const root = opts.home ?? homedir();
+  const dir = join(root, ".claude", "projects", encodeCwdForClaude(cwd));
+  try {
+    const entries = readdirSync(dir, { withFileTypes: true });
+    return entries.some((e) => e.isFile() && e.name.endsWith(".jsonl"));
+  } catch {
+    return false;
+  }
+}
+
+export interface AutoResumeInputs {
+  ownValues: {
+    model?: string | undefined;
+    list?: boolean | undefined;
+    new?: boolean | undefined;
+  };
+  claudeArgs: readonly string[];
+  hasRecentSession: boolean;
+  env: NodeJS.ProcessEnv;
+}
+
+export function shouldAutoResume(inputs: AutoResumeInputs): boolean {
+  if (!inputs.hasRecentSession) return false;
+  if (inputs.ownValues.new) return false;
+  if (inputs.ownValues.list) return false;
+  if (inputs.ownValues.model) return false;
+  if (inputs.claudeArgs.length > 0) return false;
+  if (isResumeIntent(inputs.claudeArgs)) return false;
+  const optOut = inputs.env.CLAUDELY_NO_AUTO_RESUME;
+  if (optOut && optOut !== "0" && optOut !== "" && optOut !== "false") return false;
+  return true;
 }

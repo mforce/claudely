@@ -25,11 +25,16 @@ import {
 import { applyCompat, loadSettings } from "./compat.js";
 import { splitArgs, type FlagSpec } from "./argsplit.js";
 import { renderVersion } from "./version.js";
-import { isResumeIntent, assembleClaudeArgv } from "./resume.js";
+import {
+  isResumeIntent,
+  assembleClaudeArgv,
+  hasRecentSessionForCwd,
+  shouldAutoResume,
+} from "./resume.js";
 
 const FLAG_SPEC: FlagSpec = {
   string: new Set(["provider", "model", "base-url", "token"]),
-  boolean: new Set(["list", "help", "version"]),
+  boolean: new Set(["list", "help", "version", "new"]),
   short: {
     p: "provider",
     m: "model",
@@ -48,8 +53,14 @@ claudely options:
   -u, --base-url <url>    Override the provider's default base URL
   -t, --token <token>     Override the provider's default auth token
       --list              Print available models for the provider and exit
+      --new               Force a fresh session (skip auto-resume)
   -h, --help              Show this help
   -V, --version           Print claudely and claude versions, then exit
+
+Bare \`claudely\` (no args, no --model) auto-resumes the most recent
+claude session for the current directory when one exists. Use --new to
+force a fresh session, or set CLAUDELY_NO_AUTO_RESUME=1 to disable
+auto-resume globally.
 
 When you pass a claude resume flag (-c/--continue, -r/--resume,
 --session-id, --from-pr) claudely skips the model picker and does NOT
@@ -108,6 +119,7 @@ async function main(): Promise<number> {
         "base-url": { type: "string", short: "u" },
         token: { type: "string", short: "t" },
         list: { type: "boolean" },
+        new: { type: "boolean" },
         help: { type: "boolean", short: "h" },
         version: { type: "boolean", short: "V" },
       },
@@ -165,6 +177,21 @@ async function main(): Promise<number> {
       process.stdout.write(cols.join("\t") + "\n");
     }
     return 0;
+  }
+
+  // Auto-resume on bare invocation: if the user typed `claudely` with no
+  // forwarded args and there's a saved session for this cwd, behave as if
+  // they had typed `claudely --continue`. --new and CLAUDELY_NO_AUTO_RESUME
+  // opt out.
+  const autoResume = shouldAutoResume({
+    ownValues: values,
+    claudeArgs,
+    hasRecentSession: hasRecentSessionForCwd(process.cwd()),
+    env: process.env,
+  });
+  if (autoResume) {
+    process.stderr.write("claudely: resuming previous session (use --new for a fresh one)\n");
+    claudeArgs.push("--continue");
   }
 
   // When resuming a saved session, the model is already encoded in that

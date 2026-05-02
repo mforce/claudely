@@ -1,6 +1,15 @@
-import { test } from "node:test";
+import { test, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
-import { isResumeIntent, assembleClaudeArgv } from "./resume.js";
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import {
+  isResumeIntent,
+  assembleClaudeArgv,
+  encodeCwdForClaude,
+  hasRecentSessionForCwd,
+  shouldAutoResume,
+} from "./resume.js";
 
 test("isResumeIntent: empty args → false", () => {
   assert.equal(isResumeIntent([]), false);
@@ -95,4 +104,108 @@ test("assembleClaudeArgv: empty extras and claude args → just the model pair (
     assembleClaudeArgv({ model: undefined, extraArgs: [], claudeArgs: [] }),
     [],
   );
+});
+
+test("encodeCwdForClaude mirrors claude's per-cwd directory naming", () => {
+  assert.equal(encodeCwdForClaude("/home/cesar/dev/claudely"), "-home-cesar-dev-claudely");
+  assert.equal(
+    encodeCwdForClaude("/home/cesar/dev/shelfydex--worktrees/feat-api-security"),
+    "-home-cesar-dev-shelfydex--worktrees-feat-api-security",
+  );
+});
+
+let fakeHome: string;
+
+beforeEach(() => {
+  fakeHome = mkdtempSync(join(tmpdir(), "claudely-home-"));
+});
+
+afterEach(() => {
+  rmSync(fakeHome, { recursive: true, force: true });
+});
+
+function seedSessionFile(cwd: string, sessionId: string) {
+  const dir = join(fakeHome, ".claude", "projects", encodeCwdForClaude(cwd));
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, `${sessionId}.jsonl`), '{"type":"summary"}\n');
+}
+
+test("hasRecentSessionForCwd: no projects dir at all → false", () => {
+  assert.equal(hasRecentSessionForCwd("/some/where", { home: fakeHome }), false);
+});
+
+test("hasRecentSessionForCwd: empty per-cwd dir (no .jsonl) → false", () => {
+  const cwd = "/home/u/proj";
+  mkdirSync(join(fakeHome, ".claude", "projects", encodeCwdForClaude(cwd)), {
+    recursive: true,
+  });
+  assert.equal(hasRecentSessionForCwd(cwd, { home: fakeHome }), false);
+});
+
+test("hasRecentSessionForCwd: per-cwd dir contains .jsonl → true", () => {
+  const cwd = "/home/u/proj";
+  seedSessionFile(cwd, "abc-session-id");
+  assert.equal(hasRecentSessionForCwd(cwd, { home: fakeHome }), true);
+});
+
+test("hasRecentSessionForCwd: only non-jsonl files (e.g. memory dir) → false", () => {
+  const cwd = "/home/u/proj";
+  const dir = join(fakeHome, ".claude", "projects", encodeCwdForClaude(cwd));
+  mkdirSync(join(dir, "memory"), { recursive: true });
+  writeFileSync(join(dir, "settings.json"), "{}");
+  assert.equal(hasRecentSessionForCwd(cwd, { home: fakeHome }), false);
+});
+
+test("hasRecentSessionForCwd: a different cwd's session does not leak", () => {
+  seedSessionFile("/home/u/other", "abc");
+  assert.equal(hasRecentSessionForCwd("/home/u/proj", { home: fakeHome }), false);
+});
+
+const baseInputs = {
+  ownValues: {},
+  claudeArgs: [] as string[],
+  hasRecentSession: true,
+  env: {} as NodeJS.ProcessEnv,
+};
+
+test("shouldAutoResume: bare invocation with a saved session → true", () => {
+  assert.equal(shouldAutoResume(baseInputs), true);
+});
+
+test("shouldAutoResume: no saved session → false", () => {
+  assert.equal(shouldAutoResume({ ...baseInputs, hasRecentSession: false }), false);
+});
+
+test("shouldAutoResume: --new opts out → false", () => {
+  assert.equal(shouldAutoResume({ ...baseInputs, ownValues: { new: true } }), false);
+});
+
+test("shouldAutoResume: --list path → false", () => {
+  assert.equal(shouldAutoResume({ ...baseInputs, ownValues: { list: true } }), false);
+});
+
+test("shouldAutoResume: --model present (CLI or env collapsed) → false", () => {
+  assert.equal(shouldAutoResume({ ...baseInputs, ownValues: { model: "x" } }), false);
+});
+
+test("shouldAutoResume: any forwarded claudeArgs (positional or flag) → false", () => {
+  assert.equal(shouldAutoResume({ ...baseInputs, claudeArgs: ["--print", "hi"] }), false);
+  assert.equal(shouldAutoResume({ ...baseInputs, claudeArgs: ["explain X"] }), false);
+});
+
+test("shouldAutoResume: CLAUDELY_NO_AUTO_RESUME=1 opts out → false", () => {
+  assert.equal(
+    shouldAutoResume({ ...baseInputs, env: { CLAUDELY_NO_AUTO_RESUME: "1" } }),
+    false,
+  );
+});
+
+test("shouldAutoResume: CLAUDELY_NO_AUTO_RESUME=0/false/empty does NOT opt out", () => {
+  for (const v of ["0", "false", ""]) {
+    assert.equal(
+      shouldAutoResume({ ...baseInputs, env: { CLAUDELY_NO_AUTO_RESUME: v } }),
+      true,
+      `CLAUDELY_NO_AUTO_RESUME=${JSON.stringify(v)} should not opt out`,
+    );
+  }
 });
