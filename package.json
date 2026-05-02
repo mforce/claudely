@@ -5,6 +5,14 @@
   "license": "MIT",
   "author": "mforce",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mforce/loclaude.git"
+  },
+  "homepage": "https://github.com/mforce/loclaude#readme",
+  "bugs": {
+    "url": "https://github.com/mforce/loclaude/issues"
+  },
   "bin": {
     "loclaude": "dist/cli.js"
   },
