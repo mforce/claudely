@@ -4,7 +4,9 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 
-const run = promisify(execFile);
+export type Runner = (cmd: string, args: string[]) => Promise<{ stdout: string; stderr: string }>;
+
+const defaultRun: Runner = promisify(execFile);
 
 export interface ModelEntry {
   id: string;
@@ -25,7 +27,11 @@ interface LmsPsEntry {
   modelKey: string;
 }
 
-export async function listLmStudio(baseUrl: string, token: string): Promise<ModelEntry[]> {
+export async function listLmStudio(
+  baseUrl: string,
+  token: string,
+  run: Runner = defaultRun,
+): Promise<ModelEntry[]> {
   try {
     const [{ stdout: lsOut }, ps] = await Promise.all([
       run("lms", ["ls", "--llm", "--json"]),
@@ -53,7 +59,11 @@ export async function listLmStudio(baseUrl: string, token: string): Promise<Mode
   }
 }
 
-export async function listOllama(baseUrl: string, token: string): Promise<ModelEntry[]> {
+export async function listOllama(
+  baseUrl: string,
+  token: string,
+  run: Runner = defaultRun,
+): Promise<ModelEntry[]> {
   try {
     const { stdout } = await run("ollama", ["list"]);
     const lines = stdout.trim().split("\n");

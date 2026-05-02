@@ -24,7 +24,8 @@
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",
-    "smoke": "node dist/cli.js --help"
+    "smoke": "node dist/cli.js --help",
+    "test": "tsc -p tsconfig.test.json && node --test dist-test/*.test.js"
   },
   "engines": {
     "node": ">=20"
