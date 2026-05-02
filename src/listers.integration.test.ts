@@ -13,11 +13,11 @@ import { mkdtempSync, rmSync, writeFileSync, readFileSync, existsSync } from "no
 import { tmpdir } from "node:os";
 import { join, delimiter } from "node:path";
 import { listLmStudio, listOllama } from "./listers.js";
+import { restoreFetch, mockFetch } from "./test-helpers.js";
 
 // POSIX-only: skip on Windows since the fakes use sh shebangs.
 const skipOnWindows = { skip: process.platform === "win32" ? "POSIX-only" : false };
 
-const realFetch = globalThis.fetch;
 const realPath = process.env.PATH;
 let tempDir: string;
 let argvLog: string;
@@ -27,12 +27,12 @@ beforeEach(() => {
   tempDir = mkdtempSync(join(tmpdir(), "claudely-listers-"));
   emptyDir = mkdtempSync(join(tmpdir(), "claudely-empty-"));
   argvLog = join(tempDir, "argv.log");
-  globalThis.fetch = realFetch;
+  restoreFetch();
 });
 
 afterEach(() => {
   process.env.PATH = realPath;
-  globalThis.fetch = realFetch;
+  restoreFetch();
   rmSync(tempDir, { recursive: true, force: true });
   rmSync(emptyDir, { recursive: true, force: true });
 });
@@ -49,14 +49,6 @@ function prependToPath(dir: string): void {
 function readArgvLog(): string[] {
   if (!existsSync(argvLog)) return [];
   return readFileSync(argvLog, "utf8").trim().split("\n");
-}
-
-function mockFetch(response: Partial<Response> & { json?: () => Promise<unknown> }): void {
-  globalThis.fetch = (async () => ({
-    ok: true,
-    json: async () => ({}),
-    ...response,
-  })) as typeof fetch;
 }
 
 test(
@@ -101,6 +93,7 @@ test(
   "listLmStudio: ENOENT (binary missing on PATH) → falls back to listV1Models",
   skipOnWindows,
   async () => {
+    // Intentionally clobber PATH: the fallback (listV1Models) uses fetch, not execFile.
     process.env.PATH = emptyDir;
     mockFetch({ ok: true, json: async () => ({ data: [{ id: "fallback-model" }] }) });
 
@@ -165,6 +158,7 @@ test(
   "listOllama: ENOENT (binary missing on PATH) → falls back to listV1Models",
   skipOnWindows,
   async () => {
+    // Intentionally clobber PATH: the fallback (listV1Models) uses fetch, not execFile.
     process.env.PATH = emptyDir;
     mockFetch({ ok: true, json: async () => ({ data: [{ id: "fallback-model" }] }) });
 

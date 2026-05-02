@@ -1,6 +1,7 @@
 import { test, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
 import { listLmStudio, listOllama, listV1Models, type Runner } from "./listers.js";
+import { restoreFetch, mockFetch } from "./test-helpers.js";
 
 function fakeRun(responses: Record<string, string | Error>): Runner {
   return async (cmd: string, args: string[]) => {
@@ -25,23 +26,13 @@ function mockV1Fallback(id = "fallback-model") {
   });
 }
 
-const realFetch = globalThis.fetch;
-
 beforeEach(() => {
-  globalThis.fetch = realFetch;
+  restoreFetch();
 });
 
 afterEach(() => {
-  globalThis.fetch = realFetch;
+  restoreFetch();
 });
-
-function mockFetch(response: Partial<Response> & { json?: () => Promise<unknown> }) {
-  globalThis.fetch = (async () => ({
-    ok: true,
-    json: async () => ({}),
-    ...response,
-  })) as typeof fetch;
-}
 
 test("listV1Models parses /v1/models data into ModelEntry[] with empty extras", async () => {
   mockFetch({
