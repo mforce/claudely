@@ -194,15 +194,18 @@ async function main(): Promise<number> {
     claudeArgs.push("--continue");
   }
 
-  // When resuming a saved session, the model is already encoded in that
-  // session — running the picker would just produce a value that gets
-  // overridden, and re-injecting `--model` can fight the saved state.
+  // Resume vs. model selection are independent decisions:
+  //   - Resume controls whether the picker runs and whether --continue is added.
+  //   - Model selection controls what (if anything) goes into --model.
+  // On resume, an explicit CLI --model is still honored (claude supports
+  // --continue --model X to switch models on a resumed conversation), but
+  // env-derived model defaults are skipped — they're "default for fresh",
+  // not "intent to override the saved session".
   const resuming = isResumeIntent(claudeArgs);
 
-  let model: string | undefined;
-  if (!resuming) {
+  let model: string | undefined = values.model;
+  if (!model && !resuming) {
     model =
-      values.model ??
       process.env.CLAUDELY_MODEL ??
       (provider.modelEnvVar ? process.env[provider.modelEnvVar] : undefined);
 

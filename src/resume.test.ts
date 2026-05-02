@@ -95,6 +95,24 @@ test("assembleClaudeArgv: model undefined (resume case) → no --model in argv",
   assert.equal(out.includes("--model"), false);
 });
 
+test("assembleClaudeArgv: explicit model + --continue in claudeArgs → both present (resume + model override)", () => {
+  const out = assembleClaudeArgv({
+    model: "qwen3-coder",
+    extraArgs: [],
+    claudeArgs: ["--continue"],
+  });
+  assert.deepEqual(out, ["--model", "qwen3-coder", "--continue"]);
+});
+
+test("assembleClaudeArgv: explicit model + -c short form → both present", () => {
+  const out = assembleClaudeArgv({
+    model: "qwen3-coder",
+    extraArgs: ["--effort", "high"],
+    claudeArgs: ["-c"],
+  });
+  assert.deepEqual(out, ["--model", "qwen3-coder", "--effort", "high", "-c"]);
+});
+
 test("assembleClaudeArgv: empty extras and claude args → just the model pair (or nothing)", () => {
   assert.deepEqual(
     assembleClaudeArgv({ model: "m", extraArgs: [], claudeArgs: [] }),
@@ -184,8 +202,8 @@ test("shouldAutoResume: --list path → false", () => {
   assert.equal(shouldAutoResume({ ...baseInputs, ownValues: { list: true } }), false);
 });
 
-test("shouldAutoResume: --model present (CLI or env collapsed) → false", () => {
-  assert.equal(shouldAutoResume({ ...baseInputs, ownValues: { model: "x" } }), false);
+test("shouldAutoResume: --model present does NOT block auto-resume — model and resume are independent", () => {
+  assert.equal(shouldAutoResume({ ...baseInputs, ownValues: { model: "x" } }), true);
 });
 
 test("shouldAutoResume: any forwarded claudeArgs (positional or flag) → false", () => {

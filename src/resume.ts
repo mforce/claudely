@@ -80,7 +80,6 @@ export function shouldAutoResume(inputs: AutoResumeInputs): boolean {
   if (!inputs.hasRecentSession) return false;
   if (inputs.ownValues.new) return false;
   if (inputs.ownValues.list) return false;
-  if (inputs.ownValues.model) return false;
   if (inputs.claudeArgs.length > 0) return false;
   if (isResumeIntent(inputs.claudeArgs)) return false;
   const optOut = inputs.env.CLAUDELY_NO_AUTO_RESUME;
