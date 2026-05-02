@@ -1,6 +1,6 @@
 # claudely
 
-*pron. **"lo-clawd"** — short for **"local claude"***
+*pron. **"CLAW-dlee"** — Claude, locally.*
 
 Launch [Claude Code](https://docs.anthropic.com/en/docs/claude-code) against a
 local LLM (LM Studio, Ollama, llama.cpp, or any Anthropic-compatible
