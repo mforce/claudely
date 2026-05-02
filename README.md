@@ -20,10 +20,10 @@ talking to the official Anthropic API.
 
 ```bash
 # global (recommended)
-npm i -g loclaude
+npm i -g claudely
 
 # or one-shot, no install
-npx loclaude
+npx claudely
 ```
 
 Requires Node.js ≥ 20 and the `claude` CLI on your `PATH`.
