@@ -6,7 +6,7 @@ Build + smoke test on every push to `main` and PR. Matrix: Node 20, 22.
 ## `publish.yml`
 Publishes to npm. Two triggers:
 
-- **GitHub Release published** — verifies the release tag matches `package.json` version, then `npm publish --access public --provenance` to the `latest` dist-tag. Plain tag pushes do **not** trigger this; you must create a Release (GitHub UI, `gh release create`, or the `release-on-version-bump` workflow below).
+- **GitHub Release published** — verifies the release tag matches `package.json` version, then `npm publish --access public` to the `latest` dist-tag. Auth is via npm Trusted Publishing (OIDC), and provenance is attached automatically. Plain tag pushes do **not** trigger this; you must create a Release (GitHub UI, `gh release create`, or the `release-on-version-bump` workflow below).
 - **Manual** (`workflow_dispatch`) — choose a dist-tag (`latest`, `next`, etc.). Useful for prereleases.
 
 ### One-time setup before first publish

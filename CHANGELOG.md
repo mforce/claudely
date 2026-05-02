@@ -11,6 +11,15 @@ section is also used as the body of the Release notes by the
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-05-01
+
+### Changed
+- Publish pipeline now uses npm Trusted Publishing (OIDC) end to end, with
+  npm pinned to `11.13.0` in the publish job. No code changes; this is the
+  first version actually delivered to npm under the new pipeline (0.1.1
+  was tagged on GitHub but never reached the registry, because Node 22's
+  bundled npm 10.x silently does not implement OIDC trusted publishing).
+
 ## [0.1.1] - 2026-05-01
 
 ### Changed
@@ -32,6 +41,7 @@ section is also used as the body of the Release notes by the
   `--` separator.
 - CI workflow (Node 20, 22) and npm publish workflow triggered by GitHub Release.
 
-[Unreleased]: https://github.com/mforce/claudely/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/mforce/claudely/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/mforce/claudely/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/mforce/claudely/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/mforce/claudely/releases/tag/v0.1.0
