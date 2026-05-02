@@ -44,13 +44,10 @@ jobs:
 
       - name: Publish (release)
         if: github.event_name == 'release'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public --provenance
+        run: npm publish --access public
 
       - name: Publish (manual)
         if: github.event_name == 'workflow_dispatch'
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           DIST_TAG: ${{ inputs.tag }}
-        run: npm publish --access public --provenance --tag "$DIST_TAG"
+        run: npm publish --access public --tag "$DIST_TAG"
