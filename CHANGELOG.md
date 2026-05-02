@@ -11,6 +11,30 @@ section is also used as the body of the Release notes by the
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-05-01
+
+### Added
+- `-V` / `--version` flag prints both `claudely` and the wrapped `claude`
+  CLI versions on two lines, then exits. Reports `claude  not found on
+  PATH` (without failing) when the upstream binary isn't installed, so
+  bug reports always have both numbers.
+- Real-subprocess integration tests for the `lms` and `ollama` model
+  listers. Drops fake shell scripts onto a temp dir and prepends it to
+  `PATH`, exercising the actual `promisify(execFile)` path (PATH lookup,
+  ENOENT, exit codes, argv) without depending on either provider being
+  installed.
+
+### Changed
+- `--help` and `--version` now provably short-circuit before provider
+  resolution, base-url/token validation, lister discovery, and spawning
+  `claude` — covered by an end-to-end test that runs the compiled CLI
+  with `PATH` cleared and a bogus `CLAUDELY_PROVIDER`.
+- Declares `@anthropic-ai/claude-code >=2.0.0` as a peer dependency, so
+  `npm i -g claudely` on npm 7+ also installs `claude` automatically.
+  Users who installed Claude Code via the native installer or Homebrew
+  are unaffected — npm just installs an additional copy under the npm
+  prefix, and `PATH` order decides which one runs.
+
 ## [0.1.2] - 2026-05-01
 
 ### Changed
@@ -41,7 +65,8 @@ section is also used as the body of the Release notes by the
   `--` separator.
 - CI workflow (Node 20, 22) and npm publish workflow triggered by GitHub Release.
 
-[Unreleased]: https://github.com/mforce/claudely/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/mforce/claudely/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/mforce/claudely/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/mforce/claudely/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/mforce/claudely/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/mforce/claudely/releases/tag/v0.1.0

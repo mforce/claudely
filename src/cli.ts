@@ -24,11 +24,19 @@ import {
 } from "./listers.js";
 import { applyCompat, loadSettings } from "./compat.js";
 import { splitArgs, type FlagSpec } from "./argsplit.js";
+import { renderVersion } from "./version.js";
 
 const FLAG_SPEC: FlagSpec = {
   string: new Set(["provider", "model", "base-url", "token"]),
-  boolean: new Set(["list", "help"]),
-  short: { p: "provider", m: "model", u: "base-url", t: "token", h: "help" },
+  boolean: new Set(["list", "help", "version"]),
+  short: {
+    p: "provider",
+    m: "model",
+    u: "base-url",
+    t: "token",
+    h: "help",
+    V: "version",
+  },
 };
 
 const HELP = `Usage: claudely [claudely-options] [claude-args...]
@@ -40,6 +48,7 @@ claudely options:
   -t, --token <token>     Override the provider's default auth token
       --list              Print available models for the provider and exit
   -h, --help              Show this help
+  -V, --version           Print claudely and claude versions, then exit
 
 Any flag claudely does not recognize is forwarded verbatim to \`claude\`.
 Use \`--\` as an escape hatch to force a token through (e.g. when claude
@@ -95,6 +104,7 @@ async function main(): Promise<number> {
         token: { type: "string", short: "t" },
         list: { type: "boolean" },
         help: { type: "boolean", short: "h" },
+        version: { type: "boolean", short: "V" },
       },
       allowPositionals: false,
       strict: true,
@@ -109,6 +119,11 @@ async function main(): Promise<number> {
 
   if (values.help) {
     console.log(HELP);
+    return 0;
+  }
+
+  if (values.version) {
+    console.log(await renderVersion());
     return 0;
   }
 
