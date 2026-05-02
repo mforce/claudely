@@ -23,10 +23,17 @@ import {
   type ModelEntry,
 } from "./listers.js";
 import { effortOverrideArgs, loadEffortLevel, maybeWarnEffort } from "./effort.js";
+import { splitArgs, type FlagSpec } from "./argsplit.js";
 
-const HELP = `Usage: loclaude [options] [-- claude-args...]
+const FLAG_SPEC: FlagSpec = {
+  string: new Set(["provider", "model", "base-url", "token"]),
+  boolean: new Set(["list", "help"]),
+  short: { p: "provider", m: "model", u: "base-url", t: "token", h: "help" },
+};
 
-Options:
+const HELP = `Usage: loclaude [loclaude-options] [claude-args...]
+
+loclaude options:
   -p, --provider <name>   lmstudio (default) | ollama | llamacpp | custom
   -m, --model <id>        Skip the picker and use this model id
   -u, --base-url <url>    Override the provider's default base URL
@@ -34,7 +41,9 @@ Options:
       --list              Print available models for the provider and exit
   -h, --help              Show this help
 
-Anything after \`--\` is forwarded verbatim to \`claude\`.
+Any flag loclaude does not recognize is forwarded verbatim to \`claude\`.
+Use \`--\` as an escape hatch to force a token through (e.g. when claude
+gains a flag whose name collides with one of loclaude's own).
 
 Examples:
   loclaude                                       # LM Studio + interactive picker
@@ -43,7 +52,8 @@ Examples:
   loclaude -p ollama -m gpt-oss:20b              # skip the picker
   loclaude -p custom -u http://localhost:4000 -t sk-x -m my-model
   loclaude -p ollama --list                      # print models, don't launch
-  loclaude -- --print "explain this repo"        # forward args to claude
+  loclaude --print "explain this repo"           # forwarded to claude (no -- needed)
+  loclaude -- --provider force-this-to-claude    # escape hatch for collisions
 
 Selection precedence:
   Provider:  -p  >  $LOCLAUDE_PROVIDER  >  lmstudio
@@ -69,11 +79,10 @@ function listForProvider(
 }
 
 async function main(): Promise<number> {
-  // Split argv on `--` so anything after it gets forwarded to claude verbatim.
-  const argv = process.argv.slice(2);
-  const sepIdx = argv.indexOf("--");
-  const ownArgs = sepIdx >= 0 ? argv.slice(0, sepIdx) : argv;
-  const claudeArgs = sepIdx >= 0 ? argv.slice(sepIdx + 1) : [];
+  // Anything loclaude doesn't recognize as one of its own flags is forwarded
+  // to claude. Use `--` as an explicit escape hatch to force a token through
+  // (e.g. when claude has a flag that collides with one of ours).
+  const { own: ownArgs, claude: claudeArgs } = splitArgs(process.argv.slice(2), FLAG_SPEC);
 
   let parsed;
   try {
@@ -93,7 +102,6 @@ async function main(): Promise<number> {
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     console.error(`loclaude: ${msg}`);
-    console.error(`(use \`--\` to forward unknown flags to claude, e.g. \`loclaude -- --print "hi"\`)`);
     return 2;
   }
 

@@ -50,8 +50,12 @@ loclaude -p ollama --list
 # Custom Anthropic-compatible endpoint (e.g. a litellm proxy)
 loclaude -p custom -u http://localhost:4000 -t sk-anything -m my-model
 
-# Forward extra flags through to claude (note the `--` separator)
-loclaude -p ollama -m gpt-oss:20b -- --print "explain this repo"
+# Any flag loclaude doesn't recognize is forwarded verbatim to claude
+loclaude -p ollama -m gpt-oss:20b --print "explain this repo"
+
+# `--` is an escape hatch to force a token through, e.g. if claude grows
+# a flag whose name collides with one of loclaude's own
+loclaude -p ollama -- --provider force-this-to-claude
 ```
 
 ## Supported providers
