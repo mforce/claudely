@@ -140,6 +140,11 @@ export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
 - Claude Code's in-session `/model` command does **not** auto-discover
   backend models; it accepts an arbitrary id string. To switch mid-session,
   type `/model <id>` with one of the ids shown by `loclaude --list`.
+- **Effort levels:** if your `~/.claude/settings.json` has `effortLevel:
+  "xhigh"` (Anthropic-only), local Anthropic-compatible servers (LM Studio,
+  Ollama, etc.) will reject every request with HTTP 400. loclaude prints a
+  one-line warning to stderr at startup when it detects this. Fix it with
+  `/effort high` inside Claude Code, or by editing `settings.json`.
 
 ## License
 

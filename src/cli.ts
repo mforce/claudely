@@ -12,6 +12,8 @@
 
 import { parseArgs } from "node:util";
 import { spawn } from "node:child_process";
+import { homedir } from "node:os";
+import { join } from "node:path";
 import { search } from "@inquirer/prompts";
 import { PROVIDERS, type Provider } from "./providers.js";
 import {
@@ -20,6 +22,7 @@ import {
   listV1Models,
   type ModelEntry,
 } from "./listers.js";
+import { maybeWarnEffort } from "./effort.js";
 
 const HELP = `Usage: loclaude [options] [-- claude-args...]
 
@@ -189,6 +192,12 @@ async function main(): Promise<number> {
   if (env.CLAUDE_CODE_ATTRIBUTION_HEADER === undefined) {
     env.CLAUDE_CODE_ATTRIBUTION_HEADER = "0";
   }
+
+  maybeWarnEffort({
+    baseUrl,
+    settingsPath: join(homedir(), ".claude", "settings.json"),
+    write: (line) => process.stderr.write(line),
+  });
 
   return await new Promise<number>((resolve) => {
     const child = spawn("claude", ["--model", model!, ...claudeArgs], {
