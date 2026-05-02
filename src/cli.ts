@@ -12,6 +12,8 @@
 
 import { parseArgs } from "node:util";
 import { spawn } from "node:child_process";
+import { homedir } from "node:os";
+import { join } from "node:path";
 import { search } from "@inquirer/prompts";
 import { PROVIDERS, type Provider } from "./providers.js";
 import {
@@ -20,6 +22,7 @@ import {
   listV1Models,
   type ModelEntry,
 } from "./listers.js";
+import { effortOverrideArgs, loadEffortLevel, maybeWarnEffort } from "./effort.js";
 
 const HELP = `Usage: loclaude [options] [-- claude-args...]
 
@@ -190,11 +193,21 @@ async function main(): Promise<number> {
     env.CLAUDE_CODE_ATTRIBUTION_HEADER = "0";
   }
 
+  const settingsPath = join(homedir(), ".claude", "settings.json");
+  const effortLevel = loadEffortLevel(settingsPath);
+  maybeWarnEffort({
+    baseUrl,
+    settingsPath,
+    write: (line) => process.stderr.write(line),
+  });
+  const effortArgs = effortOverrideArgs({ effortLevel, baseUrl }, claudeArgs);
+
   return await new Promise<number>((resolve) => {
-    const child = spawn("claude", ["--model", model!, ...claudeArgs], {
-      stdio: "inherit",
-      env,
-    });
+    const child = spawn(
+      "claude",
+      ["--model", model!, ...effortArgs, ...claudeArgs],
+      { stdio: "inherit", env },
+    );
     child.on("error", (err) => {
       console.error(`loclaude: failed to spawn claude: ${err.message}`);
       resolve(127);
