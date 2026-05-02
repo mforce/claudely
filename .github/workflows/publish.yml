@@ -26,6 +26,9 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           cache: npm
 
+      # npm Trusted Publishing (OIDC) requires npm >= 11.5.1; Node 22 ships npm 10.x.
+      - run: npm install -g npm@latest
+
       - run: npm ci
       - run: npm run build
       - run: npm run smoke
