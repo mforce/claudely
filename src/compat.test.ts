@@ -1,9 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
-import { join } from "node:path";
-import { tmpdir } from "node:os";
-import { applyCompat, loadSettings, type Incompatibility } from "./compat.js";
+import { applyCompat, type Incompatibility } from "./compat.js";
 
 test("effortLevel xhigh against non-Anthropic: warning + ['--effort','high']", () => {
   const result = applyCompat({
@@ -60,38 +57,6 @@ test("undefined settings (missing/malformed file): no-op", () => {
     }),
     { warnings: [], extraArgs: [] },
   );
-});
-
-test("loadSettings returns parsed object for a valid file", () => {
-  const dir = mkdtempSync(join(tmpdir(), "claudely-test-"));
-  try {
-    const path = join(dir, "settings.json");
-    writeFileSync(path, JSON.stringify({ effortLevel: "xhigh", other: 1 }));
-    assert.deepEqual(loadSettings(path), { effortLevel: "xhigh", other: 1 });
-  } finally {
-    rmSync(dir, { recursive: true, force: true });
-  }
-});
-
-test("loadSettings returns undefined for missing, malformed, or non-object JSON", () => {
-  const dir = mkdtempSync(join(tmpdir(), "claudely-test-"));
-  try {
-    assert.equal(loadSettings(join(dir, "nope.json")), undefined);
-
-    const bad = join(dir, "bad.json");
-    writeFileSync(bad, "{ not valid json");
-    assert.equal(loadSettings(bad), undefined);
-
-    const arr = join(dir, "arr.json");
-    writeFileSync(arr, "[1,2,3]");
-    assert.equal(loadSettings(arr), undefined);
-
-    const lit = join(dir, "lit.json");
-    writeFileSync(lit, '"a string"');
-    assert.equal(loadSettings(lit), undefined);
-  } finally {
-    rmSync(dir, { recursive: true, force: true });
-  }
 });
 
 test("safe / unset / unknown setting values: no-op", () => {

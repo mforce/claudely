@@ -22,8 +22,10 @@ import {
   listV1Models,
   type ModelEntry,
 } from "./listers.js";
-import { applyCompat, loadSettings } from "./compat.js";
+import { applyCompat } from "./compat.js";
+import { loadSettings, loadConfig } from "./config.js";
 import { splitArgs, type FlagSpec } from "./argsplit.js";
+import { runSetup } from "./setup.js";
 import { renderVersion } from "./version.js";
 import {
   isResumeIntent,
@@ -56,6 +58,7 @@ claudely options:
       --new               Force a fresh session (skip auto-resume)
   -h, --help              Show this help
   -V, --version           Print claudely and claude versions, then exit
+      setup               Configure provider, URL, token, and default model
 
 Bare \`claudely\` (no args, no --model) auto-resumes the most recent
 claude session for the current directory when one exists. Use --new to
@@ -71,6 +74,7 @@ Use \`--\` as an escape hatch to force a token through (e.g. when claude
 gains a flag whose name collides with one of claudely's own).
 
 Examples:
+  claudely setup                                     # interactive config wizard
   claudely                                       # LM Studio + interactive picker
   claudely -p ollama                             # Ollama
   claudely -p llamacpp                           # llama.cpp
@@ -104,6 +108,10 @@ function listForProvider(
 }
 
 async function main(): Promise<number> {
+  if (process.argv[2] === "setup") {
+    return runSetup();
+  }
+
   // Anything claudely doesn't recognize as one of its own flags is forwarded
   // to claude. Use `--` as an explicit escape hatch to force a token through
   // (e.g. when claude has a flag that collides with one of ours).
@@ -133,6 +141,7 @@ async function main(): Promise<number> {
   }
 
   const { values } = parsed;
+  const config = loadConfig();
 
   if (values.help) {
     console.log(HELP);
@@ -144,7 +153,7 @@ async function main(): Promise<number> {
     return 0;
   }
 
-  const providerName = values.provider ?? process.env.CLAUDELY_PROVIDER ?? "lmstudio";
+  const providerName = values.provider ?? process.env.CLAUDELY_PROVIDER ?? config.provider ?? "lmstudio";
   const provider = PROVIDERS[providerName];
   if (!provider) {
     console.error(
@@ -154,8 +163,8 @@ async function main(): Promise<number> {
   }
 
   const baseUrl =
-    values["base-url"] ?? process.env.CLAUDELY_BASE_URL ?? provider.defaultBaseUrl();
-  const token = values.token ?? process.env.CLAUDELY_TOKEN ?? provider.defaultToken;
+    values["base-url"] ?? process.env.CLAUDELY_BASE_URL ?? config.baseUrl ?? provider.defaultBaseUrl();
+  const token = values.token ?? process.env.CLAUDELY_TOKEN ?? config.token ?? provider.defaultToken;
 
   if (!baseUrl) {
     console.error(
@@ -207,6 +216,7 @@ async function main(): Promise<number> {
   if (!model && !resuming) {
     model =
       process.env.CLAUDELY_MODEL ??
+      config.model ??
       (provider.modelEnvVar ? process.env[provider.modelEnvVar] : undefined);
 
     if (!model) {

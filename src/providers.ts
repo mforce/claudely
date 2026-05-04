@@ -38,10 +38,9 @@ export const PROVIDERS: Record<string, Provider> = {
   llamacpp: {
     name: "llamacpp",
     defaultBaseUrl: () => `http://localhost:${process.env.LLAMACPP_PORT ?? "8080"}`,
-    // llama-server expects the key in ANTHROPIC_API_KEY, per unsloth's docs.
     defaultToken: "sk-no-key-required",
     modelEnvVar: "LLAMACPP_MODEL",
-    envStyle: "api_key",
+    envStyle: "auth_token",
     lister: "v1_models",
     startHint: "llama-server --port 8080 -m /path/to/model.gguf",
   },

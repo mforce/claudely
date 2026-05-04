@@ -1,20 +1,7 @@
-import { readFileSync } from "node:fs";
-
 export interface ApplyContext {
   settings: Record<string, unknown> | undefined;
   baseUrl: string;
   existingClaudeArgs: readonly string[];
-}
-
-export function loadSettings(settingsPath: string): Record<string, unknown> | undefined {
-  try {
-    const parsed = JSON.parse(readFileSync(settingsPath, "utf8")) as unknown;
-    return parsed && typeof parsed === "object" && !Array.isArray(parsed)
-      ? (parsed as Record<string, unknown>)
-      : undefined;
-  } catch {
-    return undefined;
-  }
 }
 
 export interface CompatResult {
