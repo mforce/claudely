@@ -30,22 +30,43 @@ export async function runSetup(): Promise<number> {
   const provider = PROVIDERS[providerName];
 
   const providerDefault = provider.defaultBaseUrl();
-  const baseUrl = await input({
-    message: existing.baseUrl && existing.baseUrl !== providerDefault
-      ? `Base URL (provider default: ${providerDefault})`
-      : "Base URL",
-    default: existing.baseUrl || providerDefault,
-  });
+  let baseUrl: string;
+  if (existing.baseUrl && existing.baseUrl !== providerDefault) {
+    const CUSTOM = "__custom__";
+    const picked = await select({
+      message: "Base URL",
+      choices: [
+        { name: `${existing.baseUrl} (current)`, value: existing.baseUrl },
+        { name: `${providerDefault} (${providerName} default)`, value: providerDefault },
+        { name: "Custom URL", value: CUSTOM },
+      ],
+    });
+    baseUrl = picked === CUSTOM
+      ? await input({ message: "Base URL", default: existing.baseUrl })
+      : picked;
+  } else {
+    baseUrl = await input({ message: "Base URL", default: providerDefault });
+  }
 
   const tokenDefault = provider.defaultToken;
-  const token = await input({
-    message: tokenDefault
-      ? existing.token && existing.token !== tokenDefault
-        ? `Auth token (provider default: ${tokenDefault})`
-        : "Auth token"
-      : "Auth token (required)",
-    default: existing.token || tokenDefault,
-  });
+  let token: string;
+  if (existing.token && existing.token !== tokenDefault) {
+    const CUSTOM = "__custom__";
+    const choices = [
+      { name: `${existing.token} (current)`, value: existing.token },
+    ];
+    if (tokenDefault) choices.push({ name: `${tokenDefault} (${providerName} default)`, value: tokenDefault });
+    choices.push({ name: "Custom token", value: CUSTOM });
+    const picked = await select({ message: "Auth token", choices });
+    token = picked === CUSTOM
+      ? await input({ message: "Auth token", default: existing.token })
+      : picked;
+  } else {
+    token = await input({
+      message: tokenDefault ? "Auth token" : "Auth token (required)",
+      default: tokenDefault,
+    });
+  }
 
   let models: ModelEntry[] = [];
   try {
