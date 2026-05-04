@@ -42,6 +42,7 @@ export async function runSetup(): Promise<number> {
   let models: ModelEntry[] = [];
   try {
     const res = await fetch(`${baseUrl}/v1/models`, {
+      headers: { Authorization: `Bearer ${token}` },
       signal: AbortSignal.timeout(5000),
     });
     if (res.ok) {
