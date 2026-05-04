@@ -23,7 +23,7 @@ import {
   type ModelEntry,
 } from "./listers.js";
 import { applyCompat } from "./compat.js";
-import { loadSettings } from "./config.js";
+import { loadSettings, loadConfig } from "./config.js";
 import { splitArgs, type FlagSpec } from "./argsplit.js";
 import { renderVersion } from "./version.js";
 import {
@@ -134,6 +134,7 @@ async function main(): Promise<number> {
   }
 
   const { values } = parsed;
+  const config = loadConfig();
 
   if (values.help) {
     console.log(HELP);
@@ -145,7 +146,7 @@ async function main(): Promise<number> {
     return 0;
   }
 
-  const providerName = values.provider ?? process.env.CLAUDELY_PROVIDER ?? "lmstudio";
+  const providerName = values.provider ?? process.env.CLAUDELY_PROVIDER ?? config.provider ?? "lmstudio";
   const provider = PROVIDERS[providerName];
   if (!provider) {
     console.error(
@@ -155,8 +156,8 @@ async function main(): Promise<number> {
   }
 
   const baseUrl =
-    values["base-url"] ?? process.env.CLAUDELY_BASE_URL ?? provider.defaultBaseUrl();
-  const token = values.token ?? process.env.CLAUDELY_TOKEN ?? provider.defaultToken;
+    values["base-url"] ?? process.env.CLAUDELY_BASE_URL ?? config.baseUrl ?? provider.defaultBaseUrl();
+  const token = values.token ?? process.env.CLAUDELY_TOKEN ?? config.token ?? provider.defaultToken;
 
   if (!baseUrl) {
     console.error(
@@ -208,6 +209,7 @@ async function main(): Promise<number> {
   if (!model && !resuming) {
     model =
       process.env.CLAUDELY_MODEL ??
+      config.model ??
       (provider.modelEnvVar ? process.env[provider.modelEnvVar] : undefined);
 
     if (!model) {
