@@ -11,6 +11,32 @@ section is also used as the body of the Release notes by the
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-05-03
+
+### Added
+- `claudely setup` interactive wizard: walks through provider, base URL,
+  auth token, connection test with model discovery, and default model
+  selection. Saves to a platform-native config file (`~/.config/claudely/`
+  on Linux, `~/Library/Application Support/claudely/` on macOS,
+  `%APPDATA%\claudely\` on Windows).
+- Persistent config loaded on every run. Precedence: CLI flag > env var >
+  config file > provider default.
+- New `src/config.ts` consolidates all config I/O: `configDir()`,
+  `configPath()`, `loadConfig()`, `saveConfig()`, and `loadSettings()`
+  (moved from compat.ts to decouple I/O from business logic).
+
+### Fixed
+- llamacpp provider switched from `api_key` to `auth_token` envStyle —
+  fixes 401 errors for Claude Max users whose OAuth session token was
+  overriding `ANTHROPIC_API_KEY`.
+- Setup wizard connection test now sends `Authorization: Bearer` header —
+  previously fetched `/v1/models` without auth, causing silent failures on
+  servers that require a key.
+
+### Changed
+- `loadSettings()` moved from `compat.ts` to `config.ts`. `compat.ts` now
+  contains only business logic (no `fs` import).
+
 ## [0.1.4] - 2026-05-02
 
 ### Added
@@ -90,7 +116,8 @@ section is also used as the body of the Release notes by the
   `--` separator.
 - CI workflow (Node 20, 22) and npm publish workflow triggered by GitHub Release.
 
-[Unreleased]: https://github.com/mforce/claudely/compare/v0.1.4...HEAD
+[Unreleased]: https://github.com/mforce/claudely/compare/v0.1.5...HEAD
+[0.1.5]: https://github.com/mforce/claudely/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/mforce/claudely/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/mforce/claudely/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/mforce/claudely/compare/v0.1.1...v0.1.2
