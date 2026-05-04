@@ -121,9 +121,10 @@ exit 1
     const result = await listLmStudio("http://localhost:1234", "tok");
 
     assert.deepEqual(result, [{ id: "fallback-model", display: "fallback-model", extras: [] }]);
-    // Both calls were attempted before falling back.
-    const argv = readArgvLog().sort();
-    assert.deepEqual(argv, ["ls --llm --json", "ps --json"]);
+    // ls is always attempted; ps may or may not have completed before
+    // Promise.all rejects (race), so only assert ls was called.
+    const argv = readArgvLog();
+    assert.ok(argv.includes("ls --llm --json"), "ls should have been called");
   },
 );
 
