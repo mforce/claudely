@@ -11,6 +11,23 @@ section is also used as the body of the Release notes by the
 
 ## [Unreleased]
 
+## [0.1.6] - 2026-05-03
+
+### Fixed
+- Empty auth token in saved config no longer overrides the provider
+  default. Previously, clearing the token in `claudely setup` saved
+  `token: ""` which blocked fallthrough to the provider's built-in
+  default (e.g. `"lmstudio"`).
+- Error messages for missing base URL or token now show the actual
+  provider name instead of hardcoding `'custom'`, and suggest running
+  `claudely setup`.
+
+### Changed
+- `claudely setup` base URL step now offers a select menu (current /
+  provider default / custom) when a saved config already exists.
+- Auth token prompt simplified to plain text input with current value
+  as default.
+
 ## [0.1.5] - 2026-05-03
 
 ### Added
@@ -116,7 +133,8 @@ section is also used as the body of the Release notes by the
   `--` separator.
 - CI workflow (Node 20, 22) and npm publish workflow triggered by GitHub Release.
 
-[Unreleased]: https://github.com/mforce/claudely/compare/v0.1.5...HEAD
+[Unreleased]: https://github.com/mforce/claudely/compare/v0.1.6...HEAD
+[0.1.6]: https://github.com/mforce/claudely/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/mforce/claudely/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/mforce/claudely/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/mforce/claudely/compare/v0.1.2...v0.1.3
