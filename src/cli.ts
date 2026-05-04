@@ -163,18 +163,18 @@ async function main(): Promise<number> {
   }
 
   const baseUrl =
-    values["base-url"] ?? process.env.CLAUDELY_BASE_URL ?? config.baseUrl ?? provider.defaultBaseUrl();
-  const token = values.token ?? process.env.CLAUDELY_TOKEN ?? config.token ?? provider.defaultToken;
+    values["base-url"] ?? process.env.CLAUDELY_BASE_URL ?? (config.baseUrl || undefined) ?? provider.defaultBaseUrl();
+  const token = values.token ?? process.env.CLAUDELY_TOKEN ?? (config.token || undefined) ?? provider.defaultToken;
 
   if (!baseUrl) {
     console.error(
-      "claudely: provider 'custom' requires --base-url <url> (or $CLAUDELY_BASE_URL)",
+      `claudely: provider '${providerName}' requires --base-url <url> (or $CLAUDELY_BASE_URL, or run \`claudely setup\`)`,
     );
     return 2;
   }
   if (!token) {
     console.error(
-      "claudely: provider 'custom' requires --token <token> (or $CLAUDELY_TOKEN)",
+      `claudely: provider '${providerName}' requires --token <token> (or $CLAUDELY_TOKEN, or run \`claudely setup\`)`,
     );
     return 2;
   }

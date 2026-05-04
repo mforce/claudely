@@ -29,14 +29,22 @@ export async function runSetup(): Promise<number> {
 
   const provider = PROVIDERS[providerName];
 
+  const providerDefault = provider.defaultBaseUrl();
   const baseUrl = await input({
-    message: "Base URL",
-    default: existing.baseUrl ?? provider.defaultBaseUrl(),
+    message: existing.baseUrl && existing.baseUrl !== providerDefault
+      ? `Base URL (provider default: ${providerDefault})`
+      : "Base URL",
+    default: existing.baseUrl || providerDefault,
   });
 
+  const tokenDefault = provider.defaultToken;
   const token = await input({
-    message: "Auth token",
-    default: existing.token ?? provider.defaultToken,
+    message: tokenDefault
+      ? existing.token && existing.token !== tokenDefault
+        ? `Auth token (provider default: ${tokenDefault})`
+        : "Auth token"
+      : "Auth token (required)",
+    default: existing.token || tokenDefault,
   });
 
   let models: ModelEntry[] = [];
@@ -73,13 +81,14 @@ export async function runSetup(): Promise<number> {
     if (manual) model = manual;
   }
 
-  const config: ClaudelyConfig = { provider: providerName, baseUrl, token };
+  const config: ClaudelyConfig = { provider: providerName, baseUrl };
+  if (token) config.token = token;
   if (model) config.model = model;
 
   console.log("\nConfig to save:");
   console.log(`  provider:  ${config.provider}`);
   console.log(`  baseUrl:   ${config.baseUrl}`);
-  console.log(`  token:     ${config.token}`);
+  console.log(`  token:     ${config.token ?? "(provider default)"}`);
   if (config.model) console.log(`  model:     ${config.model}`);
   console.log();
 
