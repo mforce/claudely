@@ -3,7 +3,8 @@ import assert from "node:assert/strict";
 import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { applyCompat, loadSettings, type Incompatibility } from "./compat.js";
+import { applyCompat, type Incompatibility } from "./compat.js";
+import { loadSettings } from "./config.js";
 
 test("effortLevel xhigh against non-Anthropic: warning + ['--effort','high']", () => {
   const result = applyCompat({

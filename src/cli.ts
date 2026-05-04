@@ -22,7 +22,8 @@ import {
   listV1Models,
   type ModelEntry,
 } from "./listers.js";
-import { applyCompat, loadSettings } from "./compat.js";
+import { applyCompat } from "./compat.js";
+import { loadSettings } from "./config.js";
 import { splitArgs, type FlagSpec } from "./argsplit.js";
 import { renderVersion } from "./version.js";
 import {
