@@ -49,24 +49,12 @@ export async function runSetup(): Promise<number> {
   }
 
   const tokenDefault = provider.defaultToken;
-  let token: string;
-  if (existing.token && existing.token !== tokenDefault) {
-    const CUSTOM = "__custom__";
-    const choices = [
-      { name: `${existing.token} (current)`, value: existing.token },
-    ];
-    if (tokenDefault) choices.push({ name: `${tokenDefault} (${providerName} default)`, value: tokenDefault });
-    choices.push({ name: "Custom token", value: CUSTOM });
-    const picked = await select({ message: "Auth token", choices });
-    token = picked === CUSTOM
-      ? await input({ message: "Auth token", default: existing.token })
-      : picked;
-  } else {
-    token = await input({
-      message: tokenDefault ? "Auth token" : "Auth token (required)",
-      default: tokenDefault,
-    });
-  }
+  const token = await input({
+    message: existing.token
+      ? "Auth token (Enter to keep current, blank to clear)"
+      : tokenDefault ? "Auth token" : "Auth token (required)",
+    default: existing.token || tokenDefault,
+  });
 
   let models: ModelEntry[] = [];
   try {
