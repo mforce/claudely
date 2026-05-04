@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "prepare": "npm run build",
+    "prepare": "git config core.hooksPath .hooks 2>/dev/null; npm run build",
     "smoke": "node dist/cli.js --help",
     "test": "tsc -p tsconfig.test.json && node --test dist-test/*.test.js"
   },
