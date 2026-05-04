@@ -1,50 +1,14 @@
 {
   "directed": false,
   "multigraph": false,
-  "graph": {
-    "hyperedges": [
-      {
-        "nodes": [
-          "setup_config_ts",
-          "setup_load_config",
-          "setup_save_config",
-          "setup_config_dir",
-          "setup_config_path",
-          "setup_load_settings"
-        ],
-        "label": "config.ts consolidates all config I/O functions",
-        "type": "EXTRACTED",
-        "confidence_score": 1.0
-      },
-      {
-        "nodes": [
-          "setup_config_file_linux",
-          "setup_config_file_macos",
-          "setup_config_file_windows"
-        ],
-        "label": "Platform-native config file locations resolved by configDir()",
-        "type": "EXTRACTED",
-        "confidence_score": 1.0
-      },
-      {
-        "nodes": [
-          "setup_cli_ts",
-          "setup_compat_ts",
-          "setup_config_ts"
-        ],
-        "label": "loadSettings decoupling: moved from compat.ts to config.ts, cli.ts import updated",
-        "type": "EXTRACTED",
-        "confidence_score": 1.0
-      }
-    ]
-  },
+  "graph": {},
   "nodes": [
     {
       "label": "listers.ts",
       "file_type": "code",
       "source_file": "src/listers.ts",
       "source_location": "L1",
-      "community": 4,
+      "community": 2,
       "norm_label": "listers.ts",
       "id": "src_listers_ts"
     },
@@ -53,7 +17,7 @@
       "file_type": "code",
       "source_file": "src/listers.ts",
       "source_location": "L30",
-      "community": 4,
+      "community": 2,
       "norm_label": "listlmstudio()",
       "id": "src_listers_listlmstudio"
     },
@@ -62,7 +26,7 @@
       "file_type": "code",
       "source_file": "src/listers.ts",
       "source_location": "L62",
-      "community": 4,
+      "community": 2,
       "norm_label": "listollama()",
       "id": "src_listers_listollama"
     },
@@ -71,7 +35,7 @@
       "file_type": "code",
       "source_file": "src/listers.ts",
       "source_location": "L89",
-      "community": 4,
+      "community": 2,
       "norm_label": "listv1models()",
       "id": "src_listers_listv1models"
     },
@@ -89,7 +53,7 @@
       "file_type": "code",
       "source_file": "src/argsplit.test.ts",
       "source_location": "L1",
-      "community": 3,
+      "community": 8,
       "norm_label": "argsplit.test.ts",
       "id": "src_argsplit_test_ts"
     },
@@ -98,7 +62,7 @@
       "file_type": "code",
       "source_file": "src/compat.test.ts",
       "source_location": "L1",
-      "community": 3,
+      "community": 6,
       "norm_label": "compat.test.ts",
       "id": "src_compat_test_ts"
     },
@@ -107,7 +71,7 @@
       "file_type": "code",
       "source_file": "src/argsplit.ts",
       "source_location": "L1",
-      "community": 3,
+      "community": 8,
       "norm_label": "argsplit.ts",
       "id": "src_argsplit_ts"
     },
@@ -116,7 +80,7 @@
       "file_type": "code",
       "source_file": "src/argsplit.ts",
       "source_location": "L12",
-      "community": 3,
+      "community": 8,
       "norm_label": "splitargs()",
       "id": "src_argsplit_splitargs"
     },
@@ -125,7 +89,7 @@
       "file_type": "code",
       "source_file": "src/compat.ts",
       "source_location": "L1",
-      "community": 3,
+      "community": 6,
       "norm_label": "compat.ts",
       "id": "src_compat_ts"
     },
@@ -134,25 +98,25 @@
       "file_type": "code",
       "source_file": "src/compat.ts",
       "source_location": "L9",
-      "community": 3,
+      "community": 6,
       "norm_label": "loadsettings()",
       "id": "src_compat_loadsettings"
     },
     {
       "label": "isAnthropicHost()",
       "file_type": "code",
-      "source_file": "src/compat.ts",
-      "source_location": "L34",
-      "community": 3,
+      "source_file": "compat.ts",
+      "source_location": "L21",
+      "community": 6,
       "norm_label": "isanthropichost()",
       "id": "src_compat_isanthropichost"
     },
     {
       "label": "applyCompat()",
       "file_type": "code",
-      "source_file": "src/compat.ts",
-      "source_location": "L54",
-      "community": 3,
+      "source_file": "compat.ts",
+      "source_location": "L41",
+      "community": 6,
       "norm_label": "applycompat()",
       "id": "src_compat_applycompat"
     },
@@ -161,7 +125,7 @@
       "file_type": "code",
       "source_file": "src/cli.integration.test.ts",
       "source_location": "L1",
-      "community": 11,
+      "community": 10,
       "norm_label": "cli.integration.test.ts",
       "id": "src_cli_integration_test_ts"
     },
@@ -170,7 +134,7 @@
       "file_type": "code",
       "source_file": "src/cli.integration.test.ts",
       "source_location": "L21",
-      "community": 11,
+      "community": 10,
       "norm_label": "emptyenv()",
       "id": "src_cli_integration_test_emptyenv"
     },
@@ -186,18 +150,18 @@
     {
       "label": "listForProvider()",
       "file_type": "code",
-      "source_file": "src/cli.ts",
-      "source_location": "L91",
-      "community": 8,
+      "source_file": "cli.ts",
+      "source_location": "L95",
+      "community": 3,
       "norm_label": "listforprovider()",
       "id": "src_cli_listforprovider"
     },
     {
       "label": "main()",
       "file_type": "code",
-      "source_file": "src/cli.ts",
-      "source_location": "L106",
-      "community": 1,
+      "source_file": "cli.ts",
+      "source_location": "L110",
+      "community": 3,
       "norm_label": "main()",
       "id": "src_cli_main"
     },
@@ -206,7 +170,7 @@
       "file_type": "code",
       "source_file": "src/resume.test.ts",
       "source_location": "L1",
-      "community": 7,
+      "community": 5,
       "norm_label": "resume.test.ts",
       "id": "src_resume_test_ts"
     },
@@ -215,7 +179,7 @@
       "file_type": "code",
       "source_file": "src/resume.test.ts",
       "source_location": "L145",
-      "community": 7,
+      "community": 5,
       "norm_label": "seedsessionfile()",
       "id": "src_resume_test_seedsessionfile"
     },
@@ -224,7 +188,7 @@
       "file_type": "code",
       "source_file": "src/resume.ts",
       "source_location": "L1",
-      "community": 7,
+      "community": 5,
       "norm_label": "resume.ts",
       "id": "src_resume_ts"
     },
@@ -233,7 +197,7 @@
       "file_type": "code",
       "source_file": "src/resume.ts",
       "source_location": "L23",
-      "community": 7,
+      "community": 5,
       "norm_label": "isresumeintent()",
       "id": "src_resume_isresumeintent"
     },
@@ -242,7 +206,7 @@
       "file_type": "code",
       "source_file": "src/resume.ts",
       "source_location": "L40",
-      "community": 7,
+      "community": 5,
       "norm_label": "assembleclaudeargv()",
       "id": "src_resume_assembleclaudeargv"
     },
@@ -251,7 +215,7 @@
       "file_type": "code",
       "source_file": "src/resume.ts",
       "source_location": "L48",
-      "community": 7,
+      "community": 5,
       "norm_label": "encodecwdforclaude()",
       "id": "src_resume_encodecwdforclaude"
     },
@@ -260,7 +224,7 @@
       "file_type": "code",
       "source_file": "src/resume.ts",
       "source_location": "L57",
-      "community": 7,
+      "community": 5,
       "norm_label": "hasrecentsessionforcwd()",
       "id": "src_resume_hasrecentsessionforcwd"
     },
@@ -269,7 +233,7 @@
       "file_type": "code",
       "source_file": "src/resume.ts",
       "source_location": "L79",
-      "community": 7,
+      "community": 5,
       "norm_label": "shouldautoresume()",
       "id": "src_resume_shouldautoresume"
     },
@@ -278,7 +242,7 @@
       "file_type": "code",
       "source_file": "src/version.test.ts",
       "source_location": "L1",
-      "community": 3,
+      "community": 7,
       "norm_label": "version.test.ts",
       "id": "src_version_test_ts"
     },
@@ -287,7 +251,7 @@
       "file_type": "code",
       "source_file": "src/version.ts",
       "source_location": "L1",
-      "community": 3,
+      "community": 7,
       "norm_label": "version.ts",
       "id": "src_version_ts"
     },
@@ -296,7 +260,7 @@
       "file_type": "code",
       "source_file": "src/version.ts",
       "source_location": "L15",
-      "community": 3,
+      "community": 7,
       "norm_label": "readclaudelyversion()",
       "id": "src_version_readclaudelyversion"
     },
@@ -305,7 +269,7 @@
       "file_type": "code",
       "source_file": "src/version.ts",
       "source_location": "L29",
-      "community": 3,
+      "community": 7,
       "norm_label": "probeclaudeversion()",
       "id": "src_version_probeclaudeversion"
     },
@@ -314,7 +278,7 @@
       "file_type": "code",
       "source_file": "src/version.ts",
       "source_location": "L41",
-      "community": 3,
+      "community": 7,
       "norm_label": "renderversion()",
       "id": "src_version_renderversion"
     },
@@ -323,34 +287,34 @@
       "file_type": "code",
       "source_file": "src/listers.integration.test.ts",
       "source_location": "L1",
-      "community": 4,
+      "community": 2,
       "norm_label": "listers.integration.test.ts",
       "id": "src_listers_integration_test_ts"
     },
     {
       "label": "installFake()",
       "file_type": "code",
-      "source_file": "src/listers.integration.test.ts",
+      "source_file": "listers.integration.test.ts",
       "source_location": "L40",
-      "community": 4,
+      "community": 2,
       "norm_label": "installfake()",
       "id": "src_listers_integration_test_installfake"
     },
     {
       "label": "prependToPath()",
       "file_type": "code",
-      "source_file": "src/listers.integration.test.ts",
+      "source_file": "listers.integration.test.ts",
       "source_location": "L45",
-      "community": 4,
+      "community": 2,
       "norm_label": "prependtopath()",
       "id": "src_listers_integration_test_prependtopath"
     },
     {
       "label": "readArgvLog()",
       "file_type": "code",
-      "source_file": "src/listers.integration.test.ts",
+      "source_file": "listers.integration.test.ts",
       "source_location": "L49",
-      "community": 4,
+      "community": 2,
       "norm_label": "readargvlog()",
       "id": "src_listers_integration_test_readargvlog"
     },
@@ -359,7 +323,7 @@
       "file_type": "code",
       "source_file": "src/listers.test.ts",
       "source_location": "L1",
-      "community": 4,
+      "community": 2,
       "norm_label": "listers.test.ts",
       "id": "src_listers_test_ts"
     },
@@ -368,7 +332,7 @@
       "file_type": "code",
       "source_file": "src/listers.test.ts",
       "source_location": "L6",
-      "community": 4,
+      "community": 2,
       "norm_label": "fakerun()",
       "id": "src_listers_test_fakerun"
     },
@@ -377,7 +341,7 @@
       "file_type": "code",
       "source_file": "src/listers.test.ts",
       "source_location": "L16",
-      "community": 4,
+      "community": 2,
       "norm_label": "enoentrunner()",
       "id": "src_listers_test_enoentrunner"
     },
@@ -386,7 +350,7 @@
       "file_type": "code",
       "source_file": "src/listers.test.ts",
       "source_location": "L22",
-      "community": 6,
+      "community": 2,
       "norm_label": "mockv1fallback()",
       "id": "src_listers_test_mockv1fallback"
     },
@@ -395,7 +359,7 @@
       "file_type": "code",
       "source_file": "src/test-helpers.ts",
       "source_location": "L1",
-      "community": 4,
+      "community": 2,
       "norm_label": "test-helpers.ts",
       "id": "src_test_helpers_ts"
     },
@@ -404,7 +368,7 @@
       "file_type": "code",
       "source_file": "src/test-helpers.ts",
       "source_location": "L3",
-      "community": 4,
+      "community": 2,
       "norm_label": "capturerealfetch()",
       "id": "src_test_helpers_capturerealfetch"
     },
@@ -413,7 +377,7 @@
       "file_type": "code",
       "source_file": "src/test-helpers.ts",
       "source_location": "L7",
-      "community": 4,
+      "community": 2,
       "norm_label": "restorefetch()",
       "id": "src_test_helpers_restorefetch"
     },
@@ -422,396 +386,9 @@
       "file_type": "code",
       "source_file": "src/test-helpers.ts",
       "source_location": "L11",
-      "community": 4,
+      "community": 2,
       "norm_label": "mockfetch()",
       "id": "src_test_helpers_mockfetch"
-    },
-    {
-      "label": "argsplit.js",
-      "file_type": "code",
-      "source_file": "dist-test/argsplit.js",
-      "source_location": "L1",
-      "community": 1,
-      "norm_label": "argsplit.js",
-      "id": "dist_test_argsplit_js"
-    },
-    {
-      "label": "splitArgs()",
-      "file_type": "code",
-      "source_file": "dist-test/argsplit.js",
-      "source_location": "L1",
-      "community": 1,
-      "norm_label": "splitargs()",
-      "id": "dist_test_argsplit_splitargs"
-    },
-    {
-      "label": "argsplit.test.js",
-      "file_type": "code",
-      "source_file": "dist-test/argsplit.test.js",
-      "source_location": "L1",
-      "community": 13,
-      "norm_label": "argsplit.test.js",
-      "id": "dist_test_argsplit_test_js"
-    },
-    {
-      "label": "providers.js",
-      "file_type": "code",
-      "source_file": "dist-test/providers.js",
-      "source_location": "L1",
-      "community": 14,
-      "norm_label": "providers.js",
-      "id": "dist_test_providers_js"
-    },
-    {
-      "label": "listers.js",
-      "file_type": "code",
-      "source_file": "dist-test/listers.js",
-      "source_location": "L1",
-      "community": 8,
-      "norm_label": "listers.js",
-      "id": "dist_test_listers_js"
-    },
-    {
-      "label": "listLmStudio()",
-      "file_type": "code",
-      "source_file": "dist-test/listers.js",
-      "source_location": "L6",
-      "community": 8,
-      "norm_label": "listlmstudio()",
-      "id": "dist_test_listers_listlmstudio"
-    },
-    {
-      "label": "listOllama()",
-      "file_type": "code",
-      "source_file": "dist-test/listers.js",
-      "source_location": "L35",
-      "community": 8,
-      "norm_label": "listollama()",
-      "id": "dist_test_listers_listollama"
-    },
-    {
-      "label": "listV1Models()",
-      "file_type": "code",
-      "source_file": "dist-test/listers.js",
-      "source_location": "L60",
-      "community": 8,
-      "norm_label": "listv1models()",
-      "id": "dist_test_listers_listv1models"
-    },
-    {
-      "label": "compat.js",
-      "file_type": "code",
-      "source_file": "dist-test/compat.js",
-      "source_location": "L1",
-      "community": 1,
-      "norm_label": "compat.js",
-      "id": "dist_test_compat_js"
-    },
-    {
-      "label": "loadSettings()",
-      "file_type": "code",
-      "source_file": "dist-test/compat.js",
-      "source_location": "L2",
-      "community": 1,
-      "norm_label": "loadsettings()",
-      "id": "dist_test_compat_loadsettings"
-    },
-    {
-      "label": "isAnthropicHost()",
-      "file_type": "code",
-      "source_file": "dist-test/compat.js",
-      "source_location": "L13",
-      "community": 1,
-      "norm_label": "isanthropichost()",
-      "id": "dist_test_compat_isanthropichost"
-    },
-    {
-      "label": "applyCompat()",
-      "file_type": "code",
-      "source_file": "dist-test/compat.js",
-      "source_location": "L31",
-      "community": 1,
-      "norm_label": "applycompat()",
-      "id": "dist_test_compat_applycompat"
-    },
-    {
-      "label": "listers.integration.test.js",
-      "file_type": "code",
-      "source_file": "dist-test/listers.integration.test.js",
-      "source_location": "L1",
-      "community": 10,
-      "norm_label": "listers.integration.test.js",
-      "id": "dist_test_listers_integration_test_js"
-    },
-    {
-      "label": "installFake()",
-      "file_type": "code",
-      "source_file": "dist-test/listers.integration.test.js",
-      "source_location": "L34",
-      "community": 10,
-      "norm_label": "installfake()",
-      "id": "dist_test_listers_integration_test_installfake"
-    },
-    {
-      "label": "prependToPath()",
-      "file_type": "code",
-      "source_file": "dist-test/listers.integration.test.js",
-      "source_location": "L38",
-      "community": 10,
-      "norm_label": "prependtopath()",
-      "id": "dist_test_listers_integration_test_prependtopath"
-    },
-    {
-      "label": "readArgvLog()",
-      "file_type": "code",
-      "source_file": "dist-test/listers.integration.test.js",
-      "source_location": "L41",
-      "community": 10,
-      "norm_label": "readargvlog()",
-      "id": "dist_test_listers_integration_test_readargvlog"
-    },
-    {
-      "label": "cli.js",
-      "file_type": "code",
-      "source_file": "dist-test/cli.js",
-      "source_location": "L1",
-      "community": 8,
-      "norm_label": "cli.js",
-      "id": "dist_test_cli_js"
-    },
-    {
-      "label": "listForProvider()",
-      "file_type": "code",
-      "source_file": "dist-test/cli.js",
-      "source_location": "L77",
-      "community": 8,
-      "norm_label": "listforprovider()",
-      "id": "dist_test_cli_listforprovider"
-    },
-    {
-      "label": "main()",
-      "file_type": "code",
-      "source_file": "dist-test/cli.js",
-      "source_location": "L87",
-      "community": 1,
-      "norm_label": "main()",
-      "id": "dist_test_cli_main"
-    },
-    {
-      "label": "compat.test.js",
-      "file_type": "code",
-      "source_file": "dist-test/compat.test.js",
-      "source_location": "L1",
-      "community": 15,
-      "norm_label": "compat.test.js",
-      "id": "dist_test_compat_test_js"
-    },
-    {
-      "label": "listers.test.js",
-      "file_type": "code",
-      "source_file": "dist-test/listers.test.js",
-      "source_location": "L1",
-      "community": 6,
-      "norm_label": "listers.test.js",
-      "id": "dist_test_listers_test_js"
-    },
-    {
-      "label": "fakeRun()",
-      "file_type": "code",
-      "source_file": "dist-test/listers.test.js",
-      "source_location": "L5",
-      "community": 6,
-      "norm_label": "fakerun()",
-      "id": "dist_test_listers_test_fakerun"
-    },
-    {
-      "label": "enoentRunner()",
-      "file_type": "code",
-      "source_file": "dist-test/listers.test.js",
-      "source_location": "L16",
-      "community": 6,
-      "norm_label": "enoentrunner()",
-      "id": "dist_test_listers_test_enoentrunner"
-    },
-    {
-      "label": "mockV1Fallback()",
-      "file_type": "code",
-      "source_file": "dist-test/listers.test.js",
-      "source_location": "L21",
-      "community": 6,
-      "norm_label": "mockv1fallback()",
-      "id": "dist_test_listers_test_mockv1fallback"
-    },
-    {
-      "label": "cli.integration.test.js",
-      "file_type": "code",
-      "source_file": "dist-test/cli.integration.test.js",
-      "source_location": "L1",
-      "community": 12,
-      "norm_label": "cli.integration.test.js",
-      "id": "dist_test_cli_integration_test_js"
-    },
-    {
-      "label": "emptyEnv()",
-      "file_type": "code",
-      "source_file": "dist-test/cli.integration.test.js",
-      "source_location": "L17",
-      "community": 12,
-      "norm_label": "emptyenv()",
-      "id": "dist_test_cli_integration_test_emptyenv"
-    },
-    {
-      "label": "version.js",
-      "file_type": "code",
-      "source_file": "dist-test/version.js",
-      "source_location": "L1",
-      "community": 1,
-      "norm_label": "version.js",
-      "id": "dist_test_version_js"
-    },
-    {
-      "label": "readClaudelyVersion()",
-      "file_type": "code",
-      "source_file": "dist-test/version.js",
-      "source_location": "L7",
-      "community": 1,
-      "norm_label": "readclaudelyversion()",
-      "id": "dist_test_version_readclaudelyversion"
-    },
-    {
-      "label": "probeClaudeVersion()",
-      "file_type": "code",
-      "source_file": "dist-test/version.js",
-      "source_location": "L19",
-      "community": 1,
-      "norm_label": "probeclaudeversion()",
-      "id": "dist_test_version_probeclaudeversion"
-    },
-    {
-      "label": "renderVersion()",
-      "file_type": "code",
-      "source_file": "dist-test/version.js",
-      "source_location": "L32",
-      "community": 1,
-      "norm_label": "renderversion()",
-      "id": "dist_test_version_renderversion"
-    },
-    {
-      "label": "version.test.js",
-      "file_type": "code",
-      "source_file": "dist-test/version.test.js",
-      "source_location": "L1",
-      "community": 16,
-      "norm_label": "version.test.js",
-      "id": "dist_test_version_test_js"
-    },
-    {
-      "label": "resume.js",
-      "file_type": "code",
-      "source_file": "dist-test/resume.js",
-      "source_location": "L1",
-      "community": 1,
-      "norm_label": "resume.js",
-      "id": "dist_test_resume_js"
-    },
-    {
-      "label": "isResumeIntent()",
-      "file_type": "code",
-      "source_file": "dist-test/resume.js",
-      "source_location": "L19",
-      "community": 1,
-      "norm_label": "isresumeintent()",
-      "id": "dist_test_resume_isresumeintent"
-    },
-    {
-      "label": "assembleClaudeArgv()",
-      "file_type": "code",
-      "source_file": "dist-test/resume.js",
-      "source_location": "L31",
-      "community": 1,
-      "norm_label": "assembleclaudeargv()",
-      "id": "dist_test_resume_assembleclaudeargv"
-    },
-    {
-      "label": "encodeCwdForClaude()",
-      "file_type": "code",
-      "source_file": "dist-test/resume.js",
-      "source_location": "L38",
-      "community": 1,
-      "norm_label": "encodecwdforclaude()",
-      "id": "dist_test_resume_encodecwdforclaude"
-    },
-    {
-      "label": "hasRecentSessionForCwd()",
-      "file_type": "code",
-      "source_file": "dist-test/resume.js",
-      "source_location": "L41",
-      "community": 1,
-      "norm_label": "hasrecentsessionforcwd()",
-      "id": "dist_test_resume_hasrecentsessionforcwd"
-    },
-    {
-      "label": "shouldAutoResume()",
-      "file_type": "code",
-      "source_file": "dist-test/resume.js",
-      "source_location": "L52",
-      "community": 1,
-      "norm_label": "shouldautoresume()",
-      "id": "dist_test_resume_shouldautoresume"
-    },
-    {
-      "label": "resume.test.js",
-      "file_type": "code",
-      "source_file": "dist-test/resume.test.js",
-      "source_location": "L1",
-      "community": 1,
-      "norm_label": "resume.test.js",
-      "id": "dist_test_resume_test_js"
-    },
-    {
-      "label": "seedSessionFile()",
-      "file_type": "code",
-      "source_file": "dist-test/resume.test.js",
-      "source_location": "L101",
-      "community": 1,
-      "norm_label": "seedsessionfile()",
-      "id": "dist_test_resume_test_seedsessionfile"
-    },
-    {
-      "label": "test-helpers.js",
-      "file_type": "code",
-      "source_file": "dist-test/test-helpers.js",
-      "source_location": "L1",
-      "community": 6,
-      "norm_label": "test-helpers.js",
-      "id": "dist_test_test_helpers_js"
-    },
-    {
-      "label": "captureRealFetch()",
-      "file_type": "code",
-      "source_file": "dist-test/test-helpers.js",
-      "source_location": "L2",
-      "community": 6,
-      "norm_label": "capturerealfetch()",
-      "id": "dist_test_test_helpers_capturerealfetch"
-    },
-    {
-      "label": "restoreFetch()",
-      "file_type": "code",
-      "source_file": "dist-test/test-helpers.js",
-      "source_location": "L5",
-      "community": 6,
-      "norm_label": "restorefetch()",
-      "id": "dist_test_test_helpers_restorefetch"
-    },
-    {
-      "label": "mockFetch()",
-      "file_type": "code",
-      "source_file": "dist-test/test-helpers.js",
-      "source_location": "L8",
-      "community": 6,
-      "norm_label": "mockfetch()",
-      "id": "dist_test_test_helpers_mockfetch"
     },
     {
       "label": "main()",
@@ -822,7 +399,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 1,
       "norm_label": "main()",
       "id": "cli_main"
     },
@@ -835,7 +412,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 4,
       "norm_label": "listforprovider()",
       "id": "cli_listforprovider"
     },
@@ -848,7 +425,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 1,
       "norm_label": "flag_spec",
       "id": "cli_flag_spec"
     },
@@ -861,7 +438,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 17,
+      "community": 11,
       "norm_label": "help text",
       "id": "cli_help"
     },
@@ -874,7 +451,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 4,
       "norm_label": "provider interface",
       "id": "providers_provider"
     },
@@ -887,7 +464,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 4,
       "norm_label": "envstyle type",
       "id": "providers_envstyle"
     },
@@ -900,7 +477,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 4,
       "norm_label": "listerkind type",
       "id": "providers_listerkind"
     },
@@ -913,7 +490,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 4,
       "norm_label": "providers registry",
       "id": "providers_registry"
     },
@@ -926,7 +503,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 4,
       "norm_label": "lmstudio provider",
       "id": "providers_lmstudio"
     },
@@ -939,7 +516,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 4,
       "norm_label": "ollama provider",
       "id": "providers_ollama"
     },
@@ -952,7 +529,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 4,
       "norm_label": "llamacpp provider",
       "id": "providers_llamacpp"
     },
@@ -965,7 +542,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 4,
       "norm_label": "custom provider",
       "id": "providers_custom"
     },
@@ -978,7 +555,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 18,
+      "community": 12,
       "norm_label": "modelentry interface",
       "id": "listers_modelentry"
     },
@@ -991,7 +568,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 19,
+      "community": 13,
       "norm_label": "runner type",
       "id": "listers_runner"
     },
@@ -1004,7 +581,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 4,
       "norm_label": "listlmstudio()",
       "id": "listers_listlmstudio"
     },
@@ -1017,7 +594,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 4,
       "norm_label": "listollama()",
       "id": "listers_listollama"
     },
@@ -1030,7 +607,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 4,
       "norm_label": "listv1models()",
       "id": "listers_listv1models"
     },
@@ -1043,7 +620,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 1,
       "norm_label": "loadsettings()",
       "id": "compat_loadsettings"
     },
@@ -1056,7 +633,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 9,
+      "community": 1,
       "norm_label": "applycompat()",
       "id": "compat_applycompat"
     },
@@ -1069,7 +646,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 9,
+      "community": 1,
       "norm_label": "incompatibilities table",
       "id": "compat_incompatibilities"
     },
@@ -1082,7 +659,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 9,
+      "community": 1,
       "norm_label": "incompatibility interface",
       "id": "compat_incompatibility"
     },
@@ -1095,7 +672,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 9,
+      "community": 1,
       "norm_label": "isanthropichost()",
       "id": "compat_isanthropichost"
     },
@@ -1108,7 +685,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 1,
       "norm_label": "splitargs()",
       "id": "argsplit_splitargs"
     },
@@ -1121,7 +698,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 1,
       "norm_label": "flagspec interface",
       "id": "argsplit_flagspec"
     },
@@ -1134,7 +711,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 20,
+      "community": 14,
       "norm_label": "splitresult interface",
       "id": "argsplit_splitresult"
     },
@@ -1147,7 +724,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 1,
       "norm_label": "isresumeintent()",
       "id": "resume_isresumeintent"
     },
@@ -1160,7 +737,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 1,
       "norm_label": "assembleclaudeargv()",
       "id": "resume_assembleclaudeargv"
     },
@@ -1173,7 +750,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 1,
       "norm_label": "encodecwdforclaude()",
       "id": "resume_encodecwdforclaude"
     },
@@ -1186,7 +763,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 1,
       "norm_label": "hasrecentsessionforcwd()",
       "id": "resume_hasrecentsessionforcwd"
     },
@@ -1199,7 +776,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 1,
       "norm_label": "shouldautoresume()",
       "id": "resume_shouldautoresume"
     },
@@ -1212,7 +789,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 1,
       "norm_label": "readclaudelyversion()",
       "id": "version_readclaudelyversion"
     },
@@ -1225,7 +802,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 1,
       "norm_label": "probeclaudeversion()",
       "id": "version_probeclaudeversion"
     },
@@ -1238,7 +815,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 1,
       "norm_label": "renderversion()",
       "id": "version_renderversion"
     },
@@ -1251,7 +828,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 21,
+      "community": 15,
       "norm_label": "mockfetch()",
       "id": "test_helpers_mockfetch"
     },
@@ -1264,22 +841,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 22,
+      "community": 16,
       "norm_label": "restorefetch()",
       "id": "test_helpers_restorefetch"
-    },
-    {
-      "label": "claudely - launch Claude Code against local LLM",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": "https://www.npmjs.com/package/claudely",
-      "captured_at": null,
-      "author": "mforce",
-      "contributor": null,
-      "community": 23,
-      "norm_label": "claudely - launch claude code against local llm",
-      "id": "claudely_project"
     },
     {
       "label": "Auth env-style pattern (auth_token vs api_key)",
@@ -1290,7 +854,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 4,
       "norm_label": "auth env-style pattern (auth_token vs api_key)",
       "id": "concept_env_style"
     },
@@ -1303,35 +867,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 4,
       "norm_label": "lister fallback pattern (cli tool -> /v1/models http)",
       "id": "concept_fallback_chain"
-    },
-    {
-      "label": "Auto-resume on bare invocation",
-      "file_type": "document",
-      "source_file": "CHANGELOG.md",
-      "source_location": "v0.1.4",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "auto-resume on bare invocation",
-      "id": "concept_auto_resume"
-    },
-    {
-      "label": "KV-cache speedup via CLAUDE_CODE_ATTRIBUTION_HEADER=0",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "KV-cache speedup section",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "kv-cache speedup via claude_code_attribution_header=0",
-      "id": "concept_kv_cache_speedup"
     },
     {
       "label": "Arg splitting pattern (own vs claude passthrough)",
@@ -1342,7 +880,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 1,
       "norm_label": "arg splitting pattern (own vs claude passthrough)",
       "id": "concept_arg_splitting"
     },
@@ -1355,230 +893,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 9,
+      "community": 1,
       "norm_label": "settings incompatibility clamping pattern",
       "id": "concept_compat_clamping"
-    },
-    {
-      "label": "claudely setup -- Interactive Configuration Wizard",
-      "file_type": "document",
-      "source_file": "docs/superpowers/specs/2026-05-03-setup-wizard-design.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": "2026-05-03",
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "claudely setup -- interactive configuration wizard",
-      "id": "setup_wizard_design"
-    },
-    {
-      "label": "ClaudelyConfig interface",
-      "file_type": "document",
-      "source_file": "docs/superpowers/specs/2026-05-03-setup-wizard-design.md",
-      "source_location": "line 24-29",
-      "source_url": null,
-      "captured_at": "2026-05-03",
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "claudelyconfig interface",
-      "id": "setup_wizard_claudely_config"
-    },
-    {
-      "label": "src/config.ts -- Config persistence layer",
-      "file_type": "document",
-      "source_file": "docs/superpowers/specs/2026-05-03-setup-wizard-design.md",
-      "source_location": "line 51-58",
-      "source_url": null,
-      "captured_at": "2026-05-03",
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "src/config.ts -- config persistence layer",
-      "id": "setup_wizard_config_ts"
-    },
-    {
-      "label": "src/setup.ts -- Interactive wizard (runSetup)",
-      "file_type": "document",
-      "source_file": "docs/superpowers/specs/2026-05-03-setup-wizard-design.md",
-      "source_location": "line 60-83",
-      "source_url": null,
-      "captured_at": "2026-05-03",
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "src/setup.ts -- interactive wizard (runsetup)",
-      "id": "setup_wizard_setup_ts"
-    },
-    {
-      "label": "Setting resolution precedence chain",
-      "file_type": "document",
-      "source_file": "docs/superpowers/specs/2026-05-03-setup-wizard-design.md",
-      "source_location": "line 37-47",
-      "source_url": null,
-      "captured_at": "2026-05-03",
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "setting resolution precedence chain",
-      "id": "setup_wizard_precedence"
-    },
-    {
-      "label": "Platform-native config file locations",
-      "file_type": "document",
-      "source_file": "docs/superpowers/specs/2026-05-03-setup-wizard-design.md",
-      "source_location": "line 13-19",
-      "source_url": null,
-      "captured_at": "2026-05-03",
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "platform-native config file locations",
-      "id": "setup_wizard_config_paths"
-    },
-    {
-      "label": "@inquirer/prompts dependency for wizard",
-      "file_type": "document",
-      "source_file": "docs/superpowers/specs/2026-05-03-setup-wizard-design.md",
-      "source_location": "line 67",
-      "source_url": null,
-      "captured_at": "2026-05-03",
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "@inquirer/prompts dependency for wizard",
-      "id": "setup_wizard_inquirer_prompts"
-    },
-    {
-      "label": "Model listers module (listLmStudio, listOllama, listV1Models)",
-      "file_type": "code",
-      "source_file": "dist-test/listers.js",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "model listers module (listlmstudio, listollama, listv1models)",
-      "id": "listers_module"
-    },
-    {
-      "label": "Compatibility layer (applyCompat, loadSettings, INCOMPATIBILITIES)",
-      "file_type": "code",
-      "source_file": "dist-test/compat.js",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "compatibility layer (applycompat, loadsettings, incompatibilities)",
-      "id": "compat_module"
-    },
-    {
-      "label": "Argument splitter (splitArgs)",
-      "file_type": "code",
-      "source_file": "dist-test/argsplit.js",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "argument splitter (splitargs)",
-      "id": "argsplit_module"
-    },
-    {
-      "label": "Resume intent detection and auto-resume logic",
-      "file_type": "code",
-      "source_file": "dist-test/resume.js",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "resume intent detection and auto-resume logic",
-      "id": "resume_module"
-    },
-    {
-      "label": "Version reporting (readClaudelyVersion, probeClaudeVersion, renderVersion)",
-      "file_type": "code",
-      "source_file": "dist-test/version.js",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "version reporting (readclaudelyversion, probeclaudeversion, renderversion)",
-      "id": "version_module"
-    },
-    {
-      "label": "Shared test helpers (mockFetch, restoreFetch, captureRealFetch)",
-      "file_type": "code",
-      "source_file": "dist-test/test-helpers.js",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "shared test helpers (mockfetch, restorefetch, capturerealfetch)",
-      "id": "test_helpers_module"
-    },
-    {
-      "label": "Graceful degradation fallback to /v1/models API",
-      "file_type": "code",
-      "source_file": "dist-test/listers.js",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "graceful degradation fallback to /v1/models api",
-      "id": "v1_models_fallback_pattern"
-    },
-    {
-      "label": "Auto-resume on bare invocation feature",
-      "file_type": "code",
-      "source_file": "dist-test/cli.js",
-      "source_location": "line 148-161",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "auto-resume on bare invocation feature",
-      "id": "auto_resume_feature"
-    },
-    {
-      "label": "Provider env-style auth (auth_token vs api_key)",
-      "file_type": "code",
-      "source_file": "dist-test/cli.js",
-      "source_location": "line 204-212",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 5,
-      "norm_label": "provider env-style auth (auth_token vs api_key)",
-      "id": "env_style_auth_pattern"
-    },
-    {
-      "label": "KV-cache speedup via CLAUDE_CODE_ATTRIBUTION_HEADER=0",
-      "file_type": "code",
-      "source_file": "dist-test/cli.js",
-      "source_location": "line 215-218",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "kv-cache speedup via claude_code_attribution_header=0",
-      "id": "kv_cache_attribution_header"
     },
     {
       "label": "claudely setup wizard",
@@ -1587,9 +904,9 @@
         "description": "Interactive configuration wizard invoked via `claudely setup` subcommand. Walks user through provider, base URL, auth token, and default model selection. Persists values to a platform-native config file.",
         "rationale": "Provides a guided first-run experience so users do not need to manually create config files or remember env var names. Config is persisted and loaded on every subsequent invocation, slotting into the resolution chain below CLI flags and env vars but above hardcoded provider defaults."
       },
-      "id": "setup_wizard",
-      "community": 2,
-      "norm_label": "claudely setup wizard"
+      "community": 0,
+      "norm_label": "claudely setup wizard",
+      "id": "setup_wizard"
     },
     {
       "label": "ClaudelyConfig",
@@ -1603,9 +920,9 @@
           "model?"
         ]
       },
-      "id": "setup_claudely_config",
-      "community": 2,
-      "norm_label": "claudelyconfig"
+      "community": 0,
+      "norm_label": "claudelyconfig",
+      "id": "setup_claudely_config"
     },
     {
       "label": "src/config.ts",
@@ -1614,9 +931,9 @@
         "description": "Consolidates all config-reading logic in one place. Exports configDir(), configPath(), loadConfig(), saveConfig(), and loadSettings() (moved from compat.ts).",
         "rationale": "Decouples disk I/O from compat business logic by moving loadSettings here. Consolidation ensures all config I/O has a single source of truth."
       },
-      "id": "setup_config_ts",
-      "community": 2,
-      "norm_label": "src/config.ts"
+      "community": 0,
+      "norm_label": "src/config.ts",
+      "id": "setup_config_ts"
     },
     {
       "label": "src/setup.ts",
@@ -1625,9 +942,9 @@
         "description": "Interactive wizard module. Exports runSetup(): Promise<number> (returns exit code). Flow: load existing config, pick provider, base URL, auth token, test connection, pick default model, confirm & save.",
         "entry_point": "runSetup()"
       },
-      "id": "setup_setup_ts",
-      "community": 2,
-      "norm_label": "src/setup.ts"
+      "community": 0,
+      "norm_label": "src/setup.ts",
+      "id": "setup_setup_ts"
     },
     {
       "label": "src/compat.ts",
@@ -1636,9 +953,9 @@
         "description": "Compat business logic module. After decoupling: loadSettings() removed (moved to config.ts), readFileSync import removed. applyCompat(), INCOMPATIBILITIES, isAnthropicHost() stay unchanged.",
         "rationale": "Removing loadSettings and its fs import makes compat.ts purely about business logic (checking incompatibilities, host detection), no longer responsible for disk I/O."
       },
-      "id": "setup_compat_ts",
-      "community": 2,
-      "norm_label": "src/compat.ts"
+      "community": 0,
+      "norm_label": "src/compat.ts",
+      "id": "setup_compat_ts"
     },
     {
       "label": "src/cli.ts",
@@ -1646,9 +963,9 @@
       "attributes": {
         "description": "CLI entry point. Changes: loadSettings import source changes from compat.js to config.js; subcommand dispatch for 'setup'; config loading via loadConfig() threaded into resolution; HELP text updated."
       },
-      "id": "setup_cli_ts",
-      "community": 2,
-      "norm_label": "src/cli.ts"
+      "community": 0,
+      "norm_label": "src/cli.ts",
+      "id": "setup_cli_ts"
     },
     {
       "label": "Precedence chain",
@@ -1662,9 +979,9 @@
           "model": "--model > $CLAUDELY_MODEL > config.model > picker"
         }
       },
-      "id": "setup_precedence_chain",
-      "community": 2,
-      "norm_label": "precedence chain"
+      "community": 0,
+      "norm_label": "precedence chain",
+      "id": "setup_precedence_chain"
     },
     {
       "label": "Linux config path",
@@ -1674,9 +991,9 @@
         "default": "~/.config/claudely/config.json",
         "platform": "linux"
       },
-      "id": "setup_config_file_linux",
-      "community": 2,
-      "norm_label": "linux config path"
+      "community": 0,
+      "norm_label": "linux config path",
+      "id": "setup_config_file_linux"
     },
     {
       "label": "macOS config path",
@@ -1685,9 +1002,9 @@
         "path": "~/Library/Application Support/claudely/config.json",
         "platform": "macos"
       },
-      "id": "setup_config_file_macos",
-      "community": 2,
-      "norm_label": "macos config path"
+      "community": 0,
+      "norm_label": "macos config path",
+      "id": "setup_config_file_macos"
     },
     {
       "label": "Windows config path",
@@ -1696,9 +1013,9 @@
         "path": "%APPDATA%\\claudely\\config.json",
         "platform": "windows"
       },
-      "id": "setup_config_file_windows",
-      "community": 2,
-      "norm_label": "windows config path"
+      "community": 0,
+      "norm_label": "windows config path",
+      "id": "setup_config_file_windows"
     },
     {
       "label": "loadSettings()",
@@ -1707,9 +1024,9 @@
         "description": "Reads Claude Code's ~/.claude/settings.json and returns the parsed object (or undefined on missing/corrupt). Moved from compat.ts to config.ts as part of the I/O decoupling.",
         "signature": "loadSettings(settingsPath: string): object | undefined"
       },
-      "id": "setup_load_settings",
-      "community": 2,
-      "norm_label": "loadsettings()"
+      "community": 0,
+      "norm_label": "loadsettings()",
+      "id": "setup_load_settings"
     },
     {
       "label": "configDir()",
@@ -1718,9 +1035,9 @@
         "description": "Platform-aware directory resolution for config file location.",
         "module": "src/config.ts"
       },
-      "id": "setup_config_dir",
-      "community": 2,
-      "norm_label": "configdir()"
+      "community": 0,
+      "norm_label": "configdir()",
+      "id": "setup_config_dir"
     },
     {
       "label": "configPath()",
@@ -1729,9 +1046,9 @@
         "description": "Returns configDir() + '/config.json'.",
         "module": "src/config.ts"
       },
-      "id": "setup_config_path",
-      "community": 2,
-      "norm_label": "configpath()"
+      "community": 0,
+      "norm_label": "configpath()",
+      "id": "setup_config_path"
     },
     {
       "label": "loadConfig()",
@@ -1741,9 +1058,9 @@
         "module": "src/config.ts",
         "return_type": "ClaudelyConfig"
       },
-      "id": "setup_load_config",
-      "community": 2,
-      "norm_label": "loadconfig()"
+      "community": 0,
+      "norm_label": "loadconfig()",
+      "id": "setup_load_config"
     },
     {
       "label": "saveConfig()",
@@ -1753,9 +1070,9 @@
         "module": "src/config.ts",
         "parameter": "ClaudelyConfig"
       },
-      "id": "setup_save_config",
-      "community": 2,
-      "norm_label": "saveconfig()"
+      "community": 0,
+      "norm_label": "saveconfig()",
+      "id": "setup_save_config"
     },
     {
       "label": "runSetup()",
@@ -1764,9 +1081,9 @@
         "description": "Exported entry point for the interactive wizard. Returns Promise<number> (exit code).",
         "module": "src/setup.ts"
       },
-      "id": "setup_run_setup",
-      "community": 2,
-      "norm_label": "runsetup()"
+      "community": 0,
+      "norm_label": "runsetup()",
+      "id": "setup_run_setup"
     },
     {
       "label": "@inquirer/prompts",
@@ -1774,9 +1091,9 @@
       "attributes": {
         "description": "Used for interactive select and input prompts in the setup wizard."
       },
-      "id": "setup_inquirer_prompts",
-      "community": 2,
-      "norm_label": "@inquirer/prompts"
+      "community": 0,
+      "norm_label": "@inquirer/prompts",
+      "id": "setup_inquirer_prompts"
     },
     {
       "label": "src/config.test.ts",
@@ -1784,9 +1101,9 @@
       "attributes": {
         "description": "Tests for config.ts: configDir() per platform, loadConfig/saveConfig round-trip, missing file handling, corrupt JSON handling, directory creation, loadSettings tests moved from compat.test.ts."
       },
-      "id": "setup_config_test_ts",
-      "community": 2,
-      "norm_label": "src/config.test.ts"
+      "community": 0,
+      "norm_label": "src/config.test.ts",
+      "id": "setup_config_test_ts"
     },
     {
       "label": "Connection test step",
@@ -1794,9 +1111,9 @@
       "attributes": {
         "description": "Wizard step 5: fetch(baseUrl + '/v1/models') with 5s timeout. On success prints model count, on failure warns but continues (server may not be running yet)."
       },
-      "id": "setup_connection_test",
-      "community": 2,
-      "norm_label": "connection test step"
+      "community": 0,
+      "norm_label": "connection test step",
+      "id": "setup_connection_test"
     },
     {
       "label": "listForProvider",
@@ -1804,9 +1121,162 @@
       "attributes": {
         "description": "Reused by the wizard to show the model picker when connection test succeeds and models are returned."
       },
-      "id": "setup_list_for_provider",
+      "community": 0,
+      "norm_label": "listforprovider",
+      "id": "setup_list_for_provider"
+    },
+    {
+      "label": "compat.test.ts",
+      "file_type": "code",
+      "source_file": "compat.test.ts",
+      "source_location": "L1",
+      "community": 6,
+      "norm_label": "compat.test.ts",
+      "id": "compat_test_ts"
+    },
+    {
+      "label": "compat.ts",
+      "file_type": "code",
+      "source_file": "compat.ts",
+      "source_location": "L1",
+      "community": 6,
+      "norm_label": "compat.ts",
+      "id": "compat_ts"
+    },
+    {
+      "label": "config.test.ts",
+      "file_type": "code",
+      "source_file": "config.test.ts",
+      "source_location": "L1",
+      "community": 9,
+      "norm_label": "config.test.ts",
+      "id": "config_test_ts"
+    },
+    {
+      "label": "mockPlatform()",
+      "file_type": "code",
+      "source_file": "config.test.ts",
+      "source_location": "L10",
+      "community": 9,
+      "norm_label": "mockplatform()",
+      "id": "src_config_test_mockplatform"
+    },
+    {
+      "label": "restorePlatform()",
+      "file_type": "code",
+      "source_file": "config.test.ts",
+      "source_location": "L13",
+      "community": 9,
+      "norm_label": "restoreplatform()",
+      "id": "src_config_test_restoreplatform"
+    },
+    {
+      "label": "config.ts",
+      "file_type": "code",
+      "source_file": "config.ts",
+      "source_location": "L1",
+      "community": 3,
+      "norm_label": "config.ts",
+      "id": "config_ts"
+    },
+    {
+      "label": "configDir()",
+      "file_type": "code",
+      "source_file": "config.ts",
+      "source_location": "L12",
+      "community": 3,
+      "norm_label": "configdir()",
+      "id": "src_config_configdir"
+    },
+    {
+      "label": "configPath()",
+      "file_type": "code",
+      "source_file": "config.ts",
+      "source_location": "L23",
+      "community": 3,
+      "norm_label": "configpath()",
+      "id": "src_config_configpath"
+    },
+    {
+      "label": "loadConfig()",
+      "file_type": "code",
+      "source_file": "config.ts",
+      "source_location": "L27",
+      "community": 3,
+      "norm_label": "loadconfig()",
+      "id": "src_config_loadconfig"
+    },
+    {
+      "label": "saveConfig()",
+      "file_type": "code",
+      "source_file": "config.ts",
+      "source_location": "L37",
+      "community": 3,
+      "norm_label": "saveconfig()",
+      "id": "src_config_saveconfig"
+    },
+    {
+      "label": "loadSettings()",
+      "file_type": "code",
+      "source_file": "config.ts",
+      "source_location": "L43",
+      "community": 3,
+      "norm_label": "loadsettings()",
+      "id": "src_config_loadsettings"
+    },
+    {
+      "label": "providers.ts",
+      "file_type": "code",
+      "source_file": "providers.ts",
+      "source_location": "L1",
+      "community": 3,
+      "norm_label": "providers.ts",
+      "id": "providers_ts"
+    },
+    {
+      "label": "cli.ts",
+      "file_type": "code",
+      "source_file": "cli.ts",
+      "source_location": "L1",
+      "community": 3,
+      "norm_label": "cli.ts",
+      "id": "cli_ts"
+    },
+    {
+      "label": "setup.ts",
+      "file_type": "code",
+      "source_file": "setup.ts",
+      "source_location": "L1",
+      "community": 3,
+      "norm_label": "setup.ts",
+      "id": "setup_ts"
+    },
+    {
+      "label": "listForProvider()",
+      "file_type": "code",
+      "source_file": "setup.ts",
+      "source_location": "L6",
+      "community": 3,
+      "norm_label": "listforprovider()",
+      "id": "src_setup_listforprovider"
+    },
+    {
+      "label": "runSetup()",
+      "file_type": "code",
+      "source_file": "setup.ts",
+      "source_location": "L21",
+      "community": 3,
+      "norm_label": "runsetup()",
+      "id": "src_setup_runsetup"
+    },
+    {
+      "label": "listers.integration.test.ts",
+      "file_type": "code",
+      "source_file": "listers.integration.test.ts",
+      "source_location": "L1",
       "community": 2,
-      "norm_label": "listforprovider"
+      "norm_label": "listers.integration.test.ts",
+      "id": "listers_integration_test_ts"
     }
   ],
   "links": [
@@ -2017,6 +1487,42 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "compat.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_src": "src_compat_isanthropichost",
+      "_tgt": "compat_ts",
+      "confidence_score": 1.0,
+      "source": "src_compat_isanthropichost",
+      "target": "compat_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "compat.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_src": "src_compat_applycompat",
+      "_tgt": "compat_ts",
+      "confidence_score": 1.0,
+      "source": "src_compat_applycompat",
+      "target": "compat_ts"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "cli.ts",
+      "source_location": "L273",
+      "weight": 1.0,
+      "_src": "src_compat_applycompat",
+      "_tgt": "src_cli_main",
+      "source": "src_compat_applycompat",
+      "target": "src_cli_main"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "src/cli.integration.test.ts",
       "source_location": "L21",
       "weight": 1.0,
@@ -2077,8 +1583,8 @@
     {
       "relation": "calls",
       "confidence": "EXTRACTED",
-      "source_file": "src/cli.ts",
-      "source_location": "L174",
+      "source_file": "cli.ts",
+      "source_location": "L183",
       "weight": 1.0,
       "_src": "src_cli_listforprovider",
       "_tgt": "src_cli_main",
@@ -2087,136 +1593,64 @@
       "target": "src_cli_main"
     },
     {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "src/cli.ts",
-      "source_location": "L98",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "cli.ts",
+      "source_location": "L95",
       "weight": 1.0,
       "_src": "src_cli_listforprovider",
-      "_tgt": "dist_test_listers_listlmstudio",
+      "_tgt": "cli_ts",
+      "confidence_score": 1.0,
       "source": "src_cli_listforprovider",
-      "target": "dist_test_listers_listlmstudio"
+      "target": "cli_ts"
     },
     {
       "relation": "calls",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
-      "source_file": "src/cli.ts",
-      "source_location": "L100",
+      "source_file": "cli.ts",
+      "source_location": "L144",
       "weight": 1.0,
-      "_src": "src_cli_listforprovider",
-      "_tgt": "dist_test_listers_listollama",
-      "source": "src_cli_listforprovider",
-      "target": "dist_test_listers_listollama"
+      "_src": "src_cli_main",
+      "_tgt": "src_config_loadconfig",
+      "source": "src_cli_main",
+      "target": "src_config_loadconfig"
     },
     {
       "relation": "calls",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
-      "source_file": "src/cli.ts",
-      "source_location": "L102",
+      "source_file": "cli.ts",
+      "source_location": "L272",
       "weight": 1.0,
-      "_src": "src_cli_listforprovider",
-      "_tgt": "dist_test_listers_listv1models",
-      "source": "src_cli_listforprovider",
-      "target": "dist_test_listers_listv1models"
+      "_src": "src_cli_main",
+      "_tgt": "src_config_loadsettings",
+      "source": "src_cli_main",
+      "target": "src_config_loadsettings"
     },
     {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "src/cli.ts",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "cli.ts",
       "source_location": "L110",
       "weight": 1.0,
       "_src": "src_cli_main",
-      "_tgt": "dist_test_argsplit_splitargs",
+      "_tgt": "cli_ts",
+      "confidence_score": 1.0,
       "source": "src_cli_main",
-      "target": "dist_test_argsplit_splitargs"
+      "target": "cli_ts"
     },
     {
       "relation": "calls",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
-      "source_file": "src/cli.ts",
-      "source_location": "L143",
+      "source_file": "cli.ts",
+      "source_location": "L112",
       "weight": 1.0,
       "_src": "src_cli_main",
-      "_tgt": "dist_test_version_renderversion",
+      "_tgt": "src_setup_runsetup",
       "source": "src_cli_main",
-      "target": "dist_test_version_renderversion"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "src/cli.ts",
-      "source_location": "L186",
-      "weight": 1.0,
-      "_src": "src_cli_main",
-      "_tgt": "dist_test_resume_shouldautoresume",
-      "source": "src_cli_main",
-      "target": "dist_test_resume_shouldautoresume"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "src/cli.ts",
-      "source_location": "L189",
-      "weight": 1.0,
-      "_src": "src_cli_main",
-      "_tgt": "dist_test_resume_hasrecentsessionforcwd",
-      "source": "src_cli_main",
-      "target": "dist_test_resume_hasrecentsessionforcwd"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "src/cli.ts",
-      "source_location": "L204",
-      "weight": 1.0,
-      "_src": "src_cli_main",
-      "_tgt": "dist_test_resume_isresumeintent",
-      "source": "src_cli_main",
-      "target": "dist_test_resume_isresumeintent"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "src/cli.ts",
-      "source_location": "L262",
-      "weight": 1.0,
-      "_src": "src_cli_main",
-      "_tgt": "dist_test_compat_loadsettings",
-      "source": "src_cli_main",
-      "target": "dist_test_compat_loadsettings"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "src/cli.ts",
-      "source_location": "L263",
-      "weight": 1.0,
-      "_src": "src_cli_main",
-      "_tgt": "dist_test_compat_applycompat",
-      "source": "src_cli_main",
-      "target": "dist_test_compat_applycompat"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "src/cli.ts",
-      "source_location": "L266",
-      "weight": 1.0,
-      "_src": "src_cli_main",
-      "_tgt": "dist_test_resume_assembleclaudeargv",
-      "source": "src_cli_main",
-      "target": "dist_test_resume_assembleclaudeargv"
+      "target": "src_setup_runsetup"
     },
     {
       "relation": "imports_from",
@@ -2241,18 +1675,6 @@
       "confidence_score": 1.0,
       "source": "src_resume_test_ts",
       "target": "src_resume_test_seedsessionfile"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "src/resume.test.ts",
-      "source_location": "L146",
-      "weight": 1.0,
-      "_src": "src_resume_test_seedsessionfile",
-      "_tgt": "dist_test_resume_encodecwdforclaude",
-      "source": "src_resume_test_seedsessionfile",
-      "target": "dist_test_resume_encodecwdforclaude"
     },
     {
       "relation": "contains",
@@ -2459,6 +1881,42 @@
       "target": "src_listers_integration_test_readargvlog"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "listers.integration.test.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "_src": "src_listers_integration_test_installfake",
+      "_tgt": "listers_integration_test_ts",
+      "confidence_score": 1.0,
+      "source": "src_listers_integration_test_installfake",
+      "target": "listers_integration_test_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "listers.integration.test.ts",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_src": "src_listers_integration_test_prependtopath",
+      "_tgt": "listers_integration_test_ts",
+      "confidence_score": 1.0,
+      "source": "src_listers_integration_test_prependtopath",
+      "target": "listers_integration_test_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "listers.integration.test.ts",
+      "source_location": "L49",
+      "weight": 1.0,
+      "_src": "src_listers_integration_test_readargvlog",
+      "_tgt": "listers_integration_test_ts",
+      "confidence_score": 1.0,
+      "source": "src_listers_integration_test_readargvlog",
+      "target": "listers_integration_test_ts"
+    },
+    {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
       "source_file": "src/listers.test.ts",
@@ -2507,18 +1965,6 @@
       "target": "src_listers_test_mockv1fallback"
     },
     {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "src/listers.test.ts",
-      "source_location": "L23",
-      "weight": 1.0,
-      "_src": "src_listers_test_mockv1fallback",
-      "_tgt": "dist_test_test_helpers_mockfetch",
-      "source": "src_listers_test_mockv1fallback",
-      "target": "dist_test_test_helpers_mockfetch"
-    },
-    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/test-helpers.ts",
@@ -2553,582 +1999,6 @@
       "confidence_score": 1.0,
       "source": "src_test_helpers_ts",
       "target": "src_test_helpers_mockfetch"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/argsplit.js",
-      "source_location": "L1",
-      "weight": 1.0,
-      "_src": "dist_test_argsplit_js",
-      "_tgt": "dist_test_argsplit_splitargs",
-      "confidence_score": 1.0,
-      "source": "dist_test_argsplit_js",
-      "target": "dist_test_argsplit_splitargs"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "dist-test/cli.js",
-      "source_location": "L91",
-      "weight": 1.0,
-      "_src": "dist_test_argsplit_splitargs",
-      "_tgt": "dist_test_cli_main",
-      "source": "dist_test_argsplit_splitargs",
-      "target": "dist_test_cli_main"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/listers.js",
-      "source_location": "L6",
-      "weight": 1.0,
-      "_src": "dist_test_listers_js",
-      "_tgt": "dist_test_listers_listlmstudio",
-      "confidence_score": 1.0,
-      "source": "dist_test_listers_js",
-      "target": "dist_test_listers_listlmstudio"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/listers.js",
-      "source_location": "L35",
-      "weight": 1.0,
-      "_src": "dist_test_listers_js",
-      "_tgt": "dist_test_listers_listollama",
-      "confidence_score": 1.0,
-      "source": "dist_test_listers_js",
-      "target": "dist_test_listers_listollama"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/listers.js",
-      "source_location": "L60",
-      "weight": 1.0,
-      "_src": "dist_test_listers_js",
-      "_tgt": "dist_test_listers_listv1models",
-      "confidence_score": 1.0,
-      "source": "dist_test_listers_js",
-      "target": "dist_test_listers_listv1models"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/listers.js",
-      "source_location": "L15",
-      "weight": 1.0,
-      "_src": "dist_test_listers_listlmstudio",
-      "_tgt": "dist_test_listers_listv1models",
-      "confidence_score": 1.0,
-      "source": "dist_test_listers_listlmstudio",
-      "target": "dist_test_listers_listv1models"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "dist-test/cli.js",
-      "source_location": "L80",
-      "weight": 1.0,
-      "_src": "dist_test_listers_listlmstudio",
-      "_tgt": "dist_test_cli_listforprovider",
-      "source": "dist_test_listers_listlmstudio",
-      "target": "dist_test_cli_listforprovider"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/listers.js",
-      "source_location": "L40",
-      "weight": 1.0,
-      "_src": "dist_test_listers_listollama",
-      "_tgt": "dist_test_listers_listv1models",
-      "confidence_score": 1.0,
-      "source": "dist_test_listers_listollama",
-      "target": "dist_test_listers_listv1models"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "dist-test/cli.js",
-      "source_location": "L82",
-      "weight": 1.0,
-      "_src": "dist_test_listers_listollama",
-      "_tgt": "dist_test_cli_listforprovider",
-      "source": "dist_test_listers_listollama",
-      "target": "dist_test_cli_listforprovider"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "dist-test/cli.js",
-      "source_location": "L84",
-      "weight": 1.0,
-      "_src": "dist_test_listers_listv1models",
-      "_tgt": "dist_test_cli_listforprovider",
-      "source": "dist_test_listers_listv1models",
-      "target": "dist_test_cli_listforprovider"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/compat.js",
-      "source_location": "L2",
-      "weight": 1.0,
-      "_src": "dist_test_compat_js",
-      "_tgt": "dist_test_compat_loadsettings",
-      "confidence_score": 1.0,
-      "source": "dist_test_compat_js",
-      "target": "dist_test_compat_loadsettings"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/compat.js",
-      "source_location": "L13",
-      "weight": 1.0,
-      "_src": "dist_test_compat_js",
-      "_tgt": "dist_test_compat_isanthropichost",
-      "confidence_score": 1.0,
-      "source": "dist_test_compat_js",
-      "target": "dist_test_compat_isanthropichost"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/compat.js",
-      "source_location": "L31",
-      "weight": 1.0,
-      "_src": "dist_test_compat_js",
-      "_tgt": "dist_test_compat_applycompat",
-      "confidence_score": 1.0,
-      "source": "dist_test_compat_js",
-      "target": "dist_test_compat_applycompat"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "dist-test/cli.js",
-      "source_location": "L219",
-      "weight": 1.0,
-      "_src": "dist_test_compat_loadsettings",
-      "_tgt": "dist_test_cli_main",
-      "source": "dist_test_compat_loadsettings",
-      "target": "dist_test_cli_main"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "dist-test/cli.js",
-      "source_location": "L220",
-      "weight": 1.0,
-      "_src": "dist_test_compat_applycompat",
-      "_tgt": "dist_test_cli_main",
-      "source": "dist_test_compat_applycompat",
-      "target": "dist_test_cli_main"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/listers.integration.test.js",
-      "source_location": "L34",
-      "weight": 1.0,
-      "_src": "dist_test_listers_integration_test_js",
-      "_tgt": "dist_test_listers_integration_test_installfake",
-      "confidence_score": 1.0,
-      "source": "dist_test_listers_integration_test_js",
-      "target": "dist_test_listers_integration_test_installfake"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/listers.integration.test.js",
-      "source_location": "L38",
-      "weight": 1.0,
-      "_src": "dist_test_listers_integration_test_js",
-      "_tgt": "dist_test_listers_integration_test_prependtopath",
-      "confidence_score": 1.0,
-      "source": "dist_test_listers_integration_test_js",
-      "target": "dist_test_listers_integration_test_prependtopath"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/listers.integration.test.js",
-      "source_location": "L41",
-      "weight": 1.0,
-      "_src": "dist_test_listers_integration_test_js",
-      "_tgt": "dist_test_listers_integration_test_readargvlog",
-      "confidence_score": 1.0,
-      "source": "dist_test_listers_integration_test_js",
-      "target": "dist_test_listers_integration_test_readargvlog"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/cli.js",
-      "source_location": "L77",
-      "weight": 1.0,
-      "_src": "dist_test_cli_js",
-      "_tgt": "dist_test_cli_listforprovider",
-      "confidence_score": 1.0,
-      "source": "dist_test_cli_js",
-      "target": "dist_test_cli_listforprovider"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/cli.js",
-      "source_location": "L87",
-      "weight": 1.0,
-      "_src": "dist_test_cli_js",
-      "_tgt": "dist_test_cli_main",
-      "confidence_score": 1.0,
-      "source": "dist_test_cli_js",
-      "target": "dist_test_cli_main"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/cli.js",
-      "source_location": "L141",
-      "weight": 1.0,
-      "_src": "dist_test_cli_listforprovider",
-      "_tgt": "dist_test_cli_main",
-      "confidence_score": 1.0,
-      "source": "dist_test_cli_listforprovider",
-      "target": "dist_test_cli_main"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "dist-test/cli.js",
-      "source_location": "L121",
-      "weight": 1.0,
-      "_src": "dist_test_cli_main",
-      "_tgt": "dist_test_version_renderversion",
-      "source": "dist_test_cli_main",
-      "target": "dist_test_version_renderversion"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "dist-test/cli.js",
-      "source_location": "L152",
-      "weight": 1.0,
-      "_src": "dist_test_cli_main",
-      "_tgt": "dist_test_resume_shouldautoresume",
-      "source": "dist_test_cli_main",
-      "target": "dist_test_resume_shouldautoresume"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "dist-test/cli.js",
-      "source_location": "L155",
-      "weight": 1.0,
-      "_src": "dist_test_cli_main",
-      "_tgt": "dist_test_resume_hasrecentsessionforcwd",
-      "source": "dist_test_cli_main",
-      "target": "dist_test_resume_hasrecentsessionforcwd"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "dist-test/cli.js",
-      "source_location": "L169",
-      "weight": 1.0,
-      "_src": "dist_test_cli_main",
-      "_tgt": "dist_test_resume_isresumeintent",
-      "source": "dist_test_cli_main",
-      "target": "dist_test_resume_isresumeintent"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "dist-test/cli.js",
-      "source_location": "L223",
-      "weight": 1.0,
-      "_src": "dist_test_cli_main",
-      "_tgt": "dist_test_resume_assembleclaudeargv",
-      "source": "dist_test_cli_main",
-      "target": "dist_test_resume_assembleclaudeargv"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/listers.test.js",
-      "source_location": "L5",
-      "weight": 1.0,
-      "_src": "dist_test_listers_test_js",
-      "_tgt": "dist_test_listers_test_fakerun",
-      "confidence_score": 1.0,
-      "source": "dist_test_listers_test_js",
-      "target": "dist_test_listers_test_fakerun"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/listers.test.js",
-      "source_location": "L16",
-      "weight": 1.0,
-      "_src": "dist_test_listers_test_js",
-      "_tgt": "dist_test_listers_test_enoentrunner",
-      "confidence_score": 1.0,
-      "source": "dist_test_listers_test_js",
-      "target": "dist_test_listers_test_enoentrunner"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/listers.test.js",
-      "source_location": "L21",
-      "weight": 1.0,
-      "_src": "dist_test_listers_test_js",
-      "_tgt": "dist_test_listers_test_mockv1fallback",
-      "confidence_score": 1.0,
-      "source": "dist_test_listers_test_js",
-      "target": "dist_test_listers_test_mockv1fallback"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "dist-test/listers.test.js",
-      "source_location": "L22",
-      "weight": 1.0,
-      "_src": "dist_test_listers_test_mockv1fallback",
-      "_tgt": "dist_test_test_helpers_mockfetch",
-      "source": "dist_test_listers_test_mockv1fallback",
-      "target": "dist_test_test_helpers_mockfetch"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/cli.integration.test.js",
-      "source_location": "L17",
-      "weight": 1.0,
-      "_src": "dist_test_cli_integration_test_js",
-      "_tgt": "dist_test_cli_integration_test_emptyenv",
-      "confidence_score": 1.0,
-      "source": "dist_test_cli_integration_test_js",
-      "target": "dist_test_cli_integration_test_emptyenv"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/version.js",
-      "source_location": "L7",
-      "weight": 1.0,
-      "_src": "dist_test_version_js",
-      "_tgt": "dist_test_version_readclaudelyversion",
-      "confidence_score": 1.0,
-      "source": "dist_test_version_js",
-      "target": "dist_test_version_readclaudelyversion"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/version.js",
-      "source_location": "L19",
-      "weight": 1.0,
-      "_src": "dist_test_version_js",
-      "_tgt": "dist_test_version_probeclaudeversion",
-      "confidence_score": 1.0,
-      "source": "dist_test_version_js",
-      "target": "dist_test_version_probeclaudeversion"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/version.js",
-      "source_location": "L32",
-      "weight": 1.0,
-      "_src": "dist_test_version_js",
-      "_tgt": "dist_test_version_renderversion",
-      "confidence_score": 1.0,
-      "source": "dist_test_version_js",
-      "target": "dist_test_version_renderversion"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/version.js",
-      "source_location": "L34",
-      "weight": 1.0,
-      "_src": "dist_test_version_readclaudelyversion",
-      "_tgt": "dist_test_version_renderversion",
-      "confidence_score": 1.0,
-      "source": "dist_test_version_readclaudelyversion",
-      "target": "dist_test_version_renderversion"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/version.js",
-      "source_location": "L35",
-      "weight": 1.0,
-      "_src": "dist_test_version_probeclaudeversion",
-      "_tgt": "dist_test_version_renderversion",
-      "confidence_score": 1.0,
-      "source": "dist_test_version_probeclaudeversion",
-      "target": "dist_test_version_renderversion"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/resume.js",
-      "source_location": "L19",
-      "weight": 1.0,
-      "_src": "dist_test_resume_js",
-      "_tgt": "dist_test_resume_isresumeintent",
-      "confidence_score": 1.0,
-      "source": "dist_test_resume_js",
-      "target": "dist_test_resume_isresumeintent"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/resume.js",
-      "source_location": "L31",
-      "weight": 1.0,
-      "_src": "dist_test_resume_js",
-      "_tgt": "dist_test_resume_assembleclaudeargv",
-      "confidence_score": 1.0,
-      "source": "dist_test_resume_js",
-      "target": "dist_test_resume_assembleclaudeargv"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/resume.js",
-      "source_location": "L38",
-      "weight": 1.0,
-      "_src": "dist_test_resume_js",
-      "_tgt": "dist_test_resume_encodecwdforclaude",
-      "confidence_score": 1.0,
-      "source": "dist_test_resume_js",
-      "target": "dist_test_resume_encodecwdforclaude"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/resume.js",
-      "source_location": "L41",
-      "weight": 1.0,
-      "_src": "dist_test_resume_js",
-      "_tgt": "dist_test_resume_hasrecentsessionforcwd",
-      "confidence_score": 1.0,
-      "source": "dist_test_resume_js",
-      "target": "dist_test_resume_hasrecentsessionforcwd"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/resume.js",
-      "source_location": "L52",
-      "weight": 1.0,
-      "_src": "dist_test_resume_js",
-      "_tgt": "dist_test_resume_shouldautoresume",
-      "confidence_score": 1.0,
-      "source": "dist_test_resume_js",
-      "target": "dist_test_resume_shouldautoresume"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/resume.js",
-      "source_location": "L61",
-      "weight": 1.0,
-      "_src": "dist_test_resume_isresumeintent",
-      "_tgt": "dist_test_resume_shouldautoresume",
-      "confidence_score": 1.0,
-      "source": "dist_test_resume_isresumeintent",
-      "target": "dist_test_resume_shouldautoresume"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/resume.js",
-      "source_location": "L43",
-      "weight": 1.0,
-      "_src": "dist_test_resume_encodecwdforclaude",
-      "_tgt": "dist_test_resume_hasrecentsessionforcwd",
-      "confidence_score": 1.0,
-      "source": "dist_test_resume_encodecwdforclaude",
-      "target": "dist_test_resume_hasrecentsessionforcwd"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "dist-test/resume.test.js",
-      "source_location": "L102",
-      "weight": 1.0,
-      "_src": "dist_test_resume_encodecwdforclaude",
-      "_tgt": "dist_test_resume_test_seedsessionfile",
-      "source": "dist_test_resume_encodecwdforclaude",
-      "target": "dist_test_resume_test_seedsessionfile"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/resume.test.js",
-      "source_location": "L101",
-      "weight": 1.0,
-      "_src": "dist_test_resume_test_js",
-      "_tgt": "dist_test_resume_test_seedsessionfile",
-      "confidence_score": 1.0,
-      "source": "dist_test_resume_test_js",
-      "target": "dist_test_resume_test_seedsessionfile"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/test-helpers.js",
-      "source_location": "L2",
-      "weight": 1.0,
-      "_src": "dist_test_test_helpers_js",
-      "_tgt": "dist_test_test_helpers_capturerealfetch",
-      "confidence_score": 1.0,
-      "source": "dist_test_test_helpers_js",
-      "target": "dist_test_test_helpers_capturerealfetch"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/test-helpers.js",
-      "source_location": "L5",
-      "weight": 1.0,
-      "_src": "dist_test_test_helpers_js",
-      "_tgt": "dist_test_test_helpers_restorefetch",
-      "confidence_score": 1.0,
-      "source": "dist_test_test_helpers_js",
-      "target": "dist_test_test_helpers_restorefetch"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "dist-test/test-helpers.js",
-      "source_location": "L8",
-      "weight": 1.0,
-      "_src": "dist_test_test_helpers_js",
-      "_tgt": "dist_test_test_helpers_mockfetch",
-      "confidence_score": 1.0,
-      "source": "dist_test_test_helpers_js",
-      "target": "dist_test_test_helpers_mockfetch"
     },
     {
       "relation": "calls",
@@ -3261,126 +2131,6 @@
       "_tgt": "cli_flag_spec",
       "source": "cli_main",
       "target": "cli_flag_spec"
-    },
-    {
-      "relation": "implemented_by",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "KV-cache speedup section",
-      "weight": 0.8,
-      "_src": "cli_main",
-      "_tgt": "concept_kv_cache_speedup",
-      "source": "cli_main",
-      "target": "concept_kv_cache_speedup"
-    },
-    {
-      "relation": "specifies_changes_to",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/specs/2026-05-03-setup-wizard-design.md",
-      "source_location": "line 86-95",
-      "weight": 1.0,
-      "_src": "cli_main",
-      "_tgt": "setup_wizard_design",
-      "source": "cli_main",
-      "target": "setup_wizard_design"
-    },
-    {
-      "relation": "implemented_by",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "dist-test/cli.js",
-      "source_location": "line 124-135",
-      "weight": 0.9,
-      "_src": "cli_main",
-      "_tgt": "setup_wizard_precedence",
-      "source": "cli_main",
-      "target": "setup_wizard_precedence"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "dist-test/cli.js",
-      "source_location": "line 91",
-      "weight": 1.0,
-      "_src": "cli_main",
-      "_tgt": "argsplit_module",
-      "source": "cli_main",
-      "target": "argsplit_module"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "dist-test/cli.js",
-      "source_location": "line 141",
-      "weight": 1.0,
-      "_src": "cli_main",
-      "_tgt": "listers_module",
-      "source": "cli_main",
-      "target": "listers_module"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "dist-test/cli.js",
-      "source_location": "line 219-220",
-      "weight": 1.0,
-      "_src": "cli_main",
-      "_tgt": "compat_module",
-      "source": "cli_main",
-      "target": "compat_module"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "dist-test/cli.js",
-      "source_location": "line 152-169",
-      "weight": 1.0,
-      "_src": "cli_main",
-      "_tgt": "resume_module",
-      "source": "cli_main",
-      "target": "resume_module"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "dist-test/cli.js",
-      "source_location": "line 122",
-      "weight": 0.8,
-      "_src": "cli_main",
-      "_tgt": "version_module",
-      "source": "cli_main",
-      "target": "version_module"
-    },
-    {
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "dist-test/cli.js",
-      "source_location": "line 204-212",
-      "weight": 0.9,
-      "_src": "cli_main",
-      "_tgt": "env_style_auth_pattern",
-      "source": "cli_main",
-      "target": "env_style_auth_pattern"
-    },
-    {
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "dist-test/cli.js",
-      "source_location": "line 215-218",
-      "weight": 0.7,
-      "_src": "cli_main",
-      "_tgt": "kv_cache_attribution_header",
-      "source": "cli_main",
-      "target": "kv_cache_attribution_header"
     },
     {
       "relation": "dispatches_to",
@@ -3561,42 +2311,6 @@
       "_tgt": "providers_custom",
       "source": "providers_registry",
       "target": "providers_custom"
-    },
-    {
-      "relation": "reads",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/specs/2026-05-03-setup-wizard-design.md",
-      "source_location": "line 67",
-      "weight": 0.9,
-      "_src": "providers_registry",
-      "_tgt": "setup_wizard_setup_ts",
-      "source": "providers_registry",
-      "target": "setup_wizard_setup_ts"
-    },
-    {
-      "relation": "declares",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "dist-test/providers.js",
-      "source_location": "line 8,19,30,39",
-      "weight": 0.9,
-      "_src": "providers_registry",
-      "_tgt": "env_style_auth_pattern",
-      "source": "providers_registry",
-      "target": "env_style_auth_pattern"
-    },
-    {
-      "relation": "references_lister_key",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "dist-test/providers.js",
-      "source_location": "line 12,21,31,39",
-      "weight": 0.9,
-      "_src": "providers_registry",
-      "_tgt": "listers_module",
-      "source": "providers_registry",
-      "target": "listers_module"
     },
     {
       "relation": "selects_lister",
@@ -3803,30 +2517,6 @@
       "target": "resume_hasrecentsessionforcwd"
     },
     {
-      "relation": "implemented_by",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "CHANGELOG.md",
-      "source_location": "v0.1.4",
-      "weight": 0.9,
-      "_src": "resume_hasrecentsessionforcwd",
-      "_tgt": "concept_auto_resume",
-      "source": "resume_hasrecentsessionforcwd",
-      "target": "concept_auto_resume"
-    },
-    {
-      "relation": "implemented_by",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "CHANGELOG.md",
-      "source_location": "v0.1.4",
-      "weight": 0.9,
-      "_src": "resume_shouldautoresume",
-      "_tgt": "concept_auto_resume",
-      "source": "resume_shouldautoresume",
-      "target": "concept_auto_resume"
-    },
-    {
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
@@ -3849,162 +2539,6 @@
       "_tgt": "version_renderversion",
       "source": "version_probeclaudeversion",
       "target": "version_renderversion"
-    },
-    {
-      "relation": "defines",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/specs/2026-05-03-setup-wizard-design.md",
-      "source_location": "line 23-30",
-      "weight": 1.0,
-      "_src": "setup_wizard_design",
-      "_tgt": "setup_wizard_claudely_config",
-      "source": "setup_wizard_design",
-      "target": "setup_wizard_claudely_config"
-    },
-    {
-      "relation": "specifies_new_file",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/specs/2026-05-03-setup-wizard-design.md",
-      "source_location": "line 51",
-      "weight": 1.0,
-      "_src": "setup_wizard_design",
-      "_tgt": "setup_wizard_config_ts",
-      "source": "setup_wizard_design",
-      "target": "setup_wizard_config_ts"
-    },
-    {
-      "relation": "specifies_new_file",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/specs/2026-05-03-setup-wizard-design.md",
-      "source_location": "line 60",
-      "weight": 1.0,
-      "_src": "setup_wizard_design",
-      "_tgt": "setup_wizard_setup_ts",
-      "source": "setup_wizard_design",
-      "target": "setup_wizard_setup_ts"
-    },
-    {
-      "relation": "defines",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/specs/2026-05-03-setup-wizard-design.md",
-      "source_location": "line 37",
-      "weight": 1.0,
-      "_src": "setup_wizard_design",
-      "_tgt": "setup_wizard_precedence",
-      "source": "setup_wizard_design",
-      "target": "setup_wizard_precedence"
-    },
-    {
-      "relation": "defines",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/specs/2026-05-03-setup-wizard-design.md",
-      "source_location": "line 13",
-      "weight": 1.0,
-      "_src": "setup_wizard_design",
-      "_tgt": "setup_wizard_config_paths",
-      "source": "setup_wizard_design",
-      "target": "setup_wizard_config_paths"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/specs/2026-05-03-setup-wizard-design.md",
-      "source_location": "line 80",
-      "weight": 1.0,
-      "_src": "setup_wizard_config_ts",
-      "_tgt": "setup_wizard_setup_ts",
-      "source": "setup_wizard_config_ts",
-      "target": "setup_wizard_setup_ts"
-    },
-    {
-      "relation": "semantically_similar_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.7,
-      "source_file": null,
-      "source_location": null,
-      "weight": 0.6,
-      "_src": "setup_wizard_config_ts",
-      "_tgt": "compat_module",
-      "source": "setup_wizard_config_ts",
-      "target": "compat_module"
-    },
-    {
-      "relation": "depends_on",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/specs/2026-05-03-setup-wizard-design.md",
-      "source_location": "line 67",
-      "weight": 0.8,
-      "_src": "setup_wizard_setup_ts",
-      "_tgt": "setup_wizard_inquirer_prompts",
-      "source": "setup_wizard_setup_ts",
-      "target": "setup_wizard_inquirer_prompts"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/specs/2026-05-03-setup-wizard-design.md",
-      "source_location": "line 76-77",
-      "weight": 0.9,
-      "_src": "setup_wizard_setup_ts",
-      "_tgt": "listers_module",
-      "source": "setup_wizard_setup_ts",
-      "target": "listers_module"
-    },
-    {
-      "relation": "semantically_similar_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.65,
-      "source_file": "docs/superpowers/specs/2026-05-03-setup-wizard-design.md",
-      "source_location": null,
-      "weight": 0.5,
-      "_src": "setup_wizard_precedence",
-      "_tgt": "auto_resume_feature",
-      "source": "setup_wizard_precedence",
-      "target": "auto_resume_feature"
-    },
-    {
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "dist-test/listers.js",
-      "source_location": "line 15,33,58",
-      "weight": 1.0,
-      "_src": "listers_module",
-      "_tgt": "v1_models_fallback_pattern",
-      "source": "listers_module",
-      "target": "v1_models_fallback_pattern"
-    },
-    {
-      "relation": "provides_test_infrastructure_for",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "dist-test/listers.test.js",
-      "source_location": "line 4",
-      "weight": 0.8,
-      "_src": "listers_module",
-      "_tgt": "test_helpers_module",
-      "source": "listers_module",
-      "target": "test_helpers_module"
-    },
-    {
-      "relation": "implemented_by",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "dist-test/cli.js",
-      "source_location": "line 152-160",
-      "weight": 1.0,
-      "_src": "resume_module",
-      "_tgt": "auto_resume_feature",
-      "source": "resume_module",
-      "target": "auto_resume_feature"
     },
     {
       "label": "implemented in",
@@ -4248,41 +2782,283 @@
       "_tgt": "setup_list_for_provider",
       "source": "setup_connection_test",
       "target": "setup_list_for_provider"
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "compat.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "compat_test_ts",
+      "_tgt": "compat_ts",
+      "confidence_score": 1.0,
+      "source": "compat_test_ts",
+      "target": "compat_ts"
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "cli.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_src": "compat_ts",
+      "_tgt": "cli_ts",
+      "confidence_score": 1.0,
+      "source": "compat_ts",
+      "target": "cli_ts"
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "config.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_src": "config_test_ts",
+      "_tgt": "config_ts",
+      "confidence_score": 1.0,
+      "source": "config_test_ts",
+      "target": "config_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config.test.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_src": "config_test_ts",
+      "_tgt": "src_config_test_mockplatform",
+      "confidence_score": 1.0,
+      "source": "config_test_ts",
+      "target": "src_config_test_mockplatform"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config.test.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_src": "config_test_ts",
+      "_tgt": "src_config_test_restoreplatform",
+      "confidence_score": 1.0,
+      "source": "config_test_ts",
+      "target": "src_config_test_restoreplatform"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_src": "config_ts",
+      "_tgt": "src_config_configdir",
+      "confidence_score": 1.0,
+      "source": "config_ts",
+      "target": "src_config_configdir"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_src": "config_ts",
+      "_tgt": "src_config_configpath",
+      "confidence_score": 1.0,
+      "source": "config_ts",
+      "target": "src_config_configpath"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config.ts",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_src": "config_ts",
+      "_tgt": "src_config_loadconfig",
+      "confidence_score": 1.0,
+      "source": "config_ts",
+      "target": "src_config_loadconfig"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config.ts",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_src": "config_ts",
+      "_tgt": "src_config_saveconfig",
+      "confidence_score": 1.0,
+      "source": "config_ts",
+      "target": "src_config_saveconfig"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config.ts",
+      "source_location": "L43",
+      "weight": 1.0,
+      "_src": "config_ts",
+      "_tgt": "src_config_loadsettings",
+      "confidence_score": 1.0,
+      "source": "config_ts",
+      "target": "src_config_loadsettings"
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "cli.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_src": "config_ts",
+      "_tgt": "cli_ts",
+      "confidence_score": 1.0,
+      "source": "config_ts",
+      "target": "cli_ts"
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "setup.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "config_ts",
+      "_tgt": "setup_ts",
+      "confidence_score": 1.0,
+      "source": "config_ts",
+      "target": "setup_ts"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "config.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_src": "src_config_configdir",
+      "_tgt": "src_config_configpath",
+      "confidence_score": 1.0,
+      "source": "src_config_configdir",
+      "target": "src_config_configpath"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "config.ts",
+      "source_location": "L38",
+      "weight": 1.0,
+      "_src": "src_config_configdir",
+      "_tgt": "src_config_saveconfig",
+      "confidence_score": 1.0,
+      "source": "src_config_configdir",
+      "target": "src_config_saveconfig"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "config.ts",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_src": "src_config_configpath",
+      "_tgt": "src_config_loadconfig",
+      "confidence_score": 1.0,
+      "source": "src_config_configpath",
+      "target": "src_config_loadconfig"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "setup.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_src": "src_config_loadconfig",
+      "_tgt": "src_setup_runsetup",
+      "source": "src_config_loadconfig",
+      "target": "src_setup_runsetup"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "setup.ts",
+      "source_location": "L110",
+      "weight": 1.0,
+      "_src": "src_config_saveconfig",
+      "_tgt": "src_setup_runsetup",
+      "source": "src_config_saveconfig",
+      "target": "src_setup_runsetup"
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "cli.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_src": "providers_ts",
+      "_tgt": "cli_ts",
+      "confidence_score": 1.0,
+      "source": "providers_ts",
+      "target": "cli_ts"
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "setup.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_src": "providers_ts",
+      "_tgt": "setup_ts",
+      "confidence_score": 1.0,
+      "source": "providers_ts",
+      "target": "setup_ts"
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "cli.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_src": "cli_ts",
+      "_tgt": "setup_ts",
+      "confidence_score": 1.0,
+      "source": "cli_ts",
+      "target": "setup_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "setup.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_src": "setup_ts",
+      "_tgt": "src_setup_listforprovider",
+      "confidence_score": 1.0,
+      "source": "setup_ts",
+      "target": "src_setup_listforprovider"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "setup.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_src": "setup_ts",
+      "_tgt": "src_setup_runsetup",
+      "confidence_score": 1.0,
+      "source": "setup_ts",
+      "target": "src_setup_runsetup"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "setup.ts",
+      "source_location": "L66",
+      "weight": 1.0,
+      "_src": "src_setup_listforprovider",
+      "_tgt": "src_setup_runsetup",
+      "confidence_score": 1.0,
+      "source": "src_setup_listforprovider",
+      "target": "src_setup_runsetup"
     }
   ],
-  "hyperedges": [
-    {
-      "nodes": [
-        "setup_config_ts",
-        "setup_load_config",
-        "setup_save_config",
-        "setup_config_dir",
-        "setup_config_path",
-        "setup_load_settings"
-      ],
-      "label": "config.ts consolidates all config I/O functions",
-      "type": "EXTRACTED",
-      "confidence_score": 1.0
-    },
-    {
-      "nodes": [
-        "setup_config_file_linux",
-        "setup_config_file_macos",
-        "setup_config_file_windows"
-      ],
-      "label": "Platform-native config file locations resolved by configDir()",
-      "type": "EXTRACTED",
-      "confidence_score": 1.0
-    },
-    {
-      "nodes": [
-        "setup_cli_ts",
-        "setup_compat_ts",
-        "setup_config_ts"
-      ],
-      "label": "loadSettings decoupling: moved from compat.ts to config.ts, cli.ts import updated",
-      "type": "EXTRACTED",
-      "confidence_score": 1.0
-    }
-  ]
+  "hyperedges": []
 }
