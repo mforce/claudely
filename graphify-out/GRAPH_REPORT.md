@@ -1,130 +1,101 @@
-# Graph Report - /home/cesar/dev/claudely  (2026-05-03)
+# Graph Report - .  (2026-08-01)
 
 ## Corpus Check
-- 18 files · ~7,723 words
-- Verdict: corpus is large enough that graph structure adds value.
+- cluster-only mode — file stats not available
 
 ## Summary
-- 119 nodes · 155 edges · 12 communities detected
-- Extraction: 87% EXTRACTED · 13% INFERRED · 0% AMBIGUOUS · INFERRED: 20 edges (avg confidence: 0.86)
+- 81 nodes · 165 edges · 8 communities
+- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
+## Graph Freshness
+- Built from commit: `e2545b3a`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
+
 ## Community Hubs (Navigation)
-- [[_COMMUNITY_Setup & Config|Setup & Config]]
-- [[_COMMUNITY_CLI Entry & Flags|CLI Entry & Flags]]
-- [[_COMMUNITY_Lister Tests|Lister Tests]]
-- [[_COMMUNITY_Module Imports|Module Imports]]
-- [[_COMMUNITY_Provider Dispatch|Provider Dispatch]]
-- [[_COMMUNITY_Resume Session|Resume Session]]
-- [[_COMMUNITY_Compat Layer|Compat Layer]]
-- [[_COMMUNITY_Version Reporting|Version Reporting]]
-- [[_COMMUNITY_CLI Help|CLI Help]]
-- [[_COMMUNITY_Model Entry Type|Model Entry Type]]
-- [[_COMMUNITY_Runner Type|Runner Type]]
-- [[_COMMUNITY_Split Result Type|Split Result Type]]
+- cli.ts
+- listers.test.ts
+- main
+- config.ts
+- compat.ts
+- version.ts
+- argsplit.ts
+- cli.integration.test.ts
 
 ## God Nodes (most connected - your core abstractions)
-1. `main()` - 11 edges
-2. `main()` - 7 edges
-3. `listLmStudio()` - 6 edges
-4. `listOllama()` - 6 edges
-5. `listV1Models()` - 6 edges
-6. `listForProvider()` - 5 edges
-7. `PROVIDERS registry` - 5 edges
-8. `runSetup()` - 5 edges
-9. `ListerKind type` - 4 edges
-10. `INCOMPATIBILITIES table` - 4 edges
+1. `main()` - 12 edges
+2. `listLmStudio()` - 8 edges
+3. `listOllama()` - 8 edges
+4. `listV1Models()` - 8 edges
+5. `loadConfig()` - 7 edges
+6. `runSetup()` - 7 edges
+7. `isResumeIntent()` - 6 edges
+8. `renderVersion()` - 6 edges
+9. `listForProvider()` - 5 edges
+10. `saveConfig()` - 5 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `applyCompat()` --calls--> `main()`  [INFERRED]
-  compat.ts → cli.ts
-- `main()` --calls--> `loadSettings()`  [INFERRED]
-  cli.ts → config.ts
-- `main()` --calls--> `loadConfig()`  [INFERRED]
-  cli.ts → config.ts
-- `main()` --calls--> `runSetup()`  [INFERRED]
-  cli.ts → setup.ts
-- `loadConfig()` --calls--> `runSetup()`  [INFERRED]
-  config.ts → setup.ts
+- `main()` --calls--> `splitArgs()`  [EXTRACTED]
+  src/cli.ts → src/argsplit.ts
+- `main()` --calls--> `applyCompat()`  [EXTRACTED]
+  src/cli.ts → src/compat.ts
+- `main()` --calls--> `loadConfig()`  [EXTRACTED]
+  src/cli.ts → src/config.ts
+- `main()` --calls--> `loadSettings()`  [EXTRACTED]
+  src/cli.ts → src/config.ts
+- `main()` --references--> `Provider`  [EXTRACTED]
+  src/cli.ts → src/providers.ts
 
-## Communities
+## Import Cycles
+- None detected.
 
-### Community 0 - "Setup & Config"
-Cohesion: 0.14
-Nodes (20): ClaudelyConfig, src/cli.ts, src/compat.ts, configDir(), Linux config path, macOS config path, Windows config path, configPath() (+12 more)
+## Communities (8 total, 0 thin omitted)
 
-### Community 1 - "CLI Entry & Flags"
-Cohesion: 0.12
-Nodes (13): FlagSpec interface, splitArgs(), FLAG_SPEC, main(), applyCompat(), INCOMPATIBILITIES table, Incompatibility interface, Arg splitting pattern (own vs claude passthrough) (+5 more)
+### Community 0 - "cli.ts"
+Cohesion: 0.24
+Nodes (16): FLAG_SPEC, listForProvider(), defaultRun, listLmStudio(), listOllama(), listV1Models(), LmsListEntry, LmsPsEntry (+8 more)
 
-### Community 2 - "Lister Tests"
-Cohesion: 0.15
-Nodes (6): installFake(), prependToPath(), readArgvLog(), listLmStudio(), listOllama(), listV1Models()
+### Community 1 - "listers.test.ts"
+Cohesion: 0.20
+Nodes (5): skipOnWindows, Runner, mockV1Fallback(), mockFetch(), restoreFetch()
 
-### Community 3 - "Module Imports"
-Cohesion: 0.26
-Nodes (9): listForProvider(), main(), configDir(), configPath(), loadConfig(), loadSettings(), saveConfig(), listForProvider() (+1 more)
+### Community 2 - "main"
+Cohesion: 0.31
+Nodes (9): main(), AssembleArgs, assembleClaudeArgv(), isResumeIntent(), ModelResolution, resolveModelForSpawn(), ResolveModelForSpawnInputs, RESUME_BOOLS (+1 more)
 
-### Community 4 - "Provider Dispatch"
-Cohesion: 0.25
-Nodes (14): listForProvider(), Auth env-style pattern (auth_token vs api_key), Lister fallback pattern (CLI tool -> /v1/models HTTP), listLmStudio(), listOllama(), listV1Models(), custom provider, EnvStyle type (+6 more)
+### Community 3 - "config.ts"
+Cohesion: 0.38
+Nodes (6): ClaudelyConfig, configDir(), configPath(), loadConfig(), loadSettings(), saveConfig()
 
-### Community 5 - "Resume Session"
+### Community 4 - "compat.ts"
 Cohesion: 0.32
-Nodes (4): encodeCwdForClaude(), hasRecentSessionForCwd(), isResumeIntent(), shouldAutoResume()
+Nodes (5): applyCompat(), ApplyContext, CompatResult, INCOMPATIBILITIES, Incompatibility
 
-### Community 6 - "Compat Layer"
-Cohesion: 0.33
-Nodes (2): applyCompat(), isAnthropicHost()
+### Community 5 - "version.ts"
+Cohesion: 0.52
+Nodes (5): defaultExec, ExecRunner, probeClaudeVersion(), readClaudelyVersion(), renderVersion()
 
-### Community 7 - "Version Reporting"
-Cohesion: 0.6
-Nodes (3): probeClaudeVersion(), readClaudelyVersion(), renderVersion()
+### Community 6 - "argsplit.ts"
+Cohesion: 0.47
+Nodes (4): FlagSpec, splitArgs(), SplitResult, SPEC
 
-### Community 11 - "CLI Help"
-Cohesion: 1.0
-Nodes (1): HELP text
-
-### Community 12 - "Model Entry Type"
-Cohesion: 1.0
-Nodes (1): ModelEntry interface
-
-### Community 13 - "Runner Type"
-Cohesion: 1.0
-Nodes (1): Runner type
-
-### Community 14 - "Split Result Type"
-Cohesion: 1.0
-Nodes (1): SplitResult interface
+### Community 7 - "cli.integration.test.ts"
+Cohesion: 0.40
+Nodes (3): CLI, run, skipOnWindows
 
 ## Knowledge Gaps
-- **8 isolated node(s):** `HELP text`, `ModelEntry interface`, `Runner type`, `Incompatibility interface`, `FlagSpec interface` (+3 more)
+- **20 isolated node(s):** `SPEC`, `SplitResult`, `run`, `skipOnWindows`, `CLI` (+15 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **Thin community `Compat Layer`** (7 nodes): `compat.test.ts`, `compat.ts`, `applyCompat()`, `isAnthropicHost()`, `loadSettings()`, `compat.test.ts`, `compat.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `CLI Help`** (1 nodes): `HELP text`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Model Entry Type`** (1 nodes): `ModelEntry interface`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Runner Type`** (1 nodes): `Runner type`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Split Result Type`** (1 nodes): `SplitResult interface`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `main()` connect `Module Imports` to `Compat Layer`?**
-  _High betweenness centrality (0.074) - this node is a cross-community bridge._
-- **Why does `main()` connect `CLI Entry & Flags` to `Provider Dispatch`?**
-  _High betweenness centrality (0.057) - this node is a cross-community bridge._
-- **Why does `listForProvider()` connect `Provider Dispatch` to `CLI Entry & Flags`?**
-  _High betweenness centrality (0.024) - this node is a cross-community bridge._
-- **Are the 4 inferred relationships involving `main()` (e.g. with `applyCompat()` and `loadConfig()`) actually correct?**
-  _`main()` has 4 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 4 inferred relationships involving `listLmStudio()` (e.g. with `ListerKind type` and `lmstudio provider`) actually correct?**
-  _`listLmStudio()` has 4 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 4 inferred relationships involving `listOllama()` (e.g. with `ListerKind type` and `ollama provider`) actually correct?**
-  _`listOllama()` has 4 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `HELP text`, `ModelEntry interface`, `Runner type` to the rest of the system?**
-  _8 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Why does `listLmStudio()` connect `cli.ts` to `listers.test.ts`?**
+  _High betweenness centrality (0.071) - this node is a cross-community bridge._
+- **Why does `listOllama()` connect `cli.ts` to `listers.test.ts`?**
+  _High betweenness centrality (0.071) - this node is a cross-community bridge._
+- **Why does `renderVersion()` connect `version.ts` to `cli.ts`, `main`?**
+  _High betweenness centrality (0.037) - this node is a cross-community bridge._
+- **What connects `SPEC`, `SplitResult`, `run` to the rest of the system?**
+  _20 weakly-connected nodes found - possible documentation gaps or missing edges._
