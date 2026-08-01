@@ -9,6 +9,7 @@ import {
   encodeCwdForClaude,
   hasRecentSessionForCwd,
   shouldAutoResume,
+  resolveModelForSpawn,
 } from "./resume.js";
 
 test("isResumeIntent: empty args → false", () => {
@@ -226,4 +227,123 @@ test("shouldAutoResume: CLAUDELY_NO_AUTO_RESUME=0/false/empty does NOT opt out",
       `CLAUDELY_NO_AUTO_RESUME=${JSON.stringify(v)} should not opt out`,
     );
   }
+});
+
+test("resolveModelForSpawn: explicit CLI --model wins over everything, resume or not", () => {
+  assert.deepEqual(
+    resolveModelForSpawn({
+      explicitModel: "deepseek-ai/DeepSeek-V4-Flash-0731",
+      env: {},
+      configModel: "opus[1m]",
+      providerModelEnvVar: "LLAMACPP_MODEL",
+      explicitlyResuming: true,
+    }),
+    { model: "deepseek-ai/DeepSeek-V4-Flash-0731", needsPicker: false },
+  );
+  assert.deepEqual(
+    resolveModelForSpawn({
+      explicitModel: "deepseek-ai/DeepSeek-V4-Flash-0731",
+      env: {},
+      configModel: "opus[1m]",
+      explicitlyResuming: false,
+    }),
+    { model: "deepseek-ai/DeepSeek-V4-Flash-0731", needsPicker: false },
+  );
+});
+
+test("resolveModelForSpawn: AUTO-resume (not explicit) still applies the configured model — regression for stale Anthropic sessions", () => {
+  // Bare `claudely` auto-resumes: the shared ~/.claude dir may hold a session
+  // from a different provider (Anthropic), so we MUST still pass the local
+  // config's model. claude --continue then uses it instead of falling back to
+  // the settings.json model (opus[1m]) which doesn't exist on the local server.
+  assert.deepEqual(
+    resolveModelForSpawn({
+      explicitModel: undefined,
+      env: {},
+      configModel: "deepseek-ai/DeepSeek-V4-Flash-0731",
+      providerModelEnvVar: "LLAMACPP_MODEL",
+      explicitlyResuming: false, // auto-resume
+    }),
+    { model: "deepseek-ai/DeepSeek-V4-Flash-0731", needsPicker: false },
+  );
+});
+
+test("resolveModelForSpawn: EXPLICIT resume keeps the saved session's model (no override, no picker)", () => {
+  assert.deepEqual(
+    resolveModelForSpawn({
+      explicitModel: undefined,
+      env: {},
+      configModel: "deepseek-ai/DeepSeek-V4-Flash-0731",
+      providerModelEnvVar: "LLAMACPP_MODEL",
+      explicitlyResuming: true, // user passed -c / --session-id / etc.
+    }),
+    { model: undefined, needsPicker: false },
+  );
+});
+
+test("resolveModelForSpawn: fresh run falls back to CLAUDELY_MODEL then config then provider env", () => {
+  assert.deepEqual(
+    resolveModelForSpawn({
+      explicitModel: undefined,
+      env: { CLAUDELY_MODEL: "from-env" },
+      configModel: "config-model",
+      explicitlyResuming: false,
+    }),
+    { model: "from-env", needsPicker: false },
+  );
+  assert.deepEqual(
+    resolveModelForSpawn({
+      explicitModel: undefined,
+      env: {},
+      configModel: "config-model",
+      explicitlyResuming: false,
+    }),
+    { model: "config-model", needsPicker: false },
+  );
+  assert.deepEqual(
+    resolveModelForSpawn({
+      explicitModel: undefined,
+      env: { LLAMACPP_MODEL: "provider-env-model" },
+      configModel: undefined,
+      providerModelEnvVar: "LLAMACPP_MODEL",
+      explicitlyResuming: false,
+    }),
+    { model: "provider-env-model", needsPicker: false },
+  );
+});
+
+test("resolveModelForSpawn: no model anywhere and not resuming → needs picker", () => {
+  assert.deepEqual(
+    resolveModelForSpawn({
+      explicitModel: undefined,
+      env: {},
+      configModel: undefined,
+      providerModelEnvVar: "LLAMACPP_MODEL",
+      explicitlyResuming: false,
+    }),
+    { model: undefined, needsPicker: true },
+  );
+});
+
+test("resolveModelForSpawn: no model and resuming (auto or explicit) → no picker, no model (claude --continue already knows its session)", () => {
+  // Auto-resume with no configured model: skip picker, let claude --continue
+  // do its thing rather than interrupting to ask.
+  assert.deepEqual(
+    resolveModelForSpawn({
+      explicitModel: undefined,
+      env: {},
+      configModel: undefined,
+      explicitlyResuming: false,
+    }),
+    { model: undefined, needsPicker: true },
+  );
+  assert.deepEqual(
+    resolveModelForSpawn({
+      explicitModel: undefined,
+      env: {},
+      configModel: undefined,
+      explicitlyResuming: true,
+    }),
+    { model: undefined, needsPicker: false },
+  );
 });

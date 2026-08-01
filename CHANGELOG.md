@@ -11,6 +11,17 @@ section is also used as the body of the Release notes by the
 
 ## [Unreleased]
 
+### Fixed
+- Bare `claudely` (auto-resume) now always injects the configured provider
+  model via `--model`. Previously auto-resume spawned `claude --continue`
+  with no model, so claude fell back to the model in `~/.claude/settings.json`
+  (e.g. `opus[1m]`). Because that session often belonged to a different
+  endpoint (the shared `~/.claude/projects/` dir also holds Anthropic-API
+  sessions), the Anthropic model didn't exist on the local server, producing
+  "There's an issue with the selected model". Explicit resume flags
+  (`-c`/`-r`/`--session-id`/`--from-pr`) still skip model injection and keep
+  the saved session's model.
+
 ## [0.1.6] - 2026-05-03
 
 ### Fixed

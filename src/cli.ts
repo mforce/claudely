@@ -32,6 +32,7 @@ import {
   assembleClaudeArgv,
   hasRecentSessionForCwd,
   shouldAutoResume,
+  resolveModelForSpawn,
 } from "./resume.js";
 
 const FLAG_SPEC: FlagSpec = {
@@ -188,6 +189,12 @@ async function main(): Promise<number> {
     return 0;
   }
 
+  // Distinguish an EXPLICIT resume (user passed -c/-r/--session-id/--from-pr)
+  // from AUTO-resume (bare `claudely`, no args). Compute it from the args as
+  // they arrive, BEFORE auto-resume pushes --continue below — otherwise the
+  // synthetic --continue would mark a bare invocation as an explicit resume.
+  const explicitlyResuming = isResumeIntent(claudeArgs);
+
   // Auto-resume on bare invocation: if the user typed `claudely` with no
   // forwarded args and there's a saved session for this cwd, behave as if
   // they had typed `claudely --continue`. --new and CLAUDELY_NO_AUTO_RESUME
@@ -206,20 +213,24 @@ async function main(): Promise<number> {
   // Resume vs. model selection are independent decisions:
   //   - Resume controls whether the picker runs and whether --continue is added.
   //   - Model selection controls what (if anything) goes into --model.
-  // On resume, an explicit CLI --model is still honored (claude supports
-  // --continue --model X to switch models on a resumed conversation), but
-  // env-derived model defaults are skipped — they're "default for fresh",
-  // not "intent to override the saved session".
-  const resuming = isResumeIntent(claudeArgs);
+  //
+  // Two kinds of resume, with opposite model intent:
+  //   - EXPLICIT resume: keep the saved session's model, never override or prompt.
+  //   - AUTO-resume: still apply the configured model. Otherwise `claude
+  //     --continue` falls back to the model in ~/.claude/settings.json (e.g.
+  //     opus[1m]) which doesn't exist on a local server and fails with "issue
+  //     with the selected model". claude supports --continue --model X.
+  const resuming = autoResume || explicitlyResuming;
 
-  let model: string | undefined = values.model;
-  if (!model && !resuming) {
-    model =
-      process.env.CLAUDELY_MODEL ??
-      config.model ??
-      (provider.modelEnvVar ? process.env[provider.modelEnvVar] : undefined);
+  let { model, needsPicker } = resolveModelForSpawn({
+    explicitModel: values.model,
+    env: process.env,
+    configModel: config.model,
+    providerModelEnvVar: provider.modelEnvVar,
+    explicitlyResuming,
+  });
 
-    if (!model) {
+  if (needsPicker && !resuming) {
       const entries = await listForProvider(provider, baseUrl, token);
       if (entries.length === 0) {
         console.error(
@@ -249,7 +260,6 @@ async function main(): Promise<number> {
           }));
         },
       });
-    }
   }
 
   // Build the env recipe to hand to claude.

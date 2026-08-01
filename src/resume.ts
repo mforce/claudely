@@ -76,6 +76,49 @@ export interface AutoResumeInputs {
   env: NodeJS.ProcessEnv;
 }
 
+export interface ResolveModelForSpawnInputs {
+  // value of the claudely --model flag (undefined if not passed).
+  explicitModel?: string;
+  env: NodeJS.ProcessEnv;
+  // configured default model from ~/.config/claudely/config.json.
+  configModel?: string;
+  // provider-specific model env var name (e.g. OLLAMA_MODEL).
+  providerModelEnvVar?: string;
+  // true when the user passed an explicit resume flag (-c/-r/--session-id/--from-pr),
+  // as opposed to claudely auto-resuming a bare invocation.
+  explicitlyResuming: boolean;
+}
+
+export interface ModelResolution {
+  model: string | undefined;
+  needsPicker: boolean;
+}
+
+// Decide which --model (if any) to hand to claude, and whether the interactive
+// picker must run. Resume intent affects both:
+//   - Explicit CLI --model always wins, resume or not (claude supports
+//     --continue --model X to switch models while resuming).
+//   - Explicit resume (user chose to resume a specific session) keeps that
+//     session's saved model: no override, no picker.
+//   - Fresh OR auto-resume falls back to the configured model for this
+//     provider. On AUTO-resume this matters: the "session" may belong to a
+//     DIFFERENT provider (the shared ~/.claude dir holds Anthropic-API
+//     sessions), and a bare `claude --continue` would otherwise fall back to
+//     the model in ~/.claude/settings.json (e.g. opus[1m]) which doesn't exist
+//     on a local server and fails with "issue with the selected model".
+export function resolveModelForSpawn(inputs: ResolveModelForSpawnInputs): ModelResolution {
+  if (inputs.explicitModel) return { model: inputs.explicitModel, needsPicker: false };
+  if (inputs.explicitlyResuming) return { model: undefined, needsPicker: false };
+
+  const fromEnv =
+    inputs.env.CLAUDELY_MODEL ??
+    inputs.configModel ??
+    (inputs.providerModelEnvVar ? inputs.env[inputs.providerModelEnvVar] : undefined);
+  if (fromEnv) return { model: fromEnv, needsPicker: false };
+
+  return { model: undefined, needsPicker: true };
+}
+
 export function shouldAutoResume(inputs: AutoResumeInputs): boolean {
   if (!inputs.hasRecentSession) return false;
   if (inputs.ownValues.new) return false;
