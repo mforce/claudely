@@ -30,8 +30,6 @@ import { renderVersion } from "./version.js";
 import {
   isResumeIntent,
   assembleClaudeArgv,
-  hasRecentSessionForCwd,
-  shouldAutoResume,
   resolveModelForSpawn,
 } from "./resume.js";
 
@@ -56,15 +54,16 @@ claudely options:
   -u, --base-url <url>    Override the provider's default base URL
   -t, --token <token>     Override the provider's default auth token
       --list              Print available models for the provider and exit
-      --new               Force a fresh session (skip auto-resume)
   -h, --help              Show this help
   -V, --version           Print claudely and claude versions, then exit
       setup               Configure provider, URL, token, and default model
 
-Bare \`claudely\` (no args, no --model) auto-resumes the most recent
-claude session for the current directory when one exists. Use --new to
-force a fresh session, or set CLAUDELY_NO_AUTO_RESUME=1 to disable
-auto-resume globally.
+Bare \`claudely\` (no args) starts a FRESH session with the configured
+provider model. To resume a previous conversation, pass a claude resume
+flag with a prompt (see examples), e.g. \`claudely -c "<prompt>"\`. The
+old auto-resume behavior (and the \`--new\` flag that toggled it) were
+removed, because Claude >=2.1 dropped prompt-less \`--continue\`; \`--new\`
+is still accepted as a no-op for backward compatibility.
 
 When you pass a claude resume flag (-c/--continue, -r/--resume,
 --session-id, --from-pr) claudely skips the model picker and does NOT
@@ -189,38 +188,13 @@ async function main(): Promise<number> {
     return 0;
   }
 
-  // Distinguish an EXPLICIT resume (user passed -c/-r/--session-id/--from-pr)
-  // from AUTO-resume (bare `claudely`, no args). Compute it from the args as
-  // they arrive, BEFORE auto-resume pushes --continue below — otherwise the
-  // synthetic --continue would mark a bare invocation as an explicit resume.
+  // Explicit resume flags (-c/-r/--session-id/--from-pr) mean the user chose
+  // to resume a specific conversation, so we keep that session's saved model:
+  // no --model injection and no picker. A bare `claudely` (no args) is a FRESH
+  // session — claude >=2.1 dropped prompt-less `--continue`, so auto-resuming
+  // a bare invocation would fail with "No conversation found to continue", and
+  // it could resume a stale Anthropic-API session from the shared ~/.claude dir.
   const explicitlyResuming = isResumeIntent(claudeArgs);
-
-  // Auto-resume on bare invocation: if the user typed `claudely` with no
-  // forwarded args and there's a saved session for this cwd, behave as if
-  // they had typed `claudely --continue`. --new and CLAUDELY_NO_AUTO_RESUME
-  // opt out.
-  const autoResume = shouldAutoResume({
-    ownValues: values,
-    claudeArgs,
-    hasRecentSession: hasRecentSessionForCwd(process.cwd()),
-    env: process.env,
-  });
-  if (autoResume) {
-    process.stderr.write("claudely: resuming previous session (use --new for a fresh one)\n");
-    claudeArgs.push("--continue");
-  }
-
-  // Resume vs. model selection are independent decisions:
-  //   - Resume controls whether the picker runs and whether --continue is added.
-  //   - Model selection controls what (if anything) goes into --model.
-  //
-  // Two kinds of resume, with opposite model intent:
-  //   - EXPLICIT resume: keep the saved session's model, never override or prompt.
-  //   - AUTO-resume: still apply the configured model. Otherwise `claude
-  //     --continue` falls back to the model in ~/.claude/settings.json (e.g.
-  //     opus[1m]) which doesn't exist on a local server and fails with "issue
-  //     with the selected model". claude supports --continue --model X.
-  const resuming = autoResume || explicitlyResuming;
 
   let { model, needsPicker } = resolveModelForSpawn({
     explicitModel: values.model,
@@ -230,8 +204,8 @@ async function main(): Promise<number> {
     explicitlyResuming,
   });
 
-  if (needsPicker && !resuming) {
-      const entries = await listForProvider(provider, baseUrl, token);
+  if (needsPicker && !explicitlyResuming) {
+    const entries = await listForProvider(provider, baseUrl, token);
       if (entries.length === 0) {
         console.error(
           `claudely: no models discovered for provider '${providerName}' at ${baseUrl}.`,

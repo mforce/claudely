@@ -11,16 +11,26 @@ section is also used as the body of the Release notes by the
 
 ## [Unreleased]
 
-### Fixed
-- Bare `claudely` (auto-resume) now always injects the configured provider
-  model via `--model`. Previously auto-resume spawned `claude --continue`
-  with no model, so claude fell back to the model in `~/.claude/settings.json`
-  (e.g. `opus[1m]`). Because that session often belonged to a different
-  endpoint (the shared `~/.claude/projects/` dir also holds Anthropic-API
-  sessions), the Anthropic model didn't exist on the local server, producing
-  "There's an issue with the selected model". Explicit resume flags
-  (`-c`/`-r`/`--session-id`/`--from-pr`) still skip model injection and keep
-  the saved session's model.
+### Removed
+- **Auto-resume on bare `claudely`.** Previously a bare invocation with a
+  saved session in `~/.claude/projects/` spawned `claude --continue` with no
+  prompt. Claude >=2.1 dropped prompt-less `--continue` (it now errors `No
+  conversation found to continue`), so auto-resume could no longer work.
+  Bare `claudely` now always starts a FRESH session; resume a conversation
+  explicitly with `claudely -c "<prompt>"` or `claudely -r`. The `--new`
+  flag and `CLAUDELY_NO_AUTO_RESUME` env var are gone as no longer
+  meaningful; `--new` is still accepted as a harmless no-op so old muscle
+  memory doesn't error.
+
+### Changed
+- **Explicit model pinning.** When starting fresh (or resuming with an
+  explicit `--model`), claudely always passes the configured provider model
+  via `--model`. `-c`/`-r`/`--session-id`/`--from-pr` without `--model` still
+  keep the saved session's model, so a locally-connecting claudely no longer
+  falls back to the Anthropic model in `~/.claude/settings.json` (e.g.
+  `opus[1m]`) that doesn't exist on a local server. Moved the model/current
+  decision into `resolveModelForSpawn()` so the fresh vs explicit-resume
+  behavior is unit-tested.
 
 ## [0.1.6] - 2026-05-03
 

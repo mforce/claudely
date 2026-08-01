@@ -10,10 +10,6 @@
 //   --session-id <uuid>             use a specific session id
 //   --from-pr [value]               resume the session linked to a PR
 
-import { readdirSync } from "node:fs";
-import { homedir } from "node:os";
-import { join } from "node:path";
-
 const RESUME_BOOLS = new Set(["-c", "--continue"]);
 
 // Flags that are themselves resume intent regardless of their value form
@@ -42,40 +38,6 @@ export function assembleClaudeArgv(opts: AssembleArgs): string[] {
   return [...head, ...opts.extraArgs, ...opts.claudeArgs];
 }
 
-// claude stores per-cwd sessions under ~/.claude/projects/<encoded-cwd>/.
-// The encoding replaces path separators with `-` (e.g. /home/u/x → -home-u-x).
-// We mirror that to detect "is there a previous session here?" without spawning.
-export function encodeCwdForClaude(cwd: string): string {
-  return cwd.replace(/\//g, "-");
-}
-
-export interface SessionLookupOpts {
-  // Override for tests; defaults to os.homedir().
-  home?: string;
-}
-
-export function hasRecentSessionForCwd(cwd: string, opts: SessionLookupOpts = {}): boolean {
-  const root = opts.home ?? homedir();
-  const dir = join(root, ".claude", "projects", encodeCwdForClaude(cwd));
-  try {
-    const entries = readdirSync(dir, { withFileTypes: true });
-    return entries.some((e) => e.isFile() && e.name.endsWith(".jsonl"));
-  } catch {
-    return false;
-  }
-}
-
-export interface AutoResumeInputs {
-  ownValues: {
-    model?: string | undefined;
-    list?: boolean | undefined;
-    new?: boolean | undefined;
-  };
-  claudeArgs: readonly string[];
-  hasRecentSession: boolean;
-  env: NodeJS.ProcessEnv;
-}
-
 export interface ResolveModelForSpawnInputs {
   // value of the claudely --model flag (undefined if not passed).
   explicitModel?: string;
@@ -84,8 +46,8 @@ export interface ResolveModelForSpawnInputs {
   configModel?: string;
   // provider-specific model env var name (e.g. OLLAMA_MODEL).
   providerModelEnvVar?: string;
-  // true when the user passed an explicit resume flag (-c/-r/--session-id/--from-pr),
-  // as opposed to claudely auto-resuming a bare invocation.
+  // true when the user passed a resume flag (-c/-r/--session-id/--from-pr) and
+  // therefore wants to keep the saved session's model.
   explicitlyResuming: boolean;
 }
 
@@ -95,17 +57,13 @@ export interface ModelResolution {
 }
 
 // Decide which --model (if any) to hand to claude, and whether the interactive
-// picker must run. Resume intent affects both:
+// picker must run. Explicit resume intent affects both:
 //   - Explicit CLI --model always wins, resume or not (claude supports
 //     --continue --model X to switch models while resuming).
 //   - Explicit resume (user chose to resume a specific session) keeps that
 //     session's saved model: no override, no picker.
-//   - Fresh OR auto-resume falls back to the configured model for this
-//     provider. On AUTO-resume this matters: the "session" may belong to a
-//     DIFFERENT provider (the shared ~/.claude dir holds Anthropic-API
-//     sessions), and a bare `claude --continue` would otherwise fall back to
-//     the model in ~/.claude/settings.json (e.g. opus[1m]) which doesn't exist
-//     on a local server and fails with "issue with the selected model".
+//   - Otherwise (fresh run) fall back to the configured model for this
+//     provider; if none is configured, the picker must run.
 export function resolveModelForSpawn(inputs: ResolveModelForSpawnInputs): ModelResolution {
   if (inputs.explicitModel) return { model: inputs.explicitModel, needsPicker: false };
   if (inputs.explicitlyResuming) return { model: undefined, needsPicker: false };
@@ -117,15 +75,4 @@ export function resolveModelForSpawn(inputs: ResolveModelForSpawnInputs): ModelR
   if (fromEnv) return { model: fromEnv, needsPicker: false };
 
   return { model: undefined, needsPicker: true };
-}
-
-export function shouldAutoResume(inputs: AutoResumeInputs): boolean {
-  if (!inputs.hasRecentSession) return false;
-  if (inputs.ownValues.new) return false;
-  if (inputs.ownValues.list) return false;
-  if (inputs.claudeArgs.length > 0) return false;
-  if (isResumeIntent(inputs.claudeArgs)) return false;
-  const optOut = inputs.env.CLAUDELY_NO_AUTO_RESUME;
-  if (optOut && optOut !== "0" && optOut !== "" && optOut !== "false") return false;
-  return true;
 }
